@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
-import { Mail, ExternalLink, MapPin, Phone, Download, PenLine } from "lucide-react"
+import { Mail, ExternalLink, MapPin, Phone, Download, PenLine, Briefcase } from "lucide-react"
 import { SiPython, SiNumpy, SiPostgresql, SiGit, SiGithub, SiJupyter } from "react-icons/si"
 import { Dock } from "@/components/ui/dock-two"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -338,6 +338,7 @@ export default function Home() {
     { icon: LinkedInIcon, label: "LinkedIn", onClick: () => window.open("https://www.linkedin.com/in/kanishk-pansari-8b60a2356/", "_blank") },
     { icon: Mail, label: "Email", onClick: () => window.open("mailto:kanishkpansari1217@gmail.com") },
     { icon: PenLine, label: "Writing", onClick: () => window.open("/blog", "_self") },
+    { icon: Briefcase, label: "Services", onClick: () => window.open("/services", "_self") },
     { icon: Download, label: "Resume", onClick: () => window.open("/resume.pdf", "_blank") },
   ]
 
