@@ -5,7 +5,7 @@ import Nav from "@/components/nav"
 
 export const metadata: Metadata = {
   title: "Services — Kanishk Pansari",
-  description: "Custom AI tools and full-stack development. Three clear offers, transparent pricing, 2-week delivery.",
+  description: "Custom AI tools, cold outreach, profile building, and full-stack development. Transparent pricing, 2-week delivery.",
 }
 
 const services = [
@@ -39,6 +39,35 @@ const services = [
     includes: ["Full-stack TypeScript + Python", "Database + auth", "Cloudflare / VPS deployment", "2 weeks post-launch support"],
     subject: "Project Inquiry — Full AI Product Build",
   },
+  {
+    num: "04",
+    name: "Cold Email Campaign",
+    price: "$600 – $1,200",
+    timeline: "1–2 weeks",
+    description: "End-to-end outbound engine. Lead list building, personalised sequences, A/B testing, and automated follow-ups. You get daily reply monitoring and a weekly analytics report on opens, clicks, and booked calls.",
+    bestFor: "Founders and consultants who need pipeline, not just a form on their website.",
+    includes: ["Lead list building & enrichment", "5–7 touch email sequence", "A/B subject line testing", "Automated follow-up logic", "Weekly performance report"],
+    subject: "Project Inquiry — Cold Email Campaign",
+  },
+  {
+    num: "05",
+    name: "Profile & Brand Building",
+    price: "$400 – $800",
+    timeline: "1 week",
+    description: "LinkedIn optimisation, positioning strategy, and a 30-day content calendar that turns your expertise into inbound leads. We rewrite your profile and build the first month of content.",
+    bestFor: "Professionals and founders who need a credible presence before their next raise or launch.",
+    includes: ["LinkedIn full rewrite", "Personal positioning statement", "30-day content calendar", "Headline A/B variants", "CTA audit across platforms"],
+    subject: "Project Inquiry — Profile & Brand Building",
+  },
+]
+
+const retainerIncludes = [
+  "Bug fixes & updates within 48h",
+  "Monthly feature additions",
+  "Hosting & uptime management",
+  "Weekly status report",
+  "Monthly strategy call",
+  "Priority support",
 ]
 
 const process = [
@@ -63,14 +92,14 @@ export default function ServicesPage() {
           What I Build
         </h1>
         <p className="text-[17px] leading-[1.7] max-w-[480px]" style={{ color: "#555" }}>
-          Custom AI tools and full-stack products. Every engagement starts with your data and ends with something that works{" "}
+          Custom AI tools, outbound campaigns, and full-stack products. Every engagement starts with your goal and ends with something that works{" "}
           <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>in production</em>.
         </p>
       </section>
 
       {/* Service list */}
-      <section className="max-w-[1200px] mx-auto px-8 pb-28" style={{ borderTop: "1px solid #1c1d22" }}>
-        {services.map((s, i) => (
+      <section className="max-w-[1200px] mx-auto px-8 pb-0" style={{ borderTop: "1px solid #1c1d22" }}>
+        {services.map((s) => (
           <div key={s.num} className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 py-16"
             style={{ borderBottom: "1px solid #1c1d22" }}>
             <div>
@@ -108,6 +137,45 @@ export default function ServicesPage() {
             </div>
           </div>
         ))}
+      </section>
+
+      {/* Monthly Retainer Add-On */}
+      <section className="max-w-[1200px] mx-auto px-8 py-20" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 items-start">
+          <div>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-6" style={{ color: "#cc9166" }}>Add-On · Available with any project</p>
+            <h2
+              className="text-[clamp(32px,4.5vw,52px)] leading-[1.05] tracking-[-0.025em] mb-6"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
+            >
+              Monthly Retainer
+            </h2>
+            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#cc9166" }}>$300 – $600 / month</p>
+            <p className="text-[15px] leading-[1.8] mb-8 max-w-[460px]" style={{ color: "#555" }}>
+              This is where recurring revenue lives — for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
+              and a weekly status report. One contact, no hourly billing, no surprises.
+            </p>
+            <p className="font-mono text-[11px] mb-10" style={{ color: "#333" }}>
+              Best for: <span style={{ color: "#555" }}>Businesses that want the product to keep evolving without managing a dev relationship.</span>
+            </p>
+            <a href="mailto:kanishkpansari1217@gmail.com?subject=Retainer%20Inquiry"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-colors hover:bg-[#e8e8e8]"
+              style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+              <Mail className="w-3.5 h-3.5" /> Discuss Retainer
+            </a>
+          </div>
+          <div>
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#333" }}>Includes</p>
+            <div style={{ borderTop: "1px solid #1c1d22" }}>
+              {retainerIncludes.map((item, j) => (
+                <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
+                  <span className="font-mono text-[10px]" style={{ color: "#cc9166" }}>→</span>
+                  <span className="font-mono text-[11px]" style={{ color: "#555" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Process */}

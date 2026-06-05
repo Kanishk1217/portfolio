@@ -745,6 +745,13 @@ function WorkSection() {
   const opacities = [op0, op1, op2]
   const yVals = [y0, y1, y2]
 
+  // Mockup Y: outgoing slides up and out, incoming slides up into view
+  // overflow-hidden on the container clips the movement at the panel edge
+  const mockY0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],             [0, 0, -80, -80])
+  const mockY1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [80, 80, 0, 0, -80, -80])
+  const mockY2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],             [80, 80, 0, 0])
+  const mockYVals = [mockY0, mockY1, mockY2]
+
   // Active index drives only the progress pills
   const [active, setActive] = useState(0)
   useMotionValueEvent(scrollYProgress, "change", (v) => {
@@ -844,7 +851,7 @@ function WorkSection() {
                   <motion.div
                     key={p.title}
                     className="absolute inset-0"
-                    style={{ opacity: opacities[i] }}
+                    style={{ opacity: opacities[i], y: mockYVals[i] }}
                   >
                     <M />
                   </motion.div>
