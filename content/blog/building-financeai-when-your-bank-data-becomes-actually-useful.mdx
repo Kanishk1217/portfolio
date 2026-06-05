@@ -1,35 +1,35 @@
----
-title: "Building FinanceAI — When Your Bank Data Becomes Actually Useful"
+﻿---
+title: "Building FinanceAI - When Your Bank Data Becomes Actually Useful"
 date: "2026-05-14"
-description: "Banks already have all your transaction data. The problem isn't capture — it's that the data sits behind clunky interfaces nobody opens twice a month. FinanceAI is what happens when you treat that data as a product instead of a statement."
+description: "Banks already have all your transaction data. The problem isn't capture - it's that the data sits behind clunky interfaces nobody opens twice a month. FinanceAI is what happens when you treat that data as a product instead of a statement."
 tags: ["React", "FastAPI", "PostgreSQL", "Plaid", "Full-Stack"]
 ---
 
 Every bank in the world already tracks your spending. They categorize it, summarize it monthly, and bury it inside an app you open twice a year. The data exists. The product doesn't.
 
-FinanceAI started from that gap. The interesting question wasn't "how do I record transactions" — that's a solved problem. It was "what would a personal finance app look like if it treated your transactions as something worth *looking at*?"
+FinanceAI started from that gap. The interesting question wasn't "how do I record transactions" - that's a solved problem. It was "what would a personal finance app look like if it treated your transactions as something worth *looking at*?"
 
 ---
 
 ## The Premise: Your Bank Already Knows Everything
 
-The first decision was to not ask users to type in their spending. Manual entry is where every personal finance app dies — people are enthusiastic for two weeks and then the dataset goes stale and the app becomes a museum of who they were last March.
+The first decision was to not ask users to type in their spending. Manual entry is where every personal finance app dies - people are enthusiastic for two weeks and then the dataset goes stale and the app becomes a museum of who they were last March.
 
-So the app reads real bank data via **Plaid**, which connects to 12,000+ financial institutions. You connect your bank once, transactions flow in continuously, and the app's job becomes interpretation — not collection. The architectural shift this enables is huge. Once you're not begging users for input, you can focus the entire UX on insight.
+So the app reads real bank data via **Plaid**, which connects to 12,000+ financial institutions. You connect your bank once, transactions flow in continuously, and the app's job becomes interpretation - not collection. The architectural shift this enables is huge. Once you're not begging users for input, you can focus the entire UX on insight.
 
-The Plaid sandbox gives realistic test data with merchant names, categories, and locations attached — which is what made it possible to build the entire anomaly detection and trend-analysis layer against data that looks like real spending, not synthetic noise.
+The Plaid sandbox gives realistic test data with merchant names, categories, and locations attached - which is what made it possible to build the entire anomaly detection and trend-analysis layer against data that looks like real spending, not synthetic noise.
 
 ---
 
 ## The Anomaly Detection That Almost Wasn't
 
-The original plan was just a transaction list with charts. But that's the museum-app problem again — pretty, interactive, useless past day three. So I added an anomaly layer on top.
+The original plan was just a transaction list with charts. But that's the museum-app problem again - pretty, interactive, useless past day three. So I added an anomaly layer on top.
 
 The rule is intentionally simple: for each category, sum the last 7 days, sum the 7 days before that, and flag any category where this-week spending is more than **2× last-week spending** (and the baseline isn't zero). That's it. No ML model. No tunable thresholds. Just one boolean per category, recomputed on every dashboard load.
 
-I tried building it as a model first. Trained on synthetic spending sequences, added rolling statistics, fit a one-class SVM to detect outliers. It worked technically — the model identified anomalies — but it failed the explainability test. When someone sees "Entertainment flagged as anomaly" they want to know *why*. The ML model's answer was "the joint probability density of this category-week pair falls below threshold τ given the embedding produced by..." Nobody wants that.
+I tried building it as a model first. Trained on synthetic spending sequences, added rolling statistics, fit a one-class SVM to detect outliers. It worked technically - the model identified anomalies - but it failed the explainability test. When someone sees "Entertainment flagged as anomaly" they want to know *why*. The ML model's answer was "the joint probability density of this category-week pair falls below threshold τ given the embedding produced by..." Nobody wants that.
 
-The 2× rule's answer is: "You spent ₹240 this week, you usually spend ₹44." That's a useful sentence. The model wasn't more accurate — it was just less honest about how simple the underlying signal was.
+The 2× rule's answer is: "You spent ₹240 this week, you usually spend ₹44." That's a useful sentence. The model wasn't more accurate - it was just less honest about how simple the underlying signal was.
 
 **Sometimes the right algorithm is the one you can explain in eight words.**
 
@@ -39,19 +39,19 @@ The 2× rule's answer is: "You spent ₹240 this week, you usually spend ₹44."
 
 ### Why FastAPI Instead of a Bigger Framework
 
-The backend is **FastAPI** — about 1,000 lines of Python handling auth, Plaid integration, transactions, budgets, savings goals, anomaly detection, and CSV import/export. I considered Django for the admin and the batteries-included story, but the trade was wrong. Django gives you a lot, but it also assumes you want a lot. For an API that mostly serializes Postgres rows and calls Plaid, FastAPI is dramatically lighter — Pydantic models double as request validation and response schemas, and the auto-generated OpenAPI docs at `/docs` mean I never had to write API documentation by hand.
+The backend is **FastAPI** - about 1,000 lines of Python handling auth, Plaid integration, transactions, budgets, savings goals, anomaly detection, and CSV import/export. I considered Django for the admin and the batteries-included story, but the trade was wrong. Django gives you a lot, but it also assumes you want a lot. For an API that mostly serializes Postgres rows and calls Plaid, FastAPI is dramatically lighter - Pydantic models double as request validation and response schemas, and the auto-generated OpenAPI docs at `/docs` mean I never had to write API documentation by hand.
 
 ### Why PostgreSQL and Not MongoDB
 
-Financial data is relational by nature. Users have many transactions. Transactions belong to categories. Categories aggregate into budgets. Budgets compare against time windows. This is what relational databases were built for, and trying to model it in a document store always ends with you reinventing joins at the application layer. Postgres also has built-in `ARRAY` types, which I used for the `tags` column on transactions — letting users add `[receipt-pending]` or `[reimbursable]` tags without a separate tags table.
+Financial data is relational by nature. Users have many transactions. Transactions belong to categories. Categories aggregate into budgets. Budgets compare against time windows. This is what relational databases were built for, and trying to model it in a document store always ends with you reinventing joins at the application layer. Postgres also has built-in `ARRAY` types, which I used for the `tags` column on transactions - letting users add `[receipt-pending]` or `[reimbursable]` tags without a separate tags table.
 
-The deployment uses **Neon** — serverless Postgres with a generous free tier and connection pooling that survives the unpredictable load patterns of a single-user demo app being shown to recruiters at 3am.
+The deployment uses **Neon** - serverless Postgres with a generous free tier and connection pooling that survives the unpredictable load patterns of a single-user demo app being shown to recruiters at 3am.
 
 ### Why React 19 and Why It Mattered
 
-The frontend uses **React 19** with the new compiler, **Vite**, **TypeScript**, **Tailwind**, and **Framer Motion** for animations. React 19's automatic memoization meant I could stop manually wrapping every component in `useMemo` and `useCallback` — the compiler does it. For a dashboard with 30+ animated chart components, that's the difference between "smooth" and "janky on a Chromebook."
+The frontend uses **React 19** with the new compiler, **Vite**, **TypeScript**, **Tailwind**, and **Framer Motion** for animations. React 19's automatic memoization meant I could stop manually wrapping every component in `useMemo` and `useCallback` - the compiler does it. For a dashboard with 30+ animated chart components, that's the difference between "smooth" and "janky on a Chromebook."
 
-Framer Motion handles every transition — page changes, modal opens, chart entrance animations, sidebar collapse. The whole app feels like a single fluid surface instead of a stack of pages, which matters more than people admit. **Apps that animate well feel more reliable, even when they aren't.** It's a UX trick worth knowing.
+Framer Motion handles every transition - page changes, modal opens, chart entrance animations, sidebar collapse. The whole app feels like a single fluid surface instead of a stack of pages, which matters more than people admit. **Apps that animate well feel more reliable, even when they aren't.** It's a UX trick worth knowing.
 
 ---
 
@@ -59,9 +59,9 @@ Framer Motion handles every transition — page changes, modal opens, chart entr
 
 ### 1. The Framer Motion Transform Trap
 
-`position: fixed` is supposed to position elements relative to the viewport. Except when an ancestor has a CSS `transform` applied — at which point that ancestor becomes the new containing block. Framer Motion animates `transform` constantly. So my modal, which was `position: fixed; inset: 0`, was rendering bound to the sidebar's 252px width instead of the full viewport.
+`position: fixed` is supposed to position elements relative to the viewport. Except when an ancestor has a CSS `transform` applied - at which point that ancestor becomes the new containing block. Framer Motion animates `transform` constantly. So my modal, which was `position: fixed; inset: 0`, was rendering bound to the sidebar's 252px width instead of the full viewport.
 
-The fix was a React **Portal** (`createPortal(modalContent, document.body)`) to render the modal outside the transformed tree entirely. Took two hours to find. The fix is one line. The lesson — **CSS containing blocks are a concept worth knowing cold** — saved me three more times in the same project.
+The fix was a React **Portal** (`createPortal(modalContent, document.body)`) to render the modal outside the transformed tree entirely. Took two hours to find. The fix is one line. The lesson - **CSS containing blocks are a concept worth knowing cold** - saved me three more times in the same project.
 
 ### 2. The CORS Mistake That Wasn't a CORS Mistake
 
@@ -69,13 +69,13 @@ Deploy went live. Frontend on Cloudflare Pages, backend on Render, database on N
 
 The actual problem was that `VITE_API_URL` was set on Cloudflare *after* the initial build. Vite bakes environment variables into the JavaScript bundle at compile time, not runtime. The deployed app was still pointing at `localhost:8000`. The browser was hitting localhost, getting connection refused, and the error happened to surface as something that *looked* like CORS in the console.
 
-Fix: trigger a rebuild after setting the env var. The deeper lesson — **always check the actual failing request URL in the Network tab before believing the error message** — applies to every web debugging session ever.
+Fix: trigger a rebuild after setting the env var. The deeper lesson - **always check the actual failing request URL in the Network tab before believing the error message** - applies to every web debugging session ever.
 
 ### 3. The DNS Filter Nobody Mentions
 
 The seed scripts couldn't connect to Neon from my local machine. Same connection string Render uses fine. `nslookup` against my ISP's DNS: `Query refused`. Against Google's DNS (`8.8.8.8`): resolves immediately.
 
-Some ISPs filter unknown subdomains aggressively, particularly newer cloud provider patterns like Neon's regional `.c-N.` segments. Changed Windows DNS to `8.8.8.8 / 1.1.1.1`, problem gone. **Local environment problems aren't always your code's fault** — sometimes the layer between you and the internet is doing too much.
+Some ISPs filter unknown subdomains aggressively, particularly newer cloud provider patterns like Neon's regional `.c-N.` segments. Changed Windows DNS to `8.8.8.8 / 1.1.1.1`, problem gone. **Local environment problems aren't always your code's fault** - sometimes the layer between you and the internet is doing too much.
 
 ---
 
@@ -95,9 +95,9 @@ Those three decisions compound. A finance app that pulls real data + shows you w
 
 ## What I'd Build Into Version 2
 
-**Spending forecasting.** Right now, the app tells you what happened. Version 2 should tell you what's going to happen — projected month-end totals based on current pace, predicted budget overshoots before they occur, savings rate trajectories that update with each new transaction.
+**Spending forecasting.** Right now, the app tells you what happened. Version 2 should tell you what's going to happen - projected month-end totals based on current pace, predicted budget overshoots before they occur, savings rate trajectories that update with each new transaction.
 
-**Smart category corrections.** Plaid's categorization is good but not perfect. A "Coffee shop" might get categorized as Food when it's really part of a recurring Subscription pattern. A lightweight feedback loop — user corrects a category once, the app learns the merchant rule — would close that gap.
+**Smart category corrections.** Plaid's categorization is good but not perfect. A "Coffee shop" might get categorized as Food when it's really part of a recurring Subscription pattern. A lightweight feedback loop - user corrects a category once, the app learns the merchant rule - would close that gap.
 
 **True multi-currency.** Right now everything is INR. The architecture supports `iso_currency_code` at the transaction level but the UI assumes a single display currency. Cleaning that up would open the app to non-Indian users in one PR.
 
@@ -105,7 +105,7 @@ Those three decisions compound. A finance app that pulls real data + shows you w
 
 ## The Bigger Picture
 
-There is a generation of personal finance apps — Mint, YNAB, Wallet — that defined the category and then mostly stopped innovating. Mint shut down. YNAB charges $99/year for what is fundamentally a budgeting spreadsheet with sync. The category is overdue for a rebuild from first principles.
+There is a generation of personal finance apps - Mint, YNAB, Wallet - that defined the category and then mostly stopped innovating. Mint shut down. YNAB charges $99/year for what is fundamentally a budgeting spreadsheet with sync. The category is overdue for a rebuild from first principles.
 
 What that rebuild looks like, I think, is exactly the inversion FinanceAI takes: **start from the data instead of the categorization scheme, and let the insights design themselves.** The bank already knows everything. The product is what you do with that knowledge.
 

@@ -446,12 +446,12 @@ function AboutSection() {
   ]
   const edu = [
     { title: "Computer Science Engineering", sub: "New LJ Institute of Engineering & Technology", meta: "6th Semester", year: "2022 – 2026" },
-    { title: "Engineering Plus — Python & Data Science", sub: "New LJ Institute · Certified", meta: "Completed", year: "2024" },
+    { title: "Engineering Plus: Python & Data Science", sub: "New LJ Institute · Certified", meta: "Completed", year: "2024" },
   ]
   const interests = ["Problem Solving", "Data Analysis", "Karate · Black Belt", "Japanese", "AI & ML"]
 
   return (
-    <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+    <section className="max-w-[1200px] mx-auto px-8 py-28">
       <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 lg:gap-24">
 
         {/* Left — bio + stack + skill bars */}
@@ -474,8 +474,8 @@ function AboutSection() {
             <p className="text-[15px] leading-[1.85] mb-12" style={{ color: "#555", maxWidth: 520 }}>
               Live tools with real users, not notebooks that live on my machine.
               My work spans the full stack: ingestion, cleaning, modeling, and user-facing analytics.
-              What makes my background different is direct experience at the intersection of data and business —
-              working on the Sales &amp; Marketing side gives me the context to understand what a metric
+              What makes my background different is direct experience at the intersection of data and business,
+              working on the Sales &amp; Marketing side, which gives me the context to understand what a metric
               needs to drive before I write the first query.
             </p>
           </FadeUp>
@@ -574,7 +574,7 @@ function AboutSection() {
                 <p className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>2025 – Present</p>
               </div>
               <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
-                Analyzed customer behavior data to identify upsell opportunities and track pipeline performance — bridging technical insight with business decisions.
+                Analyzed customer behavior data to identify upsell opportunities and track pipeline performance, bridging technical insight with business decisions.
               </p>
             </div>
           </FadeUp>
@@ -626,7 +626,7 @@ function CapabilitySection() {
   ]
 
   return (
-    <section ref={ref} style={{ borderTop: "1px solid #1c1d22" }}>
+    <section ref={ref}>
       <div className="grid grid-cols-1 lg:grid-cols-3" style={{ minHeight: "72vh" }}>
 
         {/* ── Col 1: Revenue bar chart ──────────────────── */}
@@ -672,7 +672,7 @@ function CapabilitySection() {
           </div>
           <div className="mt-10 pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#2a2a2a" }}>01</p>
+              style={{ color: "#444" }}>01</p>
             <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Data Analysis
@@ -758,7 +758,7 @@ function CapabilitySection() {
           </div>
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#2a2a2a" }}>02</p>
+              style={{ color: "#444" }}>02</p>
             <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Machine Learning
@@ -796,7 +796,7 @@ function CapabilitySection() {
           </div>
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#2a2a2a" }}>03</p>
+              style={{ color: "#444" }}>03</p>
             <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Full-Stack Build
@@ -815,7 +815,7 @@ function CapabilitySection() {
 // ─── Credentials Section ──────────────────────────────────────────────────────
 function CredentialsSection() {
   return (
-    <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+    <section className="max-w-[1200px] mx-auto px-8 py-28">
       <div className="mb-16">
         <Reveal>
           <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
@@ -845,7 +845,7 @@ function CredentialsSection() {
                 <p className="font-mono text-[9px] mt-1.5" style={{ color: "#555" }}>Python &amp; Data Science</p>
               </div>
             </div>
-            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Engineering Plus — Python &amp; Data Science</p>
+            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Engineering Plus: Python &amp; Data Science</p>
             <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>New LJ Institute of Engineering &amp; Technology · 2024</p>
             <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#666" }}>View Certificate ↗</span>
           </a>
@@ -873,7 +873,7 @@ function CredentialsSection() {
                 ))}
               </div>
             </div>
-            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari — Résumé</p>
+            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari: Résumé</p>
             <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>Data Analyst &amp; AI Developer · 2026</p>
             <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#666" }}>Download PDF ↓</span>
           </a>
@@ -899,7 +899,7 @@ const projects = [
     title: "CSV Analyzer",
     sub: "Instant Data Analysis",
     year: "2024",
-    desc: "Upload any CSV and get a full column-by-column breakdown in seconds. Types, distributions, null rates, correlations. No code, no setup — just answers.",
+    desc: "Upload any CSV and get a full column-by-column breakdown in seconds. Types, distributions, null rates, correlations. No code, no setup. Just answers.",
     tags: ["Python", "Pandas", "FastAPI", "React"],
     link: "https://csv--analysis.pages.dev/",
     github: "https://github.com/Kanishk1217/csv-analysis",
@@ -918,14 +918,14 @@ const projects = [
 ]
 
 const services = [
-  { name: "Data Intelligence Dashboard", price: "$800 – $1,500", timeline: "1–2 weeks", subject: "Project Inquiry — Data Intelligence Dashboard" },
-  { name: "Custom AI Agent", price: "$1,200 – $2,500", timeline: "1–2 weeks", subject: "Project Inquiry — Custom AI Agent" },
-  { name: "Full AI Product Build", price: "$3,000 – $6,000", timeline: "3–5 weeks", subject: "Project Inquiry — Full AI Product Build" },
+  { name: "Data Intelligence Dashboard", price: "$800 – $1,500", timeline: "1–2 weeks", subject: "Project Inquiry: Data Intelligence Dashboard" },
+  { name: "Custom AI Agent", price: "$1,200 – $2,500", timeline: "1–2 weeks", subject: "Project Inquiry: Custom AI Agent" },
+  { name: "Full AI Product Build", price: "$3,000 – $6,000", timeline: "3–5 weeks", subject: "Project Inquiry: Full AI Product Build" },
 ]
 
 const posts = [
-  { slug: "building-a-business-analyzer-what-ml-taught-me-about-real-decisions", title: "Building a Business Analyzer — What ML Taught Me About Real Decisions", date: "2025-03-10" },
-  { slug: "building-financeai-when-your-bank-data-becomes-actually-useful", title: "Building FinanceAI — When Your Bank Data Becomes Actually Useful", date: "2026-05-14" },
+  { slug: "building-a-business-analyzer-what-ml-taught-me-about-real-decisions", title: "Building a Business Analyzer: What ML Taught Me About Real Decisions", date: "2025-03-10" },
+  { slug: "building-financeai-when-your-bank-data-becomes-actually-useful", title: "Building FinanceAI: When Your Bank Data Becomes Actually Useful", date: "2026-05-14" },
   { slug: "what-i-learned-building-a-csv-analyzer", title: "What I Learned Building a CSV Analyzer", date: "2024-11-20" },
   { slug: "what-sales-taught-me-about-data-that-no-dataset-ever-could", title: "What Sales Taught Me About Data That No Dataset Ever Could", date: "2025-06-01" },
 ]
@@ -967,7 +967,7 @@ function WorkSection() {
   })
 
   return (
-    <section id="work" style={{ borderTop: "1px solid #1c1d22" }}>
+    <section id="work">
       <div className="max-w-[1200px] mx-auto px-8 pt-20 pb-6">
         <Reveal>
           <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
@@ -1077,10 +1077,15 @@ function WorkSection() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null)
-  const { scrollY } = useScroll()
+  const { scrollY, scrollYProgress: pageProgress } = useScroll()
+  const pageBg = useTransform(
+    pageProgress,
+    [0, 0.08, 0.22, 0.38, 0.52, 0.67, 0.80, 1.0],
+    ["#000000", "#000000", "#05050e", "#000000", "#070707", "#000000", "#060612", "#000000"]
+  )
 
   return (
-    <div style={{ background: "#000", color: "#ededed", minHeight: "100vh" }}>
+    <motion.div style={{ background: pageBg, color: "#ededed", minHeight: "100vh" }}>
       <Nav />
 
       {/* ══ HERO */}
@@ -1109,7 +1114,7 @@ export default function Home() {
               className="text-[17px] leading-[1.68] max-w-[400px] mb-10" style={{ color: "#666" }}>
               I build custom AI tools that turn your business data into{" "}
               <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>decisions</em>
-              {" "}— shipped in 2 weeks.
+              . Shipped in 2 weeks.
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.6 }}
@@ -1137,7 +1142,7 @@ export default function Home() {
       </section>
 
       {/* ══ MARQUEE */}
-      <div className="overflow-hidden" style={{ borderTop: "1px solid #1c1d22", borderBottom: "1px solid #1c1d22" }}>
+      <div className="overflow-hidden" style={{ borderBottom: "1px solid #111116" }}>
         <div className="flex py-3" style={{ animation: "marquee 28s linear infinite", width: "max-content", gap: 56 }}>
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span key={i} className="font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap" style={{ color: "#555" }}>{item}</span>
@@ -1180,7 +1185,7 @@ export default function Home() {
       <CredentialsSection />
 
       {/* ══ SERVICES */}
-      <section id="services" className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+      <section id="services" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <Reveal>
             <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
@@ -1230,7 +1235,7 @@ export default function Home() {
       </section>
 
       {/* ══ WRITING */}
-      <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+      <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <Reveal>
             <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
@@ -1266,7 +1271,7 @@ export default function Home() {
       </section>
 
       {/* ══ FOOTER */}
-      <footer className="max-w-[1200px] mx-auto px-8 py-16" style={{ borderTop: "1px solid #1c1d22" }}>
+      <footer className="max-w-[1200px] mx-auto px-8 py-16">
         <div className="flex items-start justify-between gap-8">
           <div>
             <p className="text-[28px] leading-none tracking-[-0.02em] mb-4"
@@ -1290,6 +1295,6 @@ export default function Home() {
         </div>
         <p className="font-mono text-[10px] mt-14" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
       </footer>
-    </div>
+    </motion.div>
   )
 }

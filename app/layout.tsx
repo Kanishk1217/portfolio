@@ -8,7 +8,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], weight: ["400", "500", "700"], style: ["normal", "italic"] })
 
 export const metadata: Metadata = {
-  title: "Kanishk Pansari — AI Developer",
+  title: "Kanishk Pansari: AI Developer",
   description: "I build custom AI tools that turn your business data into decisions. Shipped in 2 weeks.",
 }
 

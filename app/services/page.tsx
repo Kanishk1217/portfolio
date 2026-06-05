@@ -4,7 +4,7 @@ import { Mail } from "lucide-react"
 import Nav from "@/components/nav"
 
 export const metadata: Metadata = {
-  title: "Services — Kanishk Pansari",
+  title: "Services: Kanishk Pansari",
   description: "Custom AI tools, cold outreach, profile building, and full-stack development. Transparent pricing, 2-week delivery.",
 }
 
@@ -17,7 +17,7 @@ const services = [
     description: "Custom business analytics tool built on your data. Upload a CSV or connect your database and get KPI tracking, revenue forecasting, customer segmentation, and AI-generated insights. Delivered as a live web app.",
     bestFor: "SMBs with sales, ops, or finance data they can't act on.",
     includes: ["CSV / database ingestion", "KPI dashboard", "Revenue forecasting", "Customer segmentation", "Live web app deployment"],
-    subject: "Project Inquiry — Data Intelligence Dashboard",
+    subject: "Project Inquiry: Data Intelligence Dashboard",
   },
   {
     num: "02",
@@ -27,7 +27,7 @@ const services = [
     description: "A scoped AI agent built for one specific workflow. Lead qualifier, support bot, report generator, or data processor. Built with Python and FastAPI, integrated into your existing tools.",
     bestFor: "Businesses with repetitive manual processes eating team time.",
     includes: ["Scoped workflow automation", "Python + FastAPI backend", "Tool integrations (Slack, email, CRM)", "Deployment + handoff docs"],
-    subject: "Project Inquiry — Custom AI Agent",
+    subject: "Project Inquiry: Custom AI Agent",
   },
   {
     num: "03",
@@ -37,7 +37,7 @@ const services = [
     description: "End-to-end custom product. Full-stack TypeScript frontend, Python backend, database, auth, and deployment. Built for founders who have a product idea but no technical team.",
     bestFor: "Early-stage founders who need a technical partner, not just a contractor.",
     includes: ["Full-stack TypeScript + Python", "Database + auth", "Cloudflare / VPS deployment", "2 weeks post-launch support"],
-    subject: "Project Inquiry — Full AI Product Build",
+    subject: "Project Inquiry: Full AI Product Build",
   },
   {
     num: "04",
@@ -47,7 +47,7 @@ const services = [
     description: "End-to-end outbound engine. Lead list building, personalised sequences, A/B testing, and automated follow-ups. You get daily reply monitoring and a weekly analytics report on opens, clicks, and booked calls.",
     bestFor: "Founders and consultants who need pipeline, not just a form on their website.",
     includes: ["Lead list building & enrichment", "5–7 touch email sequence", "A/B subject line testing", "Automated follow-up logic", "Weekly performance report"],
-    subject: "Project Inquiry — Cold Email Campaign",
+    subject: "Project Inquiry: Cold Email Campaign",
   },
   {
     num: "05",
@@ -57,7 +57,7 @@ const services = [
     description: "LinkedIn optimisation, positioning strategy, and a 30-day content calendar that turns your expertise into inbound leads. We rewrite your profile and build the first month of content.",
     bestFor: "Professionals and founders who need a credible presence before their next raise or launch.",
     includes: ["LinkedIn full rewrite", "Personal positioning statement", "30-day content calendar", "Headline A/B variants", "CTA audit across platforms"],
-    subject: "Project Inquiry — Profile & Brand Building",
+    subject: "Project Inquiry: Profile & Brand Building",
   },
 ]
 
@@ -152,7 +152,7 @@ export default function ServicesPage() {
             </h2>
             <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#cc9166" }}>$300 – $600 / month</p>
             <p className="text-[15px] leading-[1.8] mb-8 max-w-[460px]" style={{ color: "#555" }}>
-              This is where recurring revenue lives — for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
+              This is where recurring revenue lives, for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
               and a weekly status report. One contact, no hourly billing, no surprises.
             </p>
             <p className="font-mono text-[11px] mb-10" style={{ color: "#333" }}>
@@ -204,7 +204,7 @@ export default function ServicesPage() {
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
               Ready to start?
             </h2>
-            <p className="text-[15px]" style={{ color: "#555" }}>Send a message — I reply within 24 hours.</p>
+            <p className="text-[15px]" style={{ color: "#555" }}>Send a message. I reply within 24 hours.</p>
           </div>
           <a href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
             className="inline-flex items-center gap-2 px-6 py-3 text-[13px] font-medium transition-colors hover:bg-[#e8e8e8] flex-shrink-0"

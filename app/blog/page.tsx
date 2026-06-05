@@ -5,7 +5,7 @@ import Nav from "@/components/nav"
 import { ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Writing — Kanishk Pansari",
+  title: "Writing: Kanishk Pansari",
   description: "Thoughts on data, engineering, and building things.",
 }
 
