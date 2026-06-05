@@ -1,21 +1,295 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
-import { Mail, ExternalLink, ArrowRight, Download, PenLine, Briefcase } from "lucide-react"
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  useInView,
+} from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { Mail, ExternalLink, ArrowRight } from "lucide-react"
 import { SiGithub } from "react-icons/si"
 import Link from "next/link"
 import Nav from "@/components/nav"
-import { MagneticDock, type DockItemData } from "@/components/ui/magnetic-dock"
 
-// ─── LinkedIn Icon ─────────────────────────────────────────────────────────────
-const LinkedInIcon = ({ className = "w-full h-full" }: { className?: string }) => (
+// ─── Icons ────────────────────────────────────────────────────────────────────
+const LinkedInIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor">
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 )
 
-// ─── Animated Thumbnails ───────────────────────────────────────────────────────
+// ─── Motion Helpers ───────────────────────────────────────────────────────────
+
+/** Slide-up reveal: wraps children in overflow:hidden, slides content up into view */
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode
+  delay?: number
+  className?: string
+}) {
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <motion.div
+        initial={{ y: "105%" }}
+        whileInView={{ y: "0%" }}
+        viewport={{ once: true, margin: "-32px" }}
+        transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  )
+}
+
+/** Fade + translateY for non-heading elements */
+function FadeUp({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode
+  delay?: number
+  className?: string
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-48px" }}
+      transition={{ duration: 0.65, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+/** 3-D tilt card — follows cursor */
+function TiltCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotateX = useTransform(my, [-0.5, 0.5], [4, -4])
+  const rotateY = useTransform(mx, [-0.5, 0.5], [-4, 4])
+  const sx = useSpring(rotateX, { stiffness: 140, damping: 18 })
+  const sy = useSpring(rotateY, { stiffness: 140, damping: 18 })
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ rotateX: sx, rotateY: sy, transformPerspective: 900 }}
+      onMouseMove={(e) => {
+        const r = ref.current?.getBoundingClientRect()
+        if (!r) return
+        mx.set((e.clientX - r.left) / r.width - 0.5)
+        my.set((e.clientY - r.top) / r.height - 0.5)
+      }}
+      onMouseLeave={() => { mx.set(0); my.set(0) }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+/** Cursor-follow spotlight */
+function SpotlightCard({
+  children,
+  className = "",
+  style,
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}) {
+  const [pos, setPos] = useState({ x: 0, y: 0, on: false })
+  return (
+    <div
+      className={`relative overflow-hidden ${className}`}
+      style={style}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect()
+        setPos({ x: e.clientX - r.left, y: e.clientY - r.top, on: true })
+      }}
+      onMouseLeave={() => setPos((p) => ({ ...p, on: false }))}
+    >
+      <div
+        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+        style={{
+          opacity: pos.on ? 1 : 0,
+          background: `radial-gradient(240px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.035), transparent 70%)`,
+        }}
+      />
+      {children}
+    </div>
+  )
+}
+
+/** Animated counter */
+function Counter({
+  to,
+  prefix = "",
+  suffix = "",
+}: {
+  to: number
+  prefix?: string
+  suffix?: string
+}) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true })
+  const [val, setVal] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    let start = 0
+    const tick = (ts: number) => {
+      if (!start) start = ts
+      const p = Math.min((ts - start) / 1400, 1)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setVal(Math.floor(eased * to))
+      if (p < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [inView, to])
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {val}
+      {suffix}
+    </span>
+  )
+}
+
+// ─── Hero Dashboard ───────────────────────────────────────────────────────────
+function HeroDashboard() {
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => { setLoaded(true) }, [])
+
+  const kpis = [
+    { label: "Revenue", value: "$84.2k", delta: "+12.4%", pos: true },
+    { label: "Customers", value: "1,284", delta: "+8.1%", pos: true },
+    { label: "Churn", value: "2.3%", delta: "-0.4%", pos: false },
+  ]
+  const bars = [42, 68, 53, 81, 60, 94, 72]
+  const days = ["M", "T", "W", "T", "F", "S", "S"]
+  const txns = [
+    { name: "Stripe Payment", amount: "+$2,400", time: "2m ago", pos: true },
+    { name: "AWS Invoice", amount: "-$340", time: "1h ago", pos: false },
+    { name: "New Customer", amount: "+$890", time: "3h ago", pos: true },
+  ]
+
+  return (
+    <div
+      className="w-full rounded-xl overflow-hidden"
+      style={{ border: "1px solid #1c1d22", background: "#000" }}
+    >
+      {/* header */}
+      <div
+        className="flex items-center justify-between px-5 py-3"
+        style={{ borderBottom: "1px solid #1c1d22" }}
+      >
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: "#444" }}>
+          Business Analyzer
+        </span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }} />
+          <span className="font-mono text-[10px]" style={{ color: "#444" }}>Live</span>
+        </div>
+      </div>
+
+      {/* kpis */}
+      <div className="grid grid-cols-3" style={{ borderBottom: "1px solid #1c1d22" }}>
+        {kpis.map((k, i) => (
+          <motion.div
+            key={k.label}
+            initial={{ opacity: 0 }}
+            animate={loaded ? { opacity: 1 } : {}}
+            transition={{ delay: 0.25 + i * 0.1 }}
+            className="px-4 py-4"
+            style={{ borderRight: i < 2 ? "1px solid #1c1d22" : "none" }}
+          >
+            <p className="font-mono text-[9px] tracking-widest uppercase mb-1.5" style={{ color: "#444" }}>
+              {k.label}
+            </p>
+            <p className="text-[17px] font-semibold leading-none mb-1.5" style={{ color: "#ededed" }}>
+              {k.value}
+            </p>
+            <p className="font-mono text-[10px]" style={{ color: k.pos ? "#22c55e" : "#ef4444" }}>
+              {k.delta}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* bar chart */}
+      <div className="px-5 py-4" style={{ borderBottom: "1px solid #1c1d22" }}>
+        <p className="font-mono text-[9px] tracking-widest uppercase mb-3" style={{ color: "#444" }}>
+          Weekly Revenue
+        </p>
+        <div className="flex items-end gap-1.5" style={{ height: 56 }}>
+          {bars.map((h, i) => (
+            <div key={i} className="flex-1 flex flex-col justify-end">
+              <motion.div
+                className="w-full rounded-[2px]"
+                style={{ background: "#1c1d22" }}
+                initial={{ height: 0 }}
+                animate={loaded ? { height: `${h}%` } : { height: 0 }}
+                transition={{ delay: 0.55 + i * 0.07, duration: 0.55, ease: [0.34, 1.1, 0.64, 1] }}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-1.5 mt-1.5">
+          {days.map((d, i) => (
+            <span key={i} className="flex-1 font-mono text-[8px] text-center" style={{ color: "#333" }}>
+              {d}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* transactions */}
+      <div>
+        {txns.map((t, i) => (
+          <motion.div
+            key={t.name}
+            initial={{ opacity: 0, x: -10 }}
+            animate={loaded ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 1.0 + i * 0.12 }}
+            className="flex items-center justify-between px-5 py-3"
+            style={{ borderBottom: i < txns.length - 1 ? "1px solid #1c1d22" : "none" }}
+          >
+            <div>
+              <p className="text-[12px]" style={{ color: "#888" }}>{t.name}</p>
+              <p className="font-mono text-[9px] mt-0.5" style={{ color: "#333" }}>{t.time}</p>
+            </div>
+            <p
+              className="font-mono text-[12px] font-medium"
+              style={{ color: t.pos ? "#ededed" : "#555" }}
+            >
+              {t.amount}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Project Thumbnails ───────────────────────────────────────────────────────
 function CSVThumbnail() {
   const headers = ["Column", "Type", "Unique", "Null %"]
   const rows = [
@@ -25,70 +299,72 @@ function CSVThumbnail() {
     ["date", "datetime", "365", "0.0%"],
   ]
   return (
-    <div className="w-full h-full bg-card flex items-center justify-center relative overflow-hidden">
-      <svg className="absolute inset-0 w-full h-full opacity-[0.03]" width="100%" height="100%">
-        <defs><pattern id="csv-dot" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="currentColor" /></pattern></defs>
-        <rect width="100%" height="100%" fill="url(#csv-dot)" />
-      </svg>
-      <div className="relative z-10 w-full px-5 space-y-1">
-        <div className="flex gap-1.5 pb-1 border-b border-border/40">
-          {headers.map((h, ci) => (
-            <motion.div key={ci} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + ci * 0.06, duration: 0.4 }}
-              className="font-mono text-[8px] font-semibold text-foreground/60 flex-1 text-center">{h}</motion.div>
+    <div className="w-full h-full flex items-center justify-center relative overflow-hidden" style={{ background: "#000" }}>
+      <div className="relative z-10 w-full px-6 space-y-1.5">
+        <div className="flex gap-2 pb-2" style={{ borderBottom: "1px solid #1c1d22" }}>
+          {headers.map((h, i) => (
+            <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              transition={{ delay: 0.1 + i * 0.06 }}
+              className="font-mono text-[9px] font-medium flex-1 text-center" style={{ color: "#555" }}>
+              {h}
+            </motion.div>
           ))}
         </div>
         {rows.map((row, ri) => (
-          <motion.div key={ri} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + ri * 0.18, duration: 0.45, ease: "easeOut" }}
-            className="flex gap-1.5 py-0.5">
+          <motion.div key={ri} initial={{ opacity: 0, x: -8 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+            transition={{ delay: 0.3 + ri * 0.1 }}
+            className="flex gap-2 py-1">
             {row.map((cell, ci) => (
-              <div key={ci} className={`font-mono text-[8px] flex-1 text-center ${ci === 0 ? "text-foreground/80" : "text-muted-foreground"}`}>{cell}</div>
+              <div key={ci} className="font-mono text-[9px] flex-1 text-center"
+                style={{ color: ci === 0 ? "#888" : "#555" }}>{cell}</div>
             ))}
           </motion.div>
         ))}
       </div>
-      <motion.div className="absolute left-0 right-0 h-px bg-foreground/20 pointer-events-none"
-        initial={{ opacity: 0 }} animate={{ opacity: [0, 0.6, 0, 0.6, 0] }}
-        transition={{ delay: 1.8, duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }} />
     </div>
   )
 }
 
 function FinancialThumbnail() {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
-  const income =  [42, 55, 48, 61, 58, 70]
+  const income = [42, 55, 48, 61, 58, 70]
   const expense = [30, 38, 35, 40, 44, 47]
   const maxVal = 80
-  const w = 240, h = 110, padL = 8, padB = 18, padT = 8
+  const w = 260, h = 120, padL = 8, padB = 20, padT = 10
   const chartW = w - padL, chartH = h - padB - padT
   const toX = (i: number) => padL + (i / (months.length - 1)) * chartW
   const toY = (v: number) => padT + chartH - (v / maxVal) * chartH
-  const incomePath  = income.map((v, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(v)}`).join(" ")
-  const expensePath = expense.map((v, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(v)}`).join(" ")
+  const ip = income.map((v, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(v)}`).join(" ")
+  const ep = expense.map((v, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(v)}`).join(" ")
   return (
-    <div className="w-full h-full bg-card flex flex-col items-center justify-center relative overflow-hidden px-4 gap-2">
-      <svg className="absolute inset-0 w-full h-full opacity-[0.03]" width="100%" height="100%">
-        <defs><pattern id="fin-dot" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="currentColor" /></pattern></defs>
-        <rect width="100%" height="100%" fill="url(#fin-dot)" />
-      </svg>
-      <div className="relative z-10 flex gap-4 w-full justify-center mb-1">
-        {[{ label: "Income", val: "+70k" }, { label: "Expense", val: "47k" }, { label: "Saved", val: "23k" }].map(({ label, val }, i) => (
-          <motion.div key={label} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.12 }} className="flex flex-col items-center">
-            <span className="font-mono text-[9px] text-muted-foreground/50 uppercase tracking-widest">{label}</span>
-            <span className="font-mono text-[11px] font-semibold text-foreground/80">{val}</span>
+    <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden px-4 gap-3" style={{ background: "#000" }}>
+      <div className="relative z-10 flex gap-6 w-full justify-center">
+        {[{ l: "Income", v: "+$70k" }, { l: "Expense", v: "$47k" }, { l: "Saved", v: "$23k" }].map(({ l, v }, i) => (
+          <motion.div key={l} initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            transition={{ delay: 0.1 + i * 0.1 }} className="flex flex-col items-center gap-0.5">
+            <span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: "#444" }}>{l}</span>
+            <span className="font-mono text-[12px] font-semibold" style={{ color: "#888" }}>{v}</span>
           </motion.div>
         ))}
       </div>
       <svg className="relative z-10 w-full" viewBox={`0 0 ${w} ${h}`}>
-        {[30, 50, 70].map(y => <line key={y} x1={padL} y1={toY(y)} x2={w} y2={toY(y)} stroke="currentColor" strokeOpacity="0.05" strokeWidth="1" />)}
-        <motion.path d={incomePath} fill="none" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 0.5, duration: 1.1, ease: "easeInOut" }} />
-        <motion.path d={expensePath} fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"
-          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 0.7, duration: 1.1, ease: "easeInOut" }} />
+        {[30, 50, 70].map(y => <line key={y} x1={padL} y1={toY(y)} x2={w} y2={toY(y)} stroke="#1c1d22" strokeWidth="1" />)}
+        <motion.path d={ip} fill="none" stroke="#ededed" strokeOpacity="0.4" strokeWidth="1.5"
+          strokeLinecap="round" strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 1.2, ease: "easeInOut" }} />
+        <motion.path d={ep} fill="none" stroke="#555" strokeWidth="1.5"
+          strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"
+          initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 1.2, ease: "easeInOut" }} />
         {income.map((v, i) => (
-          <motion.circle key={i} cx={toX(i)} cy={toY(v)} r="2.5" fill="currentColor" fillOpacity="0.7"
-            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.2 + i * 0.07, type: "spring", stiffness: 220, damping: 12 }} />
+          <motion.circle key={i} cx={toX(i)} cy={toY(v)} r="2.5" fill="#ededed" fillOpacity="0.6"
+            initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+            transition={{ delay: 1.1 + i * 0.06, type: "spring", stiffness: 260, damping: 14 }} />
         ))}
-        {months.map((m, i) => <text key={m} x={toX(i)} y={h - 4} textAnchor="middle" className="font-mono" fontSize="6" fill="currentColor" fillOpacity="0.3">{m}</text>)}
+        {months.map((m, i) => (
+          <text key={m} x={toX(i)} y={h - 4} textAnchor="middle" fontSize="7" fill="#333">{m}</text>
+        ))}
       </svg>
     </div>
   )
@@ -96,45 +372,41 @@ function FinancialThumbnail() {
 
 function BusinessThumbnail() {
   const bars = [{ h: 55, y: 105 }, { h: 85, y: 75 }, { h: 48, y: 112 }, { h: 108, y: 52 }, { h: 72, y: 88 }]
-  const linePoints = bars.map((b, i) => `${38 + i * 52},${b.y}`).join(" ")
+  const lp = bars.map((b, i) => `${38 + i * 52},${b.y}`).join(" ")
   return (
-    <div className="w-full h-full bg-card flex items-center justify-center relative overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center relative overflow-hidden" style={{ background: "#000" }}>
       <svg className="w-full h-4/5 px-4" viewBox="0 0 270 175">
-        {[50, 90, 130, 160].map((y) => <line key={y} x1="0" y1={y} x2="270" y2={y} stroke="currentColor" strokeOpacity="0.05" strokeWidth="1" />)}
-        {bars.map((b, i) => (
-          <motion.rect key={i} x={20 + i * 52} rx="3" fill="currentColor" fillOpacity={0.15 + i * 0.04}
-            initial={{ y: 160, height: 0 }} animate={{ y: b.y, height: b.h }}
-            transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: [0.34, 1.2, 0.64, 1] }} width={32} />
+        {[50, 90, 130, 160].map((y) => (
+          <line key={y} x1="0" y1={y} x2="270" y2={y} stroke="#1c1d22" strokeWidth="1" />
         ))}
-        <motion.polyline points={linePoints} fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="1.5"
+        {bars.map((b, i) => (
+          <motion.rect key={i} x={20 + i * 52} rx="2" fill="#ededed" fillOpacity={0.06 + i * 0.03}
+            initial={{ y: 160, height: 0 }} whileInView={{ y: b.y, height: b.h }} viewport={{ once: true }}
+            transition={{ delay: 0.2 + i * 0.08, duration: 0.6, ease: [0.34, 1.1, 0.64, 1] }} width={32} />
+        ))}
+        <motion.polyline points={lp} fill="none" stroke="#ededed" strokeOpacity="0.35" strokeWidth="1.5"
           strokeLinecap="round" strokeLinejoin="round"
-          initial={{ opacity: 0, pathLength: 0 }} animate={{ opacity: 1, pathLength: 1 }} transition={{ delay: 1.0, duration: 0.9, ease: "easeInOut" }} />
+          initial={{ opacity: 0, pathLength: 0 }} whileInView={{ opacity: 1, pathLength: 1 }} viewport={{ once: true }}
+          transition={{ delay: 0.8, duration: 1.0, ease: "easeInOut" }} />
         {bars.map((b, i) => (
-          <motion.circle key={i} cx={38 + i * 52} cy={b.y} r="3.5" fill="currentColor" fillOpacity="0.8"
-            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.2 + i * 0.06, type: "spring", stiffness: 220, damping: 12 }} />
+          <motion.circle key={i} cx={38 + i * 52} cy={b.y} r="3" fill="#ededed" fillOpacity="0.7"
+            initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+            transition={{ delay: 1.0 + i * 0.06, type: "spring", stiffness: 240, damping: 14 }} />
         ))}
-        <defs>
-          <linearGradient id="chart-fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <rect x="0" y="0" width="270" height="80" fill="url(#chart-fade)" />
       </svg>
     </div>
   )
 }
 
-// ─── Data ──────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const projects = [
   {
     num: "01",
     title: "Business Analyzer",
     sub: "Predictive Financial Analysis",
     year: "2025",
-    featured: true,
-    outcome: "KPI tracking, revenue forecasting, customer segmentation — all from a CSV upload.",
-    desc: "Feed in your business numbers and see exactly where you're headed. ML model compares predicted vs. actual performance to surface trends, flag risks, and give you a data-backed view of your business trajectory.",
+    desc: "Feed in your business numbers and see exactly where you're headed. ML model compares predicted vs. actual performance to surface trends, flag risks, and give you a data-backed view of your trajectory.",
+    outcome: "KPI tracking, revenue forecasting, customer segmentation.",
     tags: ["Python", "Machine Learning", "FastAPI", "React", "TypeScript"],
     link: "https://business-analysis-3h9.pages.dev/",
     github: "https://github.com/Kanishk1217/business-analysis",
@@ -145,7 +417,8 @@ const projects = [
     title: "CSV Analyzer",
     sub: "Data Analysis Tool",
     year: "2024",
-    desc: "Upload any CSV and instantly understand everything inside it — column types, distributions, null values, and hidden patterns. No code required.",
+    desc: "Upload any CSV and instantly understand what's inside it. Column types, distributions, null rates, correlations. No code required.",
+    outcome: "",
     tags: ["Python", "Pandas", "FastAPI", "React"],
     link: "https://csv--analysis.pages.dev/",
     github: "https://github.com/Kanishk1217/csv-analysis",
@@ -157,6 +430,7 @@ const projects = [
     sub: "AI-Powered Finance Tracker",
     year: "2026",
     desc: "Connect your real bank via Plaid. Automatic transaction sync, budget tracking, and AI spending insights. Full-stack: React + FastAPI + PostgreSQL.",
+    outcome: "",
     tags: ["React", "FastAPI", "PostgreSQL", "Plaid"],
     link: "https://financial-ai.pages.dev",
     github: "https://github.com/Kanishk1217/Financial_AI",
@@ -166,8 +440,8 @@ const projects = [
 
 const services = [
   { name: "Data Intelligence Dashboard", price: "$800 – $1,500", timeline: "1–2 weeks", subject: "Project Inquiry — Data Intelligence Dashboard" },
-  { name: "Custom AI Agent",             price: "$1,200 – $2,500", timeline: "1–2 weeks", subject: "Project Inquiry — Custom AI Agent" },
-  { name: "Full AI Product Build",       price: "$3,000 – $6,000", timeline: "3–5 weeks", subject: "Project Inquiry — Full AI Product Build" },
+  { name: "Custom AI Agent", price: "$1,200 – $2,500", timeline: "1–2 weeks", subject: "Project Inquiry — Custom AI Agent" },
+  { name: "Full AI Product Build", price: "$3,000 – $6,000", timeline: "3–5 weeks", subject: "Project Inquiry — Full AI Product Build" },
 ]
 
 const posts = [
@@ -175,426 +449,503 @@ const posts = [
     slug: "building-a-business-analyzer-what-ml-taught-me-about-real-decisions",
     title: "Building a Business Analyzer — What ML Taught Me About Real Decisions",
     date: "2025-03-10",
-    desc: "Predicting business performance sounds straightforward until the model is right and the business still makes the wrong call.",
   },
   {
     slug: "building-financeai-when-your-bank-data-becomes-actually-useful",
     title: "Building FinanceAI — When Your Bank Data Becomes Actually Useful",
     date: "2026-05-14",
-    desc: "Banks already have all your transaction data. The problem isn't capture — it's that the data sits behind clunky interfaces nobody opens twice a month.",
   },
   {
     slug: "what-i-learned-building-a-csv-analyzer",
     title: "What I Learned Building a CSV Analyzer",
     date: "2024-11-20",
-    desc: "The hardest part wasn't the ML model. It was making the output mean something to someone who doesn't know what a p-value is.",
   },
   {
     slug: "what-sales-taught-me-about-data-that-no-dataset-ever-could",
     title: "What Sales Taught Me About Data That No Dataset Ever Could",
     date: "2025-06-01",
-    desc: "The most important thing about a metric is who is going to act on it — and whether they trust it.",
   },
 ]
 
-// ─── Fade-in wrapper ───────────────────────────────────────────────────────────
-function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-72px" }}
-      transition={{ duration: 0.65, delay, ease: [0.25, 0.1, 0.25, 1] }}
-    >
-      {children}
-    </motion.div>
-  )
-}
+const marqueeItems = [
+  "Available for Projects",
+  "Python",
+  "FastAPI",
+  "React",
+  "Machine Learning",
+  "PostgreSQL",
+  "TypeScript",
+  "Data Analysis",
+  "AI Development",
+  "2 Weeks to Ship",
+  "Ahmedabad, India",
+  "Open to Remote",
+]
 
-// ─── Page ──────────────────────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => setReady(true), 120)
-    return () => clearTimeout(t)
-  }, [])
-
-  const dockItems: DockItemData[] = [
-    { id: "github",   label: "GitHub",   icon: <SiGithub className="w-full h-full" />,  onClick: () => window.open("https://github.com/Kanishk1217", "_blank") },
-    { id: "linkedin", label: "LinkedIn", icon: <LinkedInIcon />,                          onClick: () => window.open("https://www.linkedin.com/in/kanishk-pansari-8b60a2356/", "_blank") },
-    { id: "email",    label: "Email",    icon: <Mail className="w-full h-full" />,        onClick: () => window.open("mailto:kanishkpansari1217@gmail.com") },
-    { id: "writing",  label: "Writing",  icon: <PenLine className="w-full h-full" />,     onClick: () => { window.location.href = "/blog" } },
-    { id: "services", label: "Services", icon: <Briefcase className="w-full h-full" />,  onClick: () => { window.location.href = "/services" } },
-    { id: "resume",   label: "Resume",   icon: <Download className="w-full h-full" />,   onClick: () => window.open("/resume.pdf", "_blank") },
-  ]
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollY } = useScroll()
+  const heroOpacity = useTransform(scrollY, [0, 480], [1, 0])
+  const heroY = useTransform(scrollY, [0, 480], [0, -72])
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
+    <div style={{ background: "#000", color: "#ededed", minHeight: "100vh" }}>
       <Nav />
 
-      {ready && (
-        <>
-          {/* ══════════════════════════════════════ HERO */}
-          <section className="relative min-h-screen flex items-center overflow-hidden">
-            {/* gradient orbs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-              <div
-                className="absolute -top-40 left-[8%] w-[750px] h-[750px] rounded-full"
-                style={{
-                  background: "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 65%)",
-                  filter: "blur(60px)",
-                  animation: "orb1 24s ease-in-out infinite",
-                }}
-              />
-              <div
-                className="absolute bottom-[-10%] right-[4%] w-[560px] h-[560px] rounded-full"
-                style={{
-                  background: "radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)",
-                  filter: "blur(60px)",
-                  animation: "orb2 30s ease-in-out infinite reverse",
-                }}
-              />
-            </div>
+      {/* ══════════════════════════════════════════════ HERO */}
+      <motion.section
+        ref={heroRef}
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="relative min-h-screen flex items-center pt-14 overflow-hidden"
+      >
+        <div className="max-w-[1200px] mx-auto w-full px-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 items-center py-24">
 
-            <div className="relative z-10 max-w-[1100px] mx-auto w-full px-8 pt-36 pb-28">
-              <motion.div
-                initial={{ opacity: 0, y: 36 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.95, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <p className="font-mono text-[10px] tracking-[0.24em] text-muted-foreground/45 uppercase mb-8 select-none">
-                  Ahmedabad, India · Available for projects
-                </p>
+          {/* left */}
+          <div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10"
+              style={{ color: "#444" }}
+            >
+              Ahmedabad, India · Available for projects
+            </motion.p>
 
+            <div className="mb-2">
+              <Reveal>
                 <h1
-                  className="text-[clamp(54px,8.5vw,86px)] font-extrabold leading-[0.92] tracking-[-0.032em] text-foreground mb-8 select-none"
-                  style={{ fontFamily: "var(--font-syne)" }}
+                  className="leading-[0.9] tracking-[-0.03em]"
+                  style={{
+                    fontFamily: "var(--font-playfair)",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    fontSize: "clamp(68px, 9.5vw, 108px)",
+                    color: "#ededed",
+                  }}
                 >
-                  Kanishk<br />Pansari
+                  Kanishk
                 </h1>
-
-                <p className="text-[17px] text-muted-foreground leading-[1.68] max-w-[500px] mb-11 tracking-[-0.005em]">
-                  I build custom AI tools that turn your business data into decisions — shipped in 2 weeks.
-                </p>
-
-                <div className="flex gap-3 flex-wrap">
-                  <a
-                    href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-medium text-white transition-all duration-200 hover:opacity-[0.88] active:scale-[0.98]"
-                    style={{ backgroundColor: "#6366f1" }}
-                  >
-                    <Mail className="w-3.5 h-3.5" />
-                    Work With Me
-                  </a>
-                  <a
-                    href="#work"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-medium text-muted-foreground border border-border hover:text-foreground hover:border-foreground/20 transition-all duration-200"
-                  >
-                    View My Work
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </motion.div>
+              </Reveal>
+            </div>
+            <div className="mb-12">
+              <Reveal delay={0.08}>
+                <h1
+                  className="leading-[0.9] tracking-[-0.03em]"
+                  style={{
+                    fontFamily: "var(--font-playfair)",
+                    fontWeight: 400,
+                    fontSize: "clamp(68px, 9.5vw, 108px)",
+                    color: "#ededed",
+                  }}
+                >
+                  Pansari
+                </h1>
+              </Reveal>
             </div>
 
-            {/* scroll indicator */}
-            <div className="absolute bottom-10 left-8">
-              <motion.div
-                className="w-px bg-foreground/20"
-                initial={{ height: 0 }}
-                animate={{ height: 52 }}
-                transition={{ delay: 1.3, duration: 0.9, ease: "easeInOut" }}
-              />
-            </div>
-          </section>
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.42 }}
+              className="text-[17px] leading-[1.68] max-w-[400px] mb-10"
+              style={{ color: "#666" }}
+            >
+              I build custom AI tools that turn your business data into{" "}
+              <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>decisions</em>
+              {" "}— shipped in 2 weeks.
+            </motion.p>
 
-          {/* ══════════════════════════════════════ PROJECTS */}
-          <section id="work" className="max-w-[1100px] mx-auto px-8 py-28">
-            <FadeIn className="flex items-baseline justify-between mb-14">
-              <h2
-                className="text-[34px] font-bold tracking-[-0.022em]"
-                style={{ fontFamily: "var(--font-syne)" }}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.58 }}
+              className="flex gap-3 flex-wrap"
+            >
+              <a
+                href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-all duration-200 hover:bg-[#e8e8e8]"
+                style={{ background: "#fff", color: "#000", borderRadius: 3 }}
               >
-                What I've Built
-              </h2>
-              <span className="font-mono text-[10px] text-muted-foreground/35 tracking-[0.2em] uppercase">
-                2024 – 2026
-              </span>
-            </FadeIn>
+                <Mail className="w-3.5 h-3.5" /> Work With Me
+              </a>
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-all duration-200"
+                style={{ border: "1px solid #1c1d22", color: "#666", borderRadius: 3 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#333"
+                  e.currentTarget.style.color = "#ededed"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#1c1d22"
+                  e.currentTarget.style.color = "#666"
+                }}
+              >
+                View Work <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </motion.div>
+          </div>
 
-            {/* featured card */}
-            <FadeIn delay={0.08}>
+          {/* right — live dashboard */}
+          <motion.div
+            initial={{ opacity: 0, x: 48 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <HeroDashboard />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ══════════════════════════════════════════════ MARQUEE */}
+      <div className="overflow-hidden" style={{ borderTop: "1px solid #1c1d22", borderBottom: "1px solid #1c1d22" }}>
+        <div
+          className="flex py-3"
+          style={{
+            animation: "marquee 28s linear infinite",
+            width: "max-content",
+            gap: 56,
+          }}
+        >
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <span key={i} className="font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap" style={{ color: "#333" }}>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════ STATS */}
+      <section className="max-w-[1200px] mx-auto px-8 py-28">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ border: "1px solid #1c1d22" }}>
+          {[
+            { to: 3, suffix: "", label: "AI tools shipped" },
+            { to: 2, suffix: " wk", label: "average delivery" },
+            { to: 500, suffix: "k+", label: "rows processed" },
+            { to: 100, suffix: "%", label: "on-time delivery" },
+          ].map((s, i) => (
+            <FadeUp key={s.label} delay={i * 0.08}>
               <div
-                className="rounded-2xl border border-border overflow-hidden mb-4 transition-all duration-300 hover:border-indigo-500/25 group"
-                style={{ background: "rgba(255,255,255,0.018)" }}
+                className="px-8 py-10"
+                style={{ background: "#000", borderRight: i < 3 ? "1px solid #1c1d22" : "none" }}
               >
-                <div className="h-52 relative">
-                  <BusinessThumbnail />
-                </div>
-                <div className="p-6 border-t border-border">
-                  <div className="flex items-start gap-3 mb-3">
-                    <span className="font-mono text-[9px] tracking-[0.18em] text-muted-foreground/35 uppercase pt-0.5">
-                      01 · 2025
-                    </span>
-                    <span className="font-mono text-[8px] px-2 py-0.5 rounded-full border border-indigo-500/25 text-indigo-400/70 tracking-[0.12em] uppercase">
-                      Featured
-                    </span>
-                  </div>
-                  <h3
-                    className="text-[19px] font-bold tracking-[-0.015em] text-foreground mb-0.5"
-                    style={{ fontFamily: "var(--font-syne)" }}
+                <p
+                  className="text-[48px] font-bold leading-none mb-2 tracking-[-0.02em]"
+                  style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}
+                >
+                  <Counter to={s.to} suffix={s.suffix} />
+                </p>
+                <p className="font-mono text-[11px] tracking-[0.1em] uppercase" style={{ color: "#444" }}>
+                  {s.label}
+                </p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════ PROJECTS */}
+      <section id="work" className="max-w-[1200px] mx-auto px-8 pb-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="pt-20 mb-20">
+          <Reveal>
+            <h2
+              className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
+            >
+              Work
+            </h2>
+          </Reveal>
+        </div>
+
+        {/* Featured — Business Analyzer */}
+        <TiltCard className="mb-4">
+          <div
+            className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] rounded-xl overflow-hidden transition-all duration-300 group"
+            style={{ border: "1px solid #1c1d22", background: "#000" }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget
+              el.style.borderColor = "#2e2e2e"
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget
+              el.style.borderColor = "#1c1d22"
+            }}
+          >
+            {/* text */}
+            <div className="p-8 flex flex-col justify-between" style={{ borderRight: "1px solid #1c1d22" }}>
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: "#333" }}>01</span>
+                  <span
+                    className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                    style={{ border: "1px solid #cc9166", color: "#cc9166", letterSpacing: "0.1em" }}
                   >
-                    Business Analyzer
-                  </h3>
-                  <p className="font-mono text-[10px] text-muted-foreground/45 mb-4">Predictive Financial Analysis</p>
-                  <p className="text-[14px] text-foreground/60 italic leading-relaxed mb-3 max-w-[540px]">
-                    KPI tracking, revenue forecasting, customer segmentation — all from a CSV upload.
-                  </p>
-                  <p className="text-[13px] text-muted-foreground leading-relaxed max-w-[580px] mb-6">
-                    Feed in your business numbers and see exactly where you're headed. ML model compares predicted vs. actual performance to surface trends, flag risks, and give you a data-backed view of your business trajectory.
-                  </p>
-                  <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex flex-wrap gap-1.5">
-                      {["Python", "Machine Learning", "FastAPI", "React", "TypeScript"].map(tag => (
-                        <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full border border-border text-muted-foreground/50">
-                          {tag}
-                        </span>
+                    Featured
+                  </span>
+                </div>
+                <h3
+                  className="text-[28px] leading-[1.1] tracking-[-0.02em] mb-1"
+                  style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}
+                >
+                  Business Analyzer
+                </h3>
+                <p className="font-mono text-[10px] mb-6" style={{ color: "#444" }}>
+                  Predictive Financial Analysis · 2025
+                </p>
+                <p className="text-[14px] leading-relaxed mb-3 italic" style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>
+                  KPI tracking, revenue forecasting, customer segmentation.
+                </p>
+                <p className="text-[13px] leading-relaxed" style={{ color: "#666" }}>
+                  Feed in your business numbers and see exactly where you're headed. ML model compares predicted vs. actual performance to surface trends and flag risks.
+                </p>
+              </div>
+              <div>
+                <div className="flex flex-wrap gap-1.5 mb-6 mt-6">
+                  {["Python", "Machine Learning", "FastAPI", "React", "TypeScript"].map(tag => (
+                    <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                      style={{ border: "1px solid #1c1d22", color: "#555" }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-5">
+                  <a href="https://github.com/Kanishk1217/business-analysis" target="_blank" rel="noopener noreferrer"
+                    className="font-mono text-[11px] flex items-center gap-1.5 transition-colors duration-200 hover:text-[#ededed]"
+                    style={{ color: "#444" }}>
+                    <SiGithub className="w-3.5 h-3.5" /> Source
+                  </a>
+                  <a href="https://business-analysis-3h9.pages.dev/" target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-medium font-mono transition-colors duration-200 hover:bg-[#e8e8e8]"
+                    style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+                    Live Demo <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            {/* visual */}
+            <div style={{ height: 400 }}>
+              <BusinessThumbnail />
+            </div>
+          </div>
+        </TiltCard>
+
+        {/* Grid — CSV + FinanceAI */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {projects.slice(1).map((p, i) => (
+            <FadeUp key={p.num} delay={i * 0.1}>
+              <TiltCard>
+                <div
+                  className="rounded-xl overflow-hidden flex flex-col transition-all duration-300"
+                  style={{ border: "1px solid #1c1d22", background: "#000" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#2e2e2e" }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1c1d22" }}
+                >
+                  <div style={{ height: 200, borderBottom: "1px solid #1c1d22" }}>
+                    <p.Thumb />
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <span className="font-mono text-[10px] tracking-[0.18em] uppercase block mb-3" style={{ color: "#333" }}>
+                      {p.num} · {p.year}
+                    </span>
+                    <h3
+                      className="text-[20px] leading-[1.1] tracking-[-0.015em] mb-1"
+                      style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}
+                    >
+                      {p.title}
+                    </h3>
+                    <p className="font-mono text-[10px] mb-4" style={{ color: "#444" }}>{p.sub}</p>
+                    <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#666" }}>{p.desc}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {p.tags.map(tag => (
+                        <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                          style={{ border: "1px solid #1c1d22", color: "#555" }}>{tag}</span>
                       ))}
                     </div>
                     <div className="flex items-center gap-4">
-                      <a
-                        href="https://github.com/Kanishk1217/business-analysis"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-mono text-[11px] text-muted-foreground/40 hover:text-muted-foreground transition-colors flex items-center gap-1.5"
-                      >
-                        <SiGithub className="w-3.5 h-3.5" /> Source
+                      <a href={p.github} target="_blank" rel="noopener noreferrer"
+                        className="font-mono text-[10px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
+                        style={{ color: "#444" }}>
+                        <SiGithub className="w-3 h-3" /> Source
                       </a>
-                      <a
-                        href="https://business-analysis-3h9.pages.dev/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg font-mono text-[11px] font-medium text-white transition-all duration-200 hover:opacity-[0.88]"
-                        style={{ backgroundColor: "#6366f1" }}
-                      >
-                        Live Demo <ExternalLink className="w-3 h-3" />
+                      <a href={p.link} target="_blank" rel="noopener noreferrer"
+                        className="font-mono text-[10px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
+                        style={{ color: "#444" }}>
+                        <ExternalLink className="w-3 h-3" /> Live
                       </a>
                     </div>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
+              </TiltCard>
+            </FadeUp>
+          ))}
+        </div>
+      </section>
 
-            {/* 2-col grid */}
-            <div className="grid grid-cols-2 gap-4">
-              {projects.slice(1).map((p, i) => (
-                <FadeIn key={p.num} delay={0.06 + i * 0.1}>
-                  <div
-                    className="rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:border-indigo-500/20 hover:-translate-y-1 h-full flex flex-col"
-                    style={{ background: "rgba(255,255,255,0.018)" }}
-                  >
-                    <div className="h-40 relative flex-shrink-0"><p.Thumb /></div>
-                    <div className="p-5 border-t border-border flex flex-col flex-1">
-                      <span className="font-mono text-[9px] tracking-[0.18em] text-muted-foreground/35 uppercase block mb-1.5">
-                        {p.num} · {p.year}
-                      </span>
-                      <h3
-                        className="text-[15px] font-bold tracking-[-0.01em] text-foreground mb-0.5"
-                        style={{ fontFamily: "var(--font-syne)" }}
-                      >
-                        {p.title}
-                      </h3>
-                      <p className="font-mono text-[10px] text-muted-foreground/45 mb-3">{p.sub}</p>
-                      <p className="text-[12px] text-muted-foreground leading-relaxed mb-4 flex-1">{p.desc}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {p.tags.map(tag => (
-                          <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full border border-border text-muted-foreground/50">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <a
-                          href={p.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-[10px] text-muted-foreground/40 hover:text-muted-foreground transition-colors flex items-center gap-1.5"
-                        >
-                          <SiGithub className="w-3 h-3" /> Source
-                        </a>
-                        <a
-                          href={p.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-[10px] text-muted-foreground/40 hover:text-foreground transition-colors flex items-center gap-1.5"
-                        >
-                          <ExternalLink className="w-3 h-3" /> Live
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </section>
+      {/* ══════════════════════════════════════════════ SERVICES */}
+      <section id="services" className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="flex items-end justify-between mb-20">
+          <Reveal>
+            <h2
+              className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
+            >
+              Services
+            </h2>
+          </Reveal>
+          <FadeUp>
+            <Link href="/services" className="font-mono text-[11px] transition-colors hover:text-[#ededed]"
+              style={{ color: "#444" }}>
+              Full details →
+            </Link>
+          </FadeUp>
+        </div>
 
-          {/* ══════════════════════════════════════ SERVICES */}
-          <section id="services" className="max-w-[1100px] mx-auto px-8 py-28 border-t border-border">
-            <FadeIn className="flex items-baseline justify-between mb-14">
-              <h2
-                className="text-[34px] font-bold tracking-[-0.022em]"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                How I Can Help
-              </h2>
-              <Link
-                href="/services"
-                className="font-mono text-[11px] text-muted-foreground/35 hover:text-muted-foreground transition-colors"
-              >
-                All services
-              </Link>
-            </FadeIn>
-
-            <div className="grid grid-cols-3 gap-4 mb-10">
-              {services.map((s, i) => (
-                <FadeIn key={s.name} delay={i * 0.07}>
-                  <div
-                    className="rounded-2xl border border-border p-5 flex flex-col gap-4 h-full transition-all duration-200 hover:border-foreground/10"
-                    style={{ background: "rgba(255,255,255,0.018)" }}
-                  >
-                    <div>
-                      <p className="font-mono text-[9px] tracking-[0.15em] text-muted-foreground/35 uppercase mb-2">{s.timeline}</p>
-                      <h3
-                        className="text-[14px] font-bold tracking-[-0.008em] text-foreground mb-1.5"
-                        style={{ fontFamily: "var(--font-syne)" }}
-                      >
-                        {s.name}
-                      </h3>
-                      <p className="font-mono text-[12px] font-medium tracking-[-0.01em]" style={{ color: "#6366f1" }}>
-                        {s.price}
-                      </p>
-                    </div>
-                    <a
-                      href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(s.subject)}`}
-                      className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-mono text-[10px] font-medium text-white transition-all duration-200 hover:opacity-[0.85]"
-                      style={{ backgroundColor: "#6366f1" }}
-                    >
-                      <Mail className="w-3 h-3" /> Get a Quote
-                    </a>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-
-            <FadeIn delay={0.22} className="text-center">
-              <Link
-                href="/services"
-                className="inline-flex items-center gap-2 font-mono text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-              >
-                See full service details and pricing <ArrowRight className="w-3 h-3" />
-              </Link>
-            </FadeIn>
-          </section>
-
-          {/* ══════════════════════════════════════ WRITING */}
-          <section id="writing" className="max-w-[1100px] mx-auto px-8 py-28 border-t border-border">
-            <FadeIn className="flex items-baseline justify-between mb-14">
-              <h2
-                className="text-[34px] font-bold tracking-[-0.022em]"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                Writing
-              </h2>
-              <Link
-                href="/blog"
-                className="font-mono text-[11px] text-muted-foreground/35 hover:text-muted-foreground transition-colors"
-              >
-                All posts
-              </Link>
-            </FadeIn>
-
-            <div className="divide-y divide-border">
-              {posts.map((post, i) => (
-                <motion.a
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.07 }}
-                  className="group flex items-start gap-8 py-5 hover:opacity-100"
-                  style={{ opacity: 0.78 }}
-                >
-                  <span className="font-mono text-[10px] text-muted-foreground/35 flex-shrink-0 w-20 pt-0.5">
-                    {new Date(post.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[14px] font-medium text-foreground leading-snug mb-1 group-hover:text-white transition-colors">
-                      {post.title}
-                    </p>
-                    <p className="font-mono text-[10px] text-muted-foreground/45 leading-relaxed line-clamp-1">
-                      {post.desc}
-                    </p>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/25 group-hover:text-muted-foreground flex-shrink-0 mt-0.5 transition-colors" />
-                </motion.a>
-              ))}
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════ FOOTER */}
-          <footer className="max-w-[1100px] mx-auto px-8 py-14 border-t border-border">
-            <div className="flex items-center justify-between">
+        {/* bento: 1 large left + 2 stacked right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-4">
+          {/* large card */}
+          <FadeUp>
+            <SpotlightCard
+              className="rounded-xl h-full min-h-[280px] flex flex-col justify-between p-8 transition-all duration-300"
+              style={{ border: "1px solid #1c1d22", background: "#000" }}
+            >
               <div>
-                <p className="font-mono text-[10px] text-muted-foreground/30 mb-1.5 tracking-[0.1em]">
-                  Available for projects · Response within 24 hours
+                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#333" }}>
+                  {services[2].timeline}
                 </p>
-                <a
-                  href="mailto:kanishkpansari1217@gmail.com"
-                  className="font-mono text-[12px] text-muted-foreground hover:text-foreground transition-colors"
+                <h3
+                  className="text-[26px] leading-[1.1] tracking-[-0.02em] mb-3"
+                  style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}
                 >
-                  kanishkpansari1217@gmail.com
-                </a>
+                  {services[2].name}
+                </h3>
+                <p className="font-mono text-[22px] font-medium" style={{ color: "#ededed" }}>
+                  {services[2].price}
+                </p>
               </div>
-              <div className="flex items-center gap-5">
-                <a
-                  href="https://github.com/Kanishk1217"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground/35 hover:text-muted-foreground transition-colors"
-                  aria-label="GitHub"
-                >
-                  <SiGithub className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/kanishk-pansari-8b60a2356/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground/35 hover:text-muted-foreground transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <LinkedInIcon className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          </footer>
+              <a
+                href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(services[2].subject)}`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 self-start text-[13px] font-medium transition-colors hover:bg-[#e8e8e8]"
+                style={{ background: "#fff", color: "#000", borderRadius: 3 }}
+              >
+                <Mail className="w-3.5 h-3.5" /> Get a Quote
+              </a>
+            </SpotlightCard>
+          </FadeUp>
 
-          {/* ══════════════════════════════════════ MAGNETIC DOCK */}
-          <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
-            <div className="pointer-events-auto">
-              <MagneticDock
-                items={dockItems}
-                iconSize={44}
-                showLabels={true}
-                magneticDistance={120}
-                maxScale={1.45}
-              />
-            </div>
+          {/* 2 stacked */}
+          <div className="flex flex-col gap-4">
+            {services.slice(0, 2).map((s, i) => (
+              <FadeUp key={s.name} delay={0.08 + i * 0.08}>
+                <SpotlightCard
+                  className="rounded-xl flex flex-col justify-between p-6 transition-all duration-300"
+                  style={{ border: "1px solid #1c1d22", background: "#000", minHeight: 132 }}
+                >
+                  <div>
+                    <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-3" style={{ color: "#333" }}>
+                      {s.timeline}
+                    </p>
+                    <h3
+                      className="text-[17px] leading-snug tracking-[-0.01em] mb-2"
+                      style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}
+                    >
+                      {s.name}
+                    </h3>
+                    <p className="font-mono text-[13px]" style={{ color: "#888" }}>{s.price}</p>
+                  </div>
+                </SpotlightCard>
+              </FadeUp>
+            ))}
           </div>
-        </>
-      )}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════ WRITING */}
+      <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="flex items-end justify-between mb-20">
+          <Reveal>
+            <h2
+              className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
+            >
+              Writing
+            </h2>
+          </Reveal>
+          <FadeUp>
+            <Link href="/blog" className="font-mono text-[11px] transition-colors hover:text-[#ededed]"
+              style={{ color: "#444" }}>
+              All posts →
+            </Link>
+          </FadeUp>
+        </div>
+
+        <div style={{ borderTop: "1px solid #1c1d22" }}>
+          {posts.map((post, i) => (
+            <motion.a
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
+              className="group flex items-center justify-between py-5 transition-all duration-200"
+              style={{ borderBottom: "1px solid #1c1d22" }}
+              onMouseEnter={(e) => { e.currentTarget.style.paddingLeft = "8px" }}
+              onMouseLeave={(e) => { e.currentTarget.style.paddingLeft = "0px" }}
+            >
+              <div className="flex items-baseline gap-8 flex-1 min-w-0">
+                <span className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>
+                  {new Date(post.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                </span>
+                <span className="text-[14px] font-medium leading-snug truncate transition-colors duration-200 group-hover:text-white"
+                  style={{ color: "#888" }}>
+                  {post.title}
+                </span>
+              </div>
+              <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 ml-4 transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                style={{ color: "#555" }} />
+            </motion.a>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════ FOOTER */}
+      <footer
+        className="max-w-[1200px] mx-auto px-8 py-16"
+        style={{ borderTop: "1px solid #1c1d22" }}
+      >
+        <div className="flex items-start justify-between gap-8">
+          <div>
+            <p
+              className="text-[28px] leading-none tracking-[-0.02em] mb-4"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}
+            >
+              Let's work together.
+            </p>
+            <a
+              href="mailto:kanishkpansari1217@gmail.com"
+              className="font-mono text-[12px] transition-colors hover:text-[#ededed]"
+              style={{ color: "#555" }}
+            >
+              kanishkpansari1217@gmail.com
+            </a>
+          </div>
+          <div className="flex items-center gap-5 pt-1">
+            <a href="https://github.com/Kanishk1217" target="_blank" rel="noopener noreferrer"
+              className="transition-colors hover:text-[#ededed]" style={{ color: "#444" }} aria-label="GitHub">
+              <SiGithub className="w-4 h-4" />
+            </a>
+            <a href="https://www.linkedin.com/in/kanishk-pansari-8b60a2356/" target="_blank" rel="noopener noreferrer"
+              className="transition-colors hover:text-[#ededed]" style={{ color: "#444" }} aria-label="LinkedIn">
+              <LinkedInIcon className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+        <p className="font-mono text-[10px] mt-14" style={{ color: "#2a2a2a" }}>
+          © 2026 Kanishk Pansari
+        </p>
+      </footer>
     </div>
   )
 }
