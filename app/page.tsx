@@ -395,10 +395,32 @@ export default function Home() {
               <div className="px-5 pt-5 pb-28 space-y-6">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                   <p className="font-mono text-sm font-semibold text-foreground">Kanishk Pansari</p>
-                  <p className="font-mono text-[11px] text-muted-foreground mt-1 leading-relaxed">Data Analyst & Engineer</p>
+                  <p className="font-mono text-[11px] text-muted-foreground mt-1 leading-relaxed">I build custom AI tools that turn your business data into decisions — shipped in 2 weeks.</p>
                   <p className="font-mono text-[11px] text-muted-foreground leading-relaxed">Ahmedabad, India</p>
                 </motion.div>
 
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.34 }}
+                  className="flex gap-2 pt-1"
+                >
+                  <a
+                    href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-mono text-[10px] font-semibold text-white transition-all duration-200 hover:opacity-90"
+                    style={{ backgroundColor: '#0ea5e9' }}
+                  >
+                    <Mail className="w-3 h-3" />
+                    Work With Me
+                  </a>
+                  <button
+                    onClick={() => document.getElementById('col-work')?.scrollTo({ behavior: 'smooth', top: 0 })}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-mono text-[10px] font-semibold border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all duration-200 cursor-pointer"
+                  >
+                    View My Work
+                  </button>
+                </motion.div>
                 <motion.p
                   ref={bioRef}
                   initial={{ opacity: 0, y: 10 }}
