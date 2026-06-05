@@ -33,8 +33,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             style={{ color: "#444" }}>
             ← Writing
           </Link>
-          <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>·</span>
-          <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>
+          <span className="font-mono text-[10px]" style={{ color: "#444" }}>·</span>
+          <span className="font-mono text-[10px]" style={{ color: "#444" }}>
             {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
           </span>
         </div>
@@ -105,7 +105,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <footer className="max-w-[760px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
-        <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+        <p className="font-mono text-[10px]" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
       </footer>
     </div>
   )

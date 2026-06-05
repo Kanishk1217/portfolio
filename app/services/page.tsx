@@ -104,8 +104,8 @@ export default function ServicesPage() {
             style={{ borderBottom: "1px solid #1c1d22" }}>
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <span className="font-mono text-[10px] tracking-[0.18em]" style={{ color: "#333" }}>{s.num}</span>
-                <span className="font-mono text-[9px] px-2.5 py-1 rounded-full" style={{ border: "1px solid #1c1d22", color: "#444" }}>
+                <span className="font-mono text-[10px] tracking-[0.18em]" style={{ color: "#555" }}>{s.num}</span>
+                <span className="font-mono text-[9px] px-2.5 py-1 rounded-full" style={{ border: "1px solid #1c1d22", color: "#555" }}>
                   {s.timeline}
                 </span>
               </div>
@@ -115,7 +115,7 @@ export default function ServicesPage() {
               </h2>
               <p className="font-mono text-[20px] font-medium mb-6" style={{ color: "#cc9166" }}>{s.price}</p>
               <p className="text-[14px] leading-[1.8] mb-6 max-w-[500px]" style={{ color: "#555" }}>{s.description}</p>
-              <p className="font-mono text-[11px] mb-8" style={{ color: "#333" }}>
+              <p className="font-mono text-[11px] mb-8" style={{ color: "#555" }}>
                 Best for: <span style={{ color: "#555" }}>{s.bestFor}</span>
               </p>
               <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(s.subject)}`}
@@ -125,7 +125,7 @@ export default function ServicesPage() {
               </a>
             </div>
             <div className="lg:pt-14">
-              <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#333" }}>Includes</p>
+              <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#555" }}>Includes</p>
               <div style={{ borderTop: "1px solid #1c1d22" }}>
                 {s.includes.map((item, j) => (
                   <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
@@ -188,7 +188,7 @@ export default function ServicesPage() {
           {process.map((p, i) => (
             <div key={p.step} className="px-6 py-8"
               style={{ background: "#000", borderRight: i < 3 ? "1px solid #1c1d22" : "none" }}>
-              <p className="font-mono text-[10px] tracking-[0.18em] mb-5" style={{ color: "#333" }}>{p.step}</p>
+              <p className="font-mono text-[10px] tracking-[0.18em] mb-5" style={{ color: "#555" }}>{p.step}</p>
               <p className="text-[15px] font-medium mb-3" style={{ color: "#ededed" }}>{p.title}</p>
               <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>{p.desc}</p>
             </div>
@@ -219,7 +219,7 @@ export default function ServicesPage() {
           <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
             ← Back to Home
           </Link>
-          <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+          <p className="font-mono text-[10px]" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
         </div>
       </footer>
     </div>

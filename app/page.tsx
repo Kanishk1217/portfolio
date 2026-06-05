@@ -156,7 +156,7 @@ function HeroDashboard() {
         <div className="flex items-end gap-1.5" style={{ height: 64 }}>
           {bars.map((h, i) => (
             <div key={i} className="flex-1 flex flex-col justify-end">
-              <motion.div className="w-full rounded-[2px]" style={{ background: i === 5 ? "#ededed" : "#1c1d22" }}
+              <motion.div className="w-full rounded-[2px]" style={{ background: i === 5 ? "#ededed" : "#2a2a2a" }}
                 initial={{ height: 0 }} animate={loaded ? { height: `${h}%` } : { height: 0 }}
                 transition={{ delay: 0.55 + i * 0.07, duration: 0.55, ease: [0.34, 1.1, 0.64, 1] }} />
             </div>
@@ -164,7 +164,7 @@ function HeroDashboard() {
         </div>
         <div className="flex gap-1.5 mt-1.5">
           {days.map((d, i) => (
-            <span key={i} className="flex-1 font-mono text-[8px] text-center" style={{ color: "#333" }}>{d}</span>
+            <span key={i} className="flex-1 font-mono text-[8px] text-center" style={{ color: "#555" }}>{d}</span>
           ))}
         </div>
       </div>
@@ -174,7 +174,7 @@ function HeroDashboard() {
             className="flex items-center justify-between px-5 py-3" style={{ borderBottom: i < txns.length - 1 ? "1px solid #1c1d22" : "none" }}>
             <div>
               <p className="text-[12px]" style={{ color: "#888" }}>{t.name}</p>
-              <p className="font-mono text-[9px] mt-0.5" style={{ color: "#333" }}>{t.time}</p>
+              <p className="font-mono text-[9px] mt-0.5" style={{ color: "#444" }}>{t.time}</p>
             </div>
             <p className="font-mono text-[12px] font-medium" style={{ color: t.pos ? "#ededed" : "#555" }}>{t.amount}</p>
           </motion.div>
@@ -193,7 +193,7 @@ function WindowChrome({ title }: { title: string }) {
         <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#febc2e" }} />
         <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#28c840" }} />
       </div>
-      <span className="font-mono text-[9px] mx-auto" style={{ color: "#2a2a2a" }}>{title}</span>
+      <span className="font-mono text-[9px] mx-auto" style={{ color: "#444" }}>{title}</span>
     </div>
   )
 }
@@ -847,7 +847,7 @@ function CredentialsSection() {
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Engineering Plus — Python &amp; Data Science</p>
             <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>New LJ Institute of Engineering &amp; Technology · 2024</p>
-            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#444" }}>View Certificate ↗</span>
+            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#666" }}>View Certificate ↗</span>
           </a>
         </FadeUp>
 
@@ -875,7 +875,7 @@ function CredentialsSection() {
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari — Résumé</p>
             <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>Data Analyst &amp; AI Developer · 2026</p>
-            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#444" }}>Download PDF ↓</span>
+            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#666" }}>Download PDF ↓</span>
           </a>
         </FadeUp>
       </div>
@@ -931,8 +931,8 @@ const posts = [
 ]
 
 const marqueeItems = [
-  "Available for Projects", "Python", "FastAPI", "React", "Machine Learning",
-  "PostgreSQL", "TypeScript", "Data Analysis", "AI Development", "2 Weeks to Ship", "Ahmedabad, India",
+  "Python", "FastAPI", "React", "Machine Learning",
+  "PostgreSQL", "TypeScript", "Data Analysis", "AI Development",
 ]
 
 // ─── Work Section (scroll-scrubbed) ──────────────────────────────────────────
@@ -992,13 +992,13 @@ function WorkSection() {
               <div className="w-full">
                 {/* Progress pills */}
                 <div className="flex items-center gap-3 mb-8">
-                  <span className="font-mono text-[10px]" style={{ color: "#333" }}>
+                  <span className="font-mono text-[10px]" style={{ color: "#555" }}>
                     0{active + 1} / 0{projects.length}
                   </span>
                   <div className="flex gap-2 items-center">
                     {projects.map((_, i) => (
                       <motion.div key={i}
-                        animate={{ width: i === active ? 28 : 8, background: i === active ? "#ededed" : "#1c1d22" }}
+                        animate={{ width: i === active ? 28 : 8, background: i === active ? "#ededed" : "#333" }}
                         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                         style={{ height: 2, borderRadius: 2 }}
                       />
@@ -1087,11 +1087,6 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center pt-14 overflow-hidden">
         <div className="max-w-[1200px] mx-auto w-full px-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 items-center py-24">
           <div>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.1 }}
-              className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10" style={{ color: "#444" }}>
-              Ahmedabad, India · Available for projects
-            </motion.p>
-
             {/* Fixed: animate directly, not whileInView — above-fold content */}
             <div className="overflow-hidden mb-1">
               <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
@@ -1145,7 +1140,7 @@ export default function Home() {
       <div className="overflow-hidden" style={{ borderTop: "1px solid #1c1d22", borderBottom: "1px solid #1c1d22" }}>
         <div className="flex py-3" style={{ animation: "marquee 28s linear infinite", width: "max-content", gap: 56 }}>
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap" style={{ color: "#282828" }}>{item}</span>
+            <span key={i} className="font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap" style={{ color: "#555" }}>{item}</span>
           ))}
         </div>
       </div>
@@ -1165,7 +1160,7 @@ export default function Home() {
                   style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>
                   <Counter to={s.to} suffix={s.suffix} />
                 </p>
-                <p className="font-mono text-[11px] tracking-[0.1em] uppercase" style={{ color: "#333" }}>{s.label}</p>
+                <p className="font-mono text-[11px] tracking-[0.1em] uppercase" style={{ color: "#555" }}>{s.label}</p>
               </div>
             </FadeUp>
           ))}
@@ -1204,7 +1199,7 @@ export default function Home() {
             <SpotlightCard className="rounded-xl h-full min-h-[280px] flex flex-col justify-between p-8 transition-all duration-300"
               style={{ border: "1px solid #1c1d22", background: "#000" }}>
               <div>
-                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#333" }}>{services[2].timeline}</p>
+                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#555" }}>{services[2].timeline}</p>
                 <h3 className="text-[26px] leading-[1.1] tracking-[-0.02em] mb-3"
                   style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{services[2].name}</h3>
                 <p className="font-mono text-[22px] font-medium" style={{ color: "#ededed" }}>{services[2].price}</p>
@@ -1222,7 +1217,7 @@ export default function Home() {
                 <SpotlightCard className="rounded-xl flex flex-col justify-between p-6 transition-all duration-300"
                   style={{ border: "1px solid #1c1d22", background: "#000", minHeight: 132 }}>
                   <div>
-                    <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-3" style={{ color: "#333" }}>{s.timeline}</p>
+                    <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-3" style={{ color: "#555" }}>{s.timeline}</p>
                     <h3 className="text-[17px] leading-snug tracking-[-0.01em] mb-2"
                       style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{s.name}</h3>
                     <p className="font-mono text-[13px]" style={{ color: "#888" }}>{s.price}</p>
@@ -1257,7 +1252,7 @@ export default function Home() {
               onMouseEnter={e => { e.currentTarget.style.paddingLeft = "8px" }}
               onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0px" }}>
               <div className="flex items-baseline gap-8 flex-1 min-w-0">
-                <span className="font-mono text-[10px] flex-shrink-0" style={{ color: "#2a2a2a" }}>
+                <span className="font-mono text-[10px] flex-shrink-0" style={{ color: "#555" }}>
                   {new Date(post.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
                 </span>
                 <span className="text-[14px] font-medium leading-snug truncate transition-colors duration-200 group-hover:text-white" style={{ color: "#888" }}>
@@ -1284,16 +1279,16 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-5 pt-1">
             <a href="https://github.com/Kanishk1217" target="_blank" rel="noopener noreferrer"
-              className="transition-colors hover:text-[#ededed]" style={{ color: "#333" }} aria-label="GitHub">
+              className="transition-colors hover:text-[#ededed]" style={{ color: "#555" }} aria-label="GitHub">
               <SiGithub className="w-4 h-4" />
             </a>
             <a href="https://www.linkedin.com/in/kanishk-pansari-8b60a2356/" target="_blank" rel="noopener noreferrer"
-              className="transition-colors hover:text-[#ededed]" style={{ color: "#333" }} aria-label="LinkedIn">
+              className="transition-colors hover:text-[#ededed]" style={{ color: "#555" }} aria-label="LinkedIn">
               <LinkedInIcon className="w-4 h-4" />
             </a>
           </div>
         </div>
-        <p className="font-mono text-[10px] mt-14" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+        <p className="font-mono text-[10px] mt-14" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
       </footer>
     </div>
   )

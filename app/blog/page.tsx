@@ -25,7 +25,7 @@ export default function BlogPage() {
         >
           Thinking out loud
         </h1>
-        <p className="font-mono text-[11px]" style={{ color: "#333" }}>
+        <p className="font-mono text-[11px]" style={{ color: "#555" }}>
           {posts.length} {posts.length === 1 ? "post" : "posts"}
         </p>
       </section>
@@ -44,7 +44,7 @@ export default function BlogPage() {
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-6 mb-3">
-                  <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>
+                  <span className="font-mono text-[10px]" style={{ color: "#555" }}>
                     {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                   </span>
                   {post.tags?.length > 0 && (
@@ -78,7 +78,7 @@ export default function BlogPage() {
           <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
             ← Back to Home
           </Link>
-          <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+          <p className="font-mono text-[10px]" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
         </div>
       </footer>
     </div>
