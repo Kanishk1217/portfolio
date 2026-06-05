@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanishk Pansari — Portfolio
 
-## Getting Started
+Personal developer portfolio and technical blog. Showcases deployed data tools, full-stack web apps, and client projects. Includes technical writing on machine learning, data engineering, and product builds.
 
-First, run the development server:
+**Live:** https://kanishk-portfolio.pages.dev/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js (App Router) |
+| Language | TypeScript |
+| Content | MDX — blog posts and project write-ups |
+| Styling | Tailwind CSS + shadcn/ui |
+| Font | Geist (Vercel) |
+| Hosting | Cloudflare Pages + Cloudflare Workers |
+
+## Project structure
+
+```
+portfolio/
+├── app/              # Next.js App Router pages and layouts
+├── components/       # Reusable UI components (shadcn/ui)
+├── content/
+│   └── blog/         # MDX blog posts
+├── lib/              # Utilities — MDX parser, post metadata helpers
+└── public/           # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000.
 
-## Learn More
+## Writing a blog post
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.mdx` file in `content/blog/` with frontmatter:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```mdx
+---
+title: "Your post title"
+date: "2026-01-01"
+description: "One-line summary shown in the post list."
+tags: ["tag1", "tag2"]
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Post content here. MDX supports embedded React components inline.
+```
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed automatically on push to `main` via Cloudflare Pages GitHub integration.
