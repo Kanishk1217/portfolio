@@ -7,8 +7,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Kanishk Pansari — Portfolio",
-  description: "Data Analyst & Engineer building live data products with Python, SQL, and ML.",
+  title: "Kanishk Pansari — AI & Full-Stack Developer",
+  description: "I build custom AI tools that turn your business data into decisions — shipped in 2 weeks.",
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
