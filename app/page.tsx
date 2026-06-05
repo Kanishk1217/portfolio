@@ -604,6 +604,214 @@ function AboutSection() {
   )
 }
 
+// ─── Capability Section ───────────────────────────────────────────────────────
+function CapabilitySection() {
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, margin: "-80px" })
+
+  const bars = [28, 45, 36, 62, 51, 78, 94]
+  const months = ["O", "N", "D", "J", "F", "M", "A"]
+  const BAR_H = 128
+
+  // Neural net node positions in a 300×220 viewBox
+  const inNodes  = [{ x: 36,  y: 44  }, { x: 36,  y: 110 }, { x: 36,  y: 176 }]
+  const hidNodes = [{ x: 150, y: 28  }, { x: 150, y: 84  }, { x: 150, y: 136 }, { x: 150, y: 192 }]
+  const outNodes = [{ x: 264, y: 76  }, { x: 264, y: 144 }]
+
+  const stackLayers = [
+    { label: "Interface",  sub: "React · TypeScript · Tailwind" },
+    { label: "API Layer",  sub: "Python · FastAPI · Auth"       },
+    { label: "Database",   sub: "PostgreSQL · Redis"            },
+    { label: "Infra",      sub: "Cloudflare · VPS · CI/CD"      },
+  ]
+
+  return (
+    <section ref={ref} style={{ borderTop: "1px solid #1c1d22" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-3" style={{ minHeight: "72vh" }}>
+
+        {/* ── Col 1: Revenue bar chart ──────────────────── */}
+        <div className="flex flex-col px-10 pt-14 pb-10"
+          style={{ borderRight: "1px solid #1c1d22" }}>
+          <div className="flex-1 flex flex-col justify-end">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <p className="font-mono text-[9px] tracking-widest uppercase mb-2"
+                  style={{ color: "#2a2a2a" }}>Revenue YTD</p>
+                <p className="text-[36px] leading-none tracking-[-0.03em]"
+                  style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>
+                  $84.2k
+                </p>
+              </div>
+              <motion.span
+                initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ delay: 0.5 }}
+                className="font-mono text-[10px] px-2.5 py-1 rounded-full self-end mb-0.5"
+                style={{ border: "1px solid #1a3828", color: "#22c55e", background: "#0a180f" }}>
+                ↑ 12.4%
+              </motion.span>
+            </div>
+            <div className="flex items-end gap-1.5" style={{ height: BAR_H }}>
+              {bars.map((h, i) => (
+                <div key={i} className="flex-1 flex flex-col justify-end" style={{ height: "100%" }}>
+                  <motion.div
+                    className="w-full rounded-t-[2px]"
+                    style={{ background: i === bars.length - 1 ? "#ededed" : "#141414" }}
+                    initial={{ height: "0px" }}
+                    animate={inView ? { height: `${Math.round((h / 100) * BAR_H)}px` } : { height: "0px" }}
+                    transition={{ delay: 0.12 + i * 0.08, duration: 0.7, ease: [0.34, 1.1, 0.64, 1] }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-1.5 mt-2">
+              {months.map((m, i) => (
+                <span key={i} className="flex-1 font-mono text-[8px] text-center"
+                  style={{ color: "#2a2a2a" }}>{m}</span>
+              ))}
+            </div>
+          </div>
+          <div className="mt-10 pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
+              style={{ color: "#2a2a2a" }}>01</p>
+            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
+              Data Analysis
+            </h3>
+            <p className="text-[12px] leading-relaxed" style={{ color: "#444" }}>
+              Raw inputs turned into revenue-visible decisions.
+            </p>
+          </div>
+        </div>
+
+        {/* ── Col 2: Neural network SVG ─────────────────── */}
+        <div className="flex flex-col px-10 pt-14 pb-10"
+          style={{ borderRight: "1px solid #1c1d22" }}>
+          <div className="flex-1 flex items-center justify-center">
+            <svg viewBox="0 0 300 220" className="w-full max-w-[260px]">
+              {/* Base connections — input → hidden */}
+              {inNodes.map((a, ai) =>
+                hidNodes.map((b, bi) => (
+                  <motion.line key={`ih-${ai}-${bi}`}
+                    x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                    stroke="#141414" strokeWidth="1"
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ delay: 0.2 + ai * 0.04 + bi * 0.02 }}
+                  />
+                ))
+              )}
+              {/* Base connections — hidden → output */}
+              {hidNodes.map((a, ai) =>
+                outNodes.map((b, bi) => (
+                  <motion.line key={`ho-${ai}-${bi}`}
+                    x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                    stroke="#141414" strokeWidth="1"
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ delay: 0.45 + ai * 0.04 + bi * 0.02 }}
+                  />
+                ))
+              )}
+              {/* Amber highlight path through the network */}
+              <motion.line x1={36} y1={110} x2={150} y2={84}
+                stroke="#cc9166" strokeWidth="1.5"
+                initial={{ opacity: 0 }} animate={inView ? { opacity: 0.5 } : { opacity: 0 }}
+                transition={{ delay: 0.85 }} />
+              <motion.line x1={150} y1={84} x2={264} y2={76}
+                stroke="#cc9166" strokeWidth="1.5"
+                initial={{ opacity: 0 }} animate={inView ? { opacity: 0.5 } : { opacity: 0 }}
+                transition={{ delay: 0.95 }} />
+              {/* Input nodes */}
+              {inNodes.map((n, i) => (
+                <motion.circle key={`in-${i}`} cx={n.x} cy={n.y} r={8}
+                  fill="#060606" stroke="#1c1d22" strokeWidth="1.5"
+                  initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                />
+              ))}
+              {/* Hidden nodes */}
+              {hidNodes.map((n, i) => (
+                <motion.circle key={`hn-${i}`} cx={n.x} cy={n.y} r={8}
+                  fill="#060606" stroke="#2a2a2a" strokeWidth="1.5"
+                  initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 0.35 + i * 0.1 }}
+                />
+              ))}
+              {/* Output nodes — amber accent */}
+              {outNodes.map((n, i) => (
+                <motion.circle key={`on-${i}`} cx={n.x} cy={n.y} r={10}
+                  fill="#060606" stroke="#cc9166" strokeWidth="1.5"
+                  initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 0.72 + i * 0.15 }}
+                />
+              ))}
+              {/* Node labels */}
+              {inNodes.map((n, i) => (
+                <text key={`il-${i}`} x={n.x} y={n.y + 4} textAnchor="middle"
+                  fontSize="6" fill="#2a2a2a" fontFamily="monospace">x{i + 1}</text>
+              ))}
+              {outNodes.map((n, i) => (
+                <text key={`ol-${i}`} x={n.x} y={n.y + 4} textAnchor="middle"
+                  fontSize="6" fill="#cc9166" fontFamily="monospace">y{i + 1}</text>
+              ))}
+            </svg>
+          </div>
+          <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
+              style={{ color: "#2a2a2a" }}>02</p>
+            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
+              Machine Learning
+            </h3>
+            <p className="text-[12px] leading-relaxed" style={{ color: "#444" }}>
+              Models trained on your data, deployed on your stack.
+            </p>
+          </div>
+        </div>
+
+        {/* ── Col 3: Tech stack layers ──────────────────── */}
+        <div className="flex flex-col px-10 pt-14 pb-10">
+          <div className="flex-1 flex flex-col justify-center gap-2.5">
+            {stackLayers.map((layer, i) => (
+              <motion.div key={layer.label}
+                initial={{ opacity: 0, x: 18 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 18 }}
+                transition={{ delay: 0.1 + i * 0.13, duration: 0.55, ease: [0.25, 1, 0.5, 1] }}
+                className="flex items-center justify-between px-4 py-3.5 rounded-lg"
+                style={{ border: "1px solid #141414", background: "#050505" }}>
+                <div>
+                  <p className="font-mono text-[10px] font-medium mb-0.5"
+                    style={{ color: "#888" }}>{layer.label}</p>
+                  <p className="font-mono text-[8px]"
+                    style={{ color: "#2a2a2a" }}>{layer.sub}</p>
+                </div>
+                <motion.div
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: "#22c55e" }}
+                  animate={{ opacity: [1, 0.15, 1] }}
+                  transition={{ duration: 2.2 + i * 0.45, repeat: Infinity, delay: i * 0.5 }}
+                />
+              </motion.div>
+            ))}
+          </div>
+          <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
+              style={{ color: "#2a2a2a" }}>03</p>
+            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
+              Full-Stack Build
+            </h3>
+            <p className="text-[12px] leading-relaxed" style={{ color: "#444" }}>
+              Frontend to database. Every layer owned and shipped.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 // ─── Credentials Section ──────────────────────────────────────────────────────
 function CredentialsSection() {
   return (
@@ -966,6 +1174,9 @@ export default function Home() {
 
       {/* ══ ABOUT */}
       <AboutSection />
+
+      {/* ══ CAPABILITIES */}
+      <CapabilitySection />
 
       {/* ══ WORK (scroll-scrubbed) */}
       <WorkSection />
