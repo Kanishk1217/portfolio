@@ -47,7 +47,7 @@ function CSVThumbnail() {
         ))}
       </div>
       <motion.div className="absolute left-0 right-0 h-px bg-foreground/20 pointer-events-none"
-        initial={{ top: "20%", opacity: 0 }} animate={{ top: ["20%", "85%", "20%"], opacity: [0, 0.6, 0] } as Record<string, unknown>}
+        initial={{ opacity: 0 }} animate={{ opacity: [0, 0.6, 0, 0.6, 0] }}
         transition={{ delay: 1.8, duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }} />
     </div>
   )
