@@ -156,7 +156,7 @@ function HeroDashboard() {
         <div className="flex items-end gap-1.5" style={{ height: 64 }}>
           {bars.map((h, i) => (
             <div key={i} className="flex-1 flex flex-col justify-end">
-              <motion.div className="w-full rounded-[2px]" style={{ background: i === 5 ? "#ededed" : "#2a2a2a" }}
+              <motion.div className="w-full rounded-[2px]" style={{ background: i === 5 ? "#ededed" : "#3d3d3d" }}
                 initial={{ height: 0 }} animate={loaded ? { height: `${h}%` } : { height: 0 }}
                 transition={{ delay: 0.55 + i * 0.07, duration: 0.55, ease: [0.34, 1.1, 0.64, 1] }} />
             </div>
@@ -539,48 +539,66 @@ function AboutSection() {
         {/* Right — education, experience, interests, resume */}
         <div className="flex flex-col gap-8">
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Education</p>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#555" }}>Education</p>
             <div className="space-y-2">
               {edu.map((e, i) => (
-                <div key={i} className="p-4 rounded-lg" style={{ background: "#050505", border: "1px solid #1c1d22" }}>
+                <motion.div key={i}
+                  className="p-5 rounded-xl transition-all duration-300 cursor-default"
+                  style={{ background: "#060608", border: "1px solid #1e1e24" }}
+                  whileHover={{ background: "#0a0a10", borderColor: "#2a2a36" }}
+                >
                   <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-[13px] font-medium mb-1 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
-                      <p className="font-mono text-[10px]" style={{ color: "#444" }}>{e.sub}</p>
+                    <div className="flex-1">
+                      <p className="text-[14px] font-medium mb-1.5 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
+                      <p className="font-mono text-[10px]" style={{ color: "#555" }}>{e.sub}</p>
                     </div>
-                    <div className="text-right flex-shrink-0">
-                      <p className="font-mono text-[10px]" style={{ color: "#333" }}>{e.year}</p>
-                      <p className="font-mono text-[9px] mt-0.5" style={{ color: "#2a2a2a" }}>{e.meta}</p>
-                    </div>
+                    <span className="font-mono text-[9px] px-2 py-1 rounded flex-shrink-0"
+                      style={{ background: "#0d0d12", border: "1px solid #1e1e24", color: "#555" }}>
+                      {e.year}
+                    </span>
                   </div>
-                </div>
+                  {e.meta && (
+                    <div className="mt-3 pt-3 flex items-center gap-2" style={{ borderTop: "1px solid #141418" }}>
+                      <span className="font-mono text-[9px] px-2 py-0.5 rounded"
+                        style={{ background: "#0d0d12", color: "#444", border: "1px solid #1a1a20" }}>
+                        {e.meta}
+                      </span>
+                    </div>
+                  )}
+                </motion.div>
               ))}
             </div>
           </FadeUp>
 
           <FadeUp delay={0.14}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Experience</p>
-            {/* Amber left-border accent marks this as the key entry */}
-            <div className="p-4 pl-5 rounded-lg"
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#555" }}>Experience</p>
+            <motion.div
+              className="p-5 rounded-xl transition-all duration-300 cursor-default"
               style={{
-                background: "#050505",
-                borderTop: "1px solid #1c1d22",
-                borderRight: "1px solid #1c1d22",
-                borderBottom: "1px solid #1c1d22",
+                background: "#060608",
+                border: "1px solid #1e1e24",
                 borderLeft: "2px solid #cc9166",
-              }}>
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <p className="text-[13px] font-medium" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
-                <p className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>2025 – Present</p>
+              }}
+              whileHover={{ background: "#0a0a0e", borderRightColor: "#2a2a36", borderTopColor: "#2a2a36", borderBottomColor: "#2a2a36" }}
+            >
+              <div className="flex items-start justify-between gap-4 mb-1">
+                <div>
+                  <p className="text-[14px] font-medium mb-1" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
+                  <p className="font-mono text-[9px]" style={{ color: "#cc9166" }}>Agility</p>
+                </div>
+                <span className="font-mono text-[9px] px-2 py-1 rounded flex-shrink-0"
+                  style={{ background: "#0d0d12", border: "1px solid #1e1e24", color: "#555" }}>
+                  2025 – Present
+                </span>
               </div>
-              <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
+              <p className="text-[13px] leading-relaxed mt-3 pt-3" style={{ color: "#555", borderTop: "1px solid #141418" }}>
                 Analyzed customer behavior data to identify upsell opportunities and track pipeline performance, bridging technical insight with business decisions.
               </p>
-            </div>
+            </motion.div>
           </FadeUp>
 
           <FadeUp delay={0.18}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Interests</p>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#555" }}>Interests</p>
             <div className="flex flex-wrap gap-2">
               {interests.map(item => (
                 <span key={item} className="font-mono text-[10px] px-3 py-1.5"
@@ -969,12 +987,27 @@ function WorkSection() {
   return (
     <section id="work">
       <div className="max-w-[1200px] mx-auto px-8 pt-20 pb-6">
-        <Reveal>
-          <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-            style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-            Work
-          </h2>
-        </Reveal>
+        <motion.p
+          initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.45 }}
+          className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
+          style={{ color: "#cc9166" }}
+        >
+          Selected Projects
+        </motion.p>
+        <div className="relative inline-block">
+          <Reveal>
+            <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+              Work
+            </h2>
+          </Reveal>
+          <motion.div
+            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+            style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
+          />
+        </div>
       </div>
 
       {/* 400vh = ~133vh of scroll per project */}
@@ -1097,7 +1130,13 @@ export default function Home() {
               <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(68px, 9.5vw, 108px)", color: "#ededed" }}>
+                style={{
+                  fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400,
+                  fontSize: "clamp(68px, 9.5vw, 108px)",
+                  WebkitTextStroke: "1.5px #ededed",
+                  WebkitTextFillColor: "transparent",
+                  color: "transparent",
+                }}>
                 Kanishk
               </motion.h1>
             </div>
@@ -1105,7 +1144,14 @@ export default function Home() {
               <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, fontSize: "clamp(68px, 9.5vw, 108px)", color: "#ededed" }}>
+                style={{
+                  fontFamily: "var(--font-playfair)", fontWeight: 400,
+                  fontSize: "clamp(68px, 9.5vw, 108px)",
+                  background: "linear-gradient(90deg, #ededed 0%, #cc9166 70%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>
                 Pansari
               </motion.h1>
             </div>
@@ -1187,12 +1233,29 @@ export default function Home() {
       {/* ══ SERVICES */}
       <section id="services" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
-          <Reveal>
-            <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-              Services
-            </h2>
-          </Reveal>
+          <div>
+            <motion.p
+              initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.45 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
+              style={{ color: "#cc9166" }}
+            >
+              What I Build
+            </motion.p>
+            <div className="relative inline-block">
+              <Reveal>
+                <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+                  style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+                  Services
+                </h2>
+              </Reveal>
+              <motion.div
+                initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
+              />
+            </div>
+          </div>
           <FadeUp>
             <Link href="/services" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
               Full details →
@@ -1237,12 +1300,29 @@ export default function Home() {
       {/* ══ WRITING */}
       <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
-          <Reveal>
-            <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-              Writing
-            </h2>
-          </Reveal>
+          <div>
+            <motion.p
+              initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.45 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
+              style={{ color: "#cc9166" }}
+            >
+              Latest Articles
+            </motion.p>
+            <div className="relative inline-block">
+              <Reveal>
+                <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+                  style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+                  Writing
+                </h2>
+              </Reveal>
+              <motion.div
+                initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
+              />
+            </div>
+          </div>
           <FadeUp>
             <Link href="/blog" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>All posts →</Link>
           </FadeUp>
