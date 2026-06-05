@@ -7,7 +7,7 @@ import {
   useSpring,
   useInView,
   useMotionValueEvent,
-  AnimatePresence,
+  useTransform,
 } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { Mail, ExternalLink, ArrowRight } from "lucide-react"
@@ -431,12 +431,19 @@ function AboutSection() {
   const stack = [
     { name: "Python", Icon: SiPython },
     { name: "NumPy", Icon: SiNumpy },
-    { name: "SQL", Icon: SiPostgresql },
+    { name: "PostgreSQL", Icon: SiPostgresql },
     { name: "Git", Icon: SiGit },
     { name: "GitHub", Icon: SiGithub },
     { name: "Jupyter", Icon: SiJupyter },
   ]
-  const tags = ["Pandas", "Matplotlib", "Scikit-learn", "Machine Learning", "DSA", "Data Visualization", "EDA", "Statistical Analysis"]
+  const skills = [
+    { name: "Python & Data Analysis", pct: 88 },
+    { name: "Machine Learning", pct: 72 },
+    { name: "SQL & Databases", pct: 82 },
+    { name: "Data Visualization", pct: 80 },
+    { name: "React + TypeScript", pct: 70 },
+    { name: "FastAPI & Backends", pct: 74 },
+  ]
   const edu = [
     { title: "Computer Science Engineering", sub: "New LJ Institute of Engineering & Technology", meta: "6th Semester", year: "2022 – 2026" },
     { title: "Engineering Plus — Python & Data Science", sub: "New LJ Institute · Certified", meta: "Completed", year: "2024" },
@@ -447,24 +454,36 @@ function AboutSection() {
     <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
       <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 lg:gap-24">
 
-        {/* Left — bio + skills */}
+        {/* Left — bio + stack + skill bars */}
         <div>
           <FadeUp>
             <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-8" style={{ color: "#333" }}>About</p>
           </FadeUp>
-          <FadeUp delay={0.06}>
-            <p className="text-[16px] leading-[1.85] mb-12" style={{ color: "#555", maxWidth: 520 }}>
-              I build data products that work in production — live tools with real users, not notebooks that live on my machine.
-              My work spans the full stack: ingestion, cleaning, modeling, and user-facing analytics.
-              What makes my background different is direct experience at the intersection of data and business —
-              working on the Sales &amp; Marketing side gives me the context to understand what a metric needs to drive
-              before I write the first query.
+
+          {/* Pull quote */}
+          <FadeUp delay={0.04}>
+            <p
+              className="text-[clamp(17px,2vw,22px)] leading-[1.5] mb-7 pl-5"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed", borderLeft: "2px solid #cc9166" }}
+            >
+              I build data products that work in production.
             </p>
           </FadeUp>
 
+          <FadeUp delay={0.08}>
+            <p className="text-[15px] leading-[1.85] mb-12" style={{ color: "#555", maxWidth: 520 }}>
+              Live tools with real users, not notebooks that live on my machine.
+              My work spans the full stack: ingestion, cleaning, modeling, and user-facing analytics.
+              What makes my background different is direct experience at the intersection of data and business —
+              working on the Sales &amp; Marketing side gives me the context to understand what a metric
+              needs to drive before I write the first query.
+            </p>
+          </FadeUp>
+
+          {/* Tech Stack — 3-col, larger cards */}
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Tech Stack</p>
-            <div className="grid grid-cols-6 gap-2.5 mb-6">
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Stack</p>
+            <div className="grid grid-cols-3 gap-2 mb-10">
               {stack.map(({ name, Icon }, i) => (
                 <motion.div
                   key={name}
@@ -473,48 +492,66 @@ function AboutSection() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.12 + i * 0.06 }}
                   whileHover={{ y: -3 }}
-                  className="flex flex-col items-center gap-2 py-4 rounded-lg cursor-default"
-                  style={{ border: "1px solid #1c1d22", background: "#000", transition: "border-color 0.2s" }}
+                  className="flex flex-col items-center gap-2.5 py-5 rounded-lg cursor-default"
+                  style={{ border: "1px solid #1c1d22", background: "#000" }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2e2e2e" }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}
                 >
-                  <Icon className="w-5 h-5" style={{ color: "#555" }} />
-                  <span className="font-mono text-[8px]" style={{ color: "#333" }}>{name}</span>
+                  <Icon className="w-6 h-6" style={{ color: "#555" }} />
+                  <span className="font-mono text-[9px]" style={{ color: "#333" }}>{name}</span>
                 </motion.div>
               ))}
             </div>
-            <div className="flex flex-wrap gap-1.5">
-              {tags.map((t, i) => (
-                <motion.span
-                  key={t}
+          </FadeUp>
+
+          {/* Skill proficiency bars */}
+          <FadeUp delay={0.14}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Proficiency</p>
+            <div className="space-y-4">
+              {skills.map((s, i) => (
+                <motion.div
+                  key={s.name}
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.25 + i * 0.04 }}
-                  className="font-mono text-[9px] px-2.5 py-1 rounded-full"
-                  style={{ border: "1px solid #1c1d22", color: "#444" }}
+                  transition={{ delay: 0.18 + i * 0.06 }}
                 >
-                  {t}
-                </motion.span>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-mono text-[10px]" style={{ color: "#444" }}>{s.name}</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#2a2a2a" }}>{s.pct}%</span>
+                  </div>
+                  <div className="h-px w-full" style={{ background: "#0f0f0f" }}>
+                    <motion.div
+                      className="h-px"
+                      style={{ background: "#333" }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${s.pct}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, delay: 0.25 + i * 0.09, ease: [0.25, 1, 0.5, 1] }}
+                    />
+                  </div>
+                </motion.div>
               ))}
             </div>
           </FadeUp>
         </div>
 
-        {/* Right — education + experience + interests + resume */}
-        <div className="flex flex-col gap-10">
+        {/* Right — education, experience, interests, resume */}
+        <div className="flex flex-col gap-8">
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Education</p>
-            <div style={{ borderTop: "1px solid #1c1d22" }}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Education</p>
+            <div className="space-y-2">
               {edu.map((e, i) => (
-                <div key={i} className="py-4 flex items-start justify-between gap-4" style={{ borderBottom: "1px solid #1c1d22" }}>
-                  <div>
-                    <p className="text-[13px] font-medium mb-1 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
-                    <p className="font-mono text-[10px]" style={{ color: "#555" }}>{e.sub}</p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="font-mono text-[10px]" style={{ color: "#333" }}>{e.year}</p>
-                    <p className="font-mono text-[9px] mt-0.5" style={{ color: "#2a2a2a" }}>{e.meta}</p>
+                <div key={i} className="p-4 rounded-lg" style={{ background: "#050505", border: "1px solid #1c1d22" }}>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[13px] font-medium mb-1 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
+                      <p className="font-mono text-[10px]" style={{ color: "#444" }}>{e.sub}</p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="font-mono text-[10px]" style={{ color: "#333" }}>{e.year}</p>
+                      <p className="font-mono text-[9px] mt-0.5" style={{ color: "#2a2a2a" }}>{e.meta}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -522,17 +559,23 @@ function AboutSection() {
           </FadeUp>
 
           <FadeUp delay={0.14}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Experience</p>
-            <div style={{ borderTop: "1px solid #1c1d22" }}>
-              <div className="py-4" style={{ borderBottom: "1px solid #1c1d22" }}>
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <p className="text-[13px] font-medium" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
-                  <p className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>2025 – Present</p>
-                </div>
-                <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
-                  Analyzed customer behavior data to identify upsell opportunities and track pipeline performance — bridging technical insight with business decisions.
-                </p>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Experience</p>
+            {/* Amber left-border accent marks this as the key entry */}
+            <div className="p-4 pl-5 rounded-lg"
+              style={{
+                background: "#050505",
+                borderTop: "1px solid #1c1d22",
+                borderRight: "1px solid #1c1d22",
+                borderBottom: "1px solid #1c1d22",
+                borderLeft: "2px solid #cc9166",
+              }}>
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <p className="text-[13px] font-medium" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
+                <p className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>2025 – Present</p>
               </div>
+              <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
+                Analyzed customer behavior data to identify upsell opportunities and track pipeline performance — bridging technical insight with business decisions.
+              </p>
             </div>
           </FadeUp>
 
@@ -541,7 +584,7 @@ function AboutSection() {
             <div className="flex flex-wrap gap-2">
               {interests.map(item => (
                 <span key={item} className="font-mono text-[10px] px-3 py-1.5"
-                  style={{ border: "1px solid #1c1d22", color: "#555", borderRadius: 3 }}>
+                  style={{ border: "1px solid #1c1d22", color: "#555", borderRadius: 3, background: "#050505" }}>
                   {item}
                 </span>
               ))}
@@ -684,18 +727,29 @@ const marqueeItems = [
   "PostgreSQL", "TypeScript", "Data Analysis", "AI Development", "2 Weeks to Ship", "Ahmedabad, India",
 ]
 
-// ─── Work Section (sticky scroll) ────────────────────────────────────────────
+// ─── Work Section (scroll-scrubbed) ──────────────────────────────────────────
 function WorkSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] })
+
+  // Each opacity/y value is a direct function of scrollYProgress — no state transitions.
+  // Crossfade zone is the 0.25–0.38 and 0.62–0.75 bands. Pausing mid-scroll = visual pauses.
+  const op0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],       [1, 1, 0, 0])
+  const op1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [0, 0, 1, 1, 0, 0])
+  const op2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],       [0, 0, 1, 1])
+
+  const y0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],       [0, 0, -20, -20])
+  const y1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [20, 20, 0, 0, -20, -20])
+  const y2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],       [20, 20, 0, 0])
+
+  const opacities = [op0, op1, op2]
+  const yVals = [y0, y1, y2]
+
+  // Active index drives only the progress pills
   const [active, setActive] = useState(0)
-
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.min(projects.length - 1, Math.floor(v * projects.length))
-    setActive(idx)
+    setActive(Math.min(projects.length - 1, Math.floor(v * projects.length)))
   })
-
-  const ActiveMockup = projects[active].Mockup
 
   return (
     <section id="work" style={{ borderTop: "1px solid #1c1d22" }}>
@@ -708,17 +762,24 @@ function WorkSection() {
         </Reveal>
       </div>
 
-      {/* 400vh container gives ~100vh of scroll per project */}
+      {/* 400vh = ~133vh of scroll per project */}
       <div ref={containerRef} style={{ height: "400vh" }}>
         <div className="sticky overflow-hidden" style={{ top: 56, height: "calc(100vh - 56px)" }}>
-          <div className="h-full max-w-[1200px] mx-auto px-8 flex flex-col lg:flex-row items-stretch gap-0">
 
-            {/* Left: text */}
-            <div className="w-full lg:w-[42%] flex items-center py-8 lg:py-0 lg:pr-12">
+          {/* Full-viewport flex: text aligns to page grid, mockup fills right edge-to-edge */}
+          <div className="h-full flex flex-col lg:flex-row items-stretch">
+
+            {/* Left: text panel — left padding mirrors the page's max-w-[1200px] mx-auto px-8 */}
+            <div
+              className="w-full lg:w-[42%] flex items-center py-8 lg:py-0 pr-10"
+              style={{ paddingLeft: "max(2rem, calc((100vw - 1200px) / 2 + 2rem))" }}
+            >
               <div className="w-full">
                 {/* Progress pills */}
                 <div className="flex items-center gap-3 mb-8">
-                  <span className="font-mono text-[10px]" style={{ color: "#333" }}>0{active + 1} / 0{projects.length}</span>
+                  <span className="font-mono text-[10px]" style={{ color: "#333" }}>
+                    0{active + 1} / 0{projects.length}
+                  </span>
                   <div className="flex gap-2 items-center">
                     {projects.map((_, i) => (
                       <motion.div key={i}
@@ -730,60 +791,67 @@ function WorkSection() {
                   </div>
                 </div>
 
-                <AnimatePresence mode="wait">
-                  <motion.div key={active}
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -22 }}
-                    transition={{ duration: 0.42, ease: [0.25, 0.1, 0.25, 1] }}>
-                    <h3 className="leading-[1] tracking-[-0.025em] mb-2"
-                      style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
-                      {projects[active].title}
-                    </h3>
-                    <p className="font-mono text-[10px] mb-7" style={{ color: "#444" }}>
-                      {projects[active].sub} · {projects[active].year}
-                    </p>
-                    <p className="text-[14px] leading-[1.8] mb-7" style={{ color: "#555", maxWidth: 380 }}>
-                      {projects[active].desc}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mb-8">
-                      {projects[active].tags.map(tag => (
-                        <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
-                          style={{ border: "1px solid #1c1d22", color: "#444" }}>{tag}</span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <a href={projects[active].github} target="_blank" rel="noopener noreferrer"
-                        className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
-                        style={{ color: "#444" }}>
-                        <SiGithub className="w-3.5 h-3.5" /> Source
-                      </a>
-                      <a href={projects[active].link} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
-                        style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
-                        Live Demo <ExternalLink className="w-3 h-3" />
-                      </a>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                {/* All 3 text blocks stacked; opacity + y driven by scroll */}
+                <div className="relative" style={{ height: 360 }}>
+                  {projects.map((p, i) => (
+                    <motion.div
+                      key={p.title}
+                      className="absolute inset-0"
+                      style={{ opacity: opacities[i], y: yVals[i] }}
+                    >
+                      <h3 className="leading-[1] tracking-[-0.025em] mb-2"
+                        style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
+                        {p.title}
+                      </h3>
+                      <p className="font-mono text-[10px] mb-7" style={{ color: "#444" }}>
+                        {p.sub} · {p.year}
+                      </p>
+                      <p className="text-[14px] leading-[1.8] mb-7" style={{ color: "#555", maxWidth: 380 }}>
+                        {p.desc}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mb-8">
+                        {p.tags.map(tag => (
+                          <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                            style={{ border: "1px solid #1c1d22", color: "#444" }}>{tag}</span>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <a href={p.github} target="_blank" rel="noopener noreferrer"
+                          className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
+                          style={{ color: "#444" }}>
+                          <SiGithub className="w-3.5 h-3.5" /> Source
+                        </a>
+                        <a href={p.link} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
+                          style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+                          Live Demo <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Right: product visual */}
-            <div className="w-full lg:w-[58%] flex items-center justify-center py-6 lg:py-10">
-              <div className="relative w-full" style={{ maxWidth: 620, height: "min(62vh, 500px)" }}>
-                <AnimatePresence mode="wait">
-                  <motion.div key={active} className="absolute inset-0 rounded-xl overflow-hidden"
-                    initial={{ opacity: 0, y: 28, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -28, scale: 1.02 }}
-                    transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ border: "1px solid #1c1d22" }}>
-                    <ActiveMockup />
+            {/* Right: full-bleed product visual, no padding, no max-width */}
+            <div
+              className="w-full lg:w-[58%] relative overflow-hidden"
+              style={{ borderLeft: "1px solid #1c1d22", background: "#000" }}
+            >
+              {projects.map((p, i) => {
+                const M = p.Mockup
+                return (
+                  <motion.div
+                    key={p.title}
+                    className="absolute inset-0"
+                    style={{ opacity: opacities[i] }}
+                  >
+                    <M />
                   </motion.div>
-                </AnimatePresence>
-              </div>
+                )
+              })}
             </div>
+
           </div>
         </div>
       </div>
@@ -809,7 +877,7 @@ export default function Home() {
               Ahmedabad, India · Available for projects
             </motion.p>
 
-            {/* Fixed: animate directly, not whileInView */}
+            {/* Fixed: animate directly, not whileInView — above-fold content */}
             <div className="overflow-hidden mb-1">
               <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
@@ -892,7 +960,7 @@ export default function Home() {
       {/* ══ ABOUT */}
       <AboutSection />
 
-      {/* ══ WORK (sticky scroll) */}
+      {/* ══ WORK (scroll-scrubbed) */}
       <WorkSection />
 
       {/* ══ CREDENTIALS */}

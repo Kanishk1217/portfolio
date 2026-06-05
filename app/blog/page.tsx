@@ -39,13 +39,8 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex items-start justify-between gap-8 py-8 transition-all duration-200"
-              style={{
-                borderBottom: "1px solid #1c1d22",
-                paddingLeft: 0,
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.paddingLeft = "8px" }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.paddingLeft = "0px" }}
+              className="group flex items-start justify-between gap-8 py-8 pl-0 hover:pl-2 transition-all duration-200"
+              style={{ borderBottom: "1px solid #1c1d22" }}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-6 mb-3">
