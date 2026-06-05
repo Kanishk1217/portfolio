@@ -11,7 +11,7 @@ import {
 } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { Mail, ExternalLink, ArrowRight } from "lucide-react"
-import { SiGithub } from "react-icons/si"
+import { SiGithub, SiPython, SiNumpy, SiPostgresql, SiGit, SiJupyter } from "react-icons/si"
 import Link from "next/link"
 import Nav from "@/components/nav"
 
@@ -426,6 +426,212 @@ function FinanceAIMockup() {
   )
 }
 
+// ─── About Section ───────────────────────────────────────────────────────────
+function AboutSection() {
+  const stack = [
+    { name: "Python", Icon: SiPython },
+    { name: "NumPy", Icon: SiNumpy },
+    { name: "SQL", Icon: SiPostgresql },
+    { name: "Git", Icon: SiGit },
+    { name: "GitHub", Icon: SiGithub },
+    { name: "Jupyter", Icon: SiJupyter },
+  ]
+  const tags = ["Pandas", "Matplotlib", "Scikit-learn", "Machine Learning", "DSA", "Data Visualization", "EDA", "Statistical Analysis"]
+  const edu = [
+    { title: "Computer Science Engineering", sub: "New LJ Institute of Engineering & Technology", meta: "6th Semester", year: "2022 – 2026" },
+    { title: "Engineering Plus — Python & Data Science", sub: "New LJ Institute · Certified", meta: "Completed", year: "2024" },
+  ]
+  const interests = ["Problem Solving", "Data Analysis", "Karate · Black Belt", "Japanese", "AI & ML"]
+
+  return (
+    <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 lg:gap-24">
+
+        {/* Left — bio + skills */}
+        <div>
+          <FadeUp>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-8" style={{ color: "#333" }}>About</p>
+          </FadeUp>
+          <FadeUp delay={0.06}>
+            <p className="text-[16px] leading-[1.85] mb-12" style={{ color: "#555", maxWidth: 520 }}>
+              I build data products that work in production — live tools with real users, not notebooks that live on my machine.
+              My work spans the full stack: ingestion, cleaning, modeling, and user-facing analytics.
+              What makes my background different is direct experience at the intersection of data and business —
+              working on the Sales &amp; Marketing side gives me the context to understand what a metric needs to drive
+              before I write the first query.
+            </p>
+          </FadeUp>
+
+          <FadeUp delay={0.1}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Tech Stack</p>
+            <div className="grid grid-cols-6 gap-2.5 mb-6">
+              {stack.map(({ name, Icon }, i) => (
+                <motion.div
+                  key={name}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.12 + i * 0.06 }}
+                  whileHover={{ y: -3 }}
+                  className="flex flex-col items-center gap-2 py-4 rounded-lg cursor-default"
+                  style={{ border: "1px solid #1c1d22", background: "#000", transition: "border-color 0.2s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2e2e2e" }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}
+                >
+                  <Icon className="w-5 h-5" style={{ color: "#555" }} />
+                  <span className="font-mono text-[8px]" style={{ color: "#333" }}>{name}</span>
+                </motion.div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {tags.map((t, i) => (
+                <motion.span
+                  key={t}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.25 + i * 0.04 }}
+                  className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                  style={{ border: "1px solid #1c1d22", color: "#444" }}
+                >
+                  {t}
+                </motion.span>
+              ))}
+            </div>
+          </FadeUp>
+        </div>
+
+        {/* Right — education + experience + interests + resume */}
+        <div className="flex flex-col gap-10">
+          <FadeUp delay={0.1}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Education</p>
+            <div style={{ borderTop: "1px solid #1c1d22" }}>
+              {edu.map((e, i) => (
+                <div key={i} className="py-4 flex items-start justify-between gap-4" style={{ borderBottom: "1px solid #1c1d22" }}>
+                  <div>
+                    <p className="text-[13px] font-medium mb-1 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
+                    <p className="font-mono text-[10px]" style={{ color: "#555" }}>{e.sub}</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <p className="font-mono text-[10px]" style={{ color: "#333" }}>{e.year}</p>
+                    <p className="font-mono text-[9px] mt-0.5" style={{ color: "#2a2a2a" }}>{e.meta}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.14}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#333" }}>Experience</p>
+            <div style={{ borderTop: "1px solid #1c1d22" }}>
+              <div className="py-4" style={{ borderBottom: "1px solid #1c1d22" }}>
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <p className="text-[13px] font-medium" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
+                  <p className="font-mono text-[10px] flex-shrink-0" style={{ color: "#333" }}>2025 – Present</p>
+                </div>
+                <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
+                  Analyzed customer behavior data to identify upsell opportunities and track pipeline performance — bridging technical insight with business decisions.
+                </p>
+              </div>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.18}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#333" }}>Interests</p>
+            <div className="flex flex-wrap gap-2">
+              {interests.map(item => (
+                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                  style={{ border: "1px solid #1c1d22", color: "#555", borderRadius: 3 }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.22}>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-[12px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
+              style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+              ↓ Download Resume
+            </a>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Credentials Section ──────────────────────────────────────────────────────
+function CredentialsSection() {
+  return (
+    <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+      <div className="mb-16">
+        <Reveal>
+          <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+            style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+            Credentials
+          </h2>
+        </Reveal>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Certificate */}
+        <FadeUp>
+          <a href="/certificate.pdf" target="_blank" rel="noopener noreferrer"
+            className="group flex flex-col rounded-xl p-8 h-full transition-all duration-300"
+            style={{ border: "1px solid #1c1d22", background: "#000" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2e2e2e" }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}>
+            <div className="flex-1 flex items-center justify-center py-12 rounded-lg mb-8"
+              style={{ background: "#030303", border: "1px solid #1c1d22" }}>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ border: "1px solid #cc9166" }}>
+                  <span className="text-[18px]" style={{ color: "#cc9166" }}>✓</span>
+                </div>
+                <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3" style={{ color: "#333" }}>Certificate of Completion</p>
+                <p className="text-[15px] font-medium" style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>Engineering Plus</p>
+                <p className="font-mono text-[9px] mt-1.5" style={{ color: "#555" }}>Python &amp; Data Science</p>
+              </div>
+            </div>
+            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Engineering Plus — Python &amp; Data Science</p>
+            <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>New LJ Institute of Engineering &amp; Technology · 2024</p>
+            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#444" }}>View Certificate ↗</span>
+          </a>
+        </FadeUp>
+
+        {/* Resume */}
+        <FadeUp delay={0.08}>
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+            className="group flex flex-col rounded-xl p-8 h-full transition-all duration-300"
+            style={{ border: "1px solid #1c1d22", background: "#000" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2e2e2e" }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}>
+            <div className="flex-1 rounded-lg mb-8 p-6 space-y-3"
+              style={{ background: "#030303", border: "1px solid #1c1d22" }}>
+              <div className="space-y-2 mb-4">
+                <div className="h-2.5 rounded w-2/5" style={{ background: "#1c1d22" }} />
+                <div className="h-1.5 rounded w-1/3" style={{ background: "#141414" }} />
+              </div>
+              {[["w-[88%]","#111"], ["w-[72%]","#0d0d0d"], ["w-[80%]","#111"], ["w-[65%]","#0d0d0d"], ["w-[85%]","#111"]].map(([w, bg], i) => (
+                <div key={i} className={`h-1.5 rounded ${w}`} style={{ background: bg }} />
+              ))}
+              <div className="pt-2 space-y-2">
+                {[["w-[60%]","#0a0a0a"], ["w-[70%]","#0a0a0a"], ["w-[55%]","#0a0a0a"]].map(([w, bg], i) => (
+                  <div key={i} className={`h-1.5 rounded ${w}`} style={{ background: bg }} />
+                ))}
+              </div>
+            </div>
+            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari — Résumé</p>
+            <p className="font-mono text-[10px] mb-5" style={{ color: "#444" }}>Data Analyst &amp; AI Developer · 2026</p>
+            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#444" }}>Download PDF ↓</span>
+          </a>
+        </FadeUp>
+      </div>
+    </section>
+  )
+}
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const projects = [
   {
@@ -683,8 +889,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ══ ABOUT */}
+      <AboutSection />
+
       {/* ══ WORK (sticky scroll) */}
       <WorkSection />
+
+      {/* ══ CREDENTIALS */}
+      <CredentialsSection />
 
       {/* ══ SERVICES */}
       <section id="services" className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>

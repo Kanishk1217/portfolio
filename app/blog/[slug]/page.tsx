@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import Nav from "@/components/nav"
 
 export async function generateStaticParams() {
   const { getAllPosts } = await import("@/lib/blog")
@@ -22,44 +23,90 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post) notFound()
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="h-10 border-b border-border flex items-center justify-between px-6 bg-background/80 backdrop-blur-md sticky top-0 z-20">
-        <Link href="/blog" className="font-mono text-[11px] tracking-widest text-muted-foreground hover:text-foreground transition-colors uppercase">
-          ← Writing
-        </Link>
-        <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
-          {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
-        </span>
-      </header>
+    <div style={{ background: "#000", color: "#ededed", minHeight: "100vh" }}>
+      <Nav />
 
-      <article className="max-w-2xl mx-auto px-6 py-16">
-        <div className="mb-10">
-          {post.tags.map((tag) => (
-            <span key={tag} className="font-mono text-[9px] px-2 py-0.5 rounded border border-border text-muted-foreground mr-1.5">
-              {tag}
-            </span>
-          ))}
+      {/* Post header */}
+      <header className="max-w-[760px] mx-auto px-8 pt-36 pb-16">
+        <div className="flex items-center gap-4 mb-10">
+          <Link href="/blog" className="font-mono text-[10px] tracking-[0.15em] uppercase transition-colors hover:text-[#ededed]"
+            style={{ color: "#444" }}>
+            ← Writing
+          </Link>
+          <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>·</span>
+          <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>
+            {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+          </span>
         </div>
 
-        <h1 className="font-mono text-xl font-semibold text-foreground leading-snug mb-4">
+        {post.tags?.length > 0 && (
+          <div className="flex gap-1.5 mb-8">
+            {post.tags.map(tag => (
+              <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                style={{ border: "1px solid #1c1d22", color: "#444" }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <h1
+          className="text-[clamp(32px,5vw,56px)] leading-[1.05] tracking-[-0.025em] mb-6"
+          style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}
+        >
           {post.title}
         </h1>
-        <p className="font-mono text-sm text-muted-foreground mb-12 leading-relaxed">
-          {post.description}
-        </p>
 
-        <div className="prose prose-sm prose-invert max-w-none
-          prose-headings:font-mono prose-headings:font-semibold prose-headings:text-foreground
-          prose-h2:text-base prose-h2:mt-10 prose-h2:mb-3
-          prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:text-[13px]
-          prose-strong:text-foreground prose-strong:font-semibold
-          prose-code:font-mono prose-code:text-[11px] prose-code:bg-card prose-code:border prose-code:border-border prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-foreground/80
-          prose-pre:bg-card prose-pre:border prose-pre:border-border prose-pre:rounded-lg
-          prose-li:text-muted-foreground prose-li:text-[13px]
-          prose-a:text-foreground prose-a:underline prose-a:underline-offset-2">
+        {post.description && (
+          <p className="text-[16px] leading-[1.75]" style={{ color: "#555" }}>{post.description}</p>
+        )}
+      </header>
+
+      {/* Divider */}
+      <div className="max-w-[760px] mx-auto px-8">
+        <div style={{ height: "1px", background: "#1c1d22" }} />
+      </div>
+
+      {/* Post body */}
+      <article className="max-w-[760px] mx-auto px-8 py-16">
+        <div className="
+          prose prose-invert max-w-none
+          prose-p:text-[15px] prose-p:leading-[1.85] prose-p:text-[#666] prose-p:mb-5
+          prose-h2:text-[22px] prose-h2:leading-snug prose-h2:tracking-[-0.015em] prose-h2:text-[#ededed] prose-h2:mt-14 prose-h2:mb-4
+          prose-h2:font-normal
+          prose-h3:text-[17px] prose-h3:leading-snug prose-h3:text-[#888] prose-h3:mt-10 prose-h3:mb-3 prose-h3:font-normal
+          prose-strong:text-[#888] prose-strong:font-medium
+          prose-em:text-[#cc9166]
+          prose-a:text-[#888] prose-a:underline prose-a:underline-offset-3 hover:prose-a:text-[#ededed]
+          prose-code:font-mono prose-code:text-[13px] prose-code:bg-[#0a0a0a] prose-code:border prose-code:border-[#1c1d22] prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[#888]
+          prose-pre:bg-[#050505] prose-pre:border prose-pre:border-[#1c1d22] prose-pre:rounded-xl
+          prose-li:text-[15px] prose-li:text-[#555] prose-li:leading-[1.8]
+          prose-ul:my-5 prose-ol:my-5
+          prose-blockquote:border-l-[#cc9166] prose-blockquote:text-[#555] prose-blockquote:italic
+        ">
           <MDXRemote source={post.content} />
         </div>
       </article>
+
+      {/* Post footer */}
+      <div className="max-w-[760px] mx-auto px-8 pb-28">
+        <div className="flex items-center justify-between pt-12" style={{ borderTop: "1px solid #1c1d22" }}>
+          <Link href="/blog"
+            className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
+            style={{ color: "#444" }}>
+            ← All posts
+          </Link>
+          <a href="mailto:kanishkpansari1217@gmail.com"
+            className="font-mono text-[11px] transition-colors hover:text-[#ededed]"
+            style={{ color: "#444" }}>
+            Reply by email →
+          </a>
+        </div>
+      </div>
+
+      <footer className="max-w-[760px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
+        <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+      </footer>
     </div>
   )
 }

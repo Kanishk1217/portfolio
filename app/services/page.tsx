@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowLeft, Mail } from "lucide-react"
+import { Mail } from "lucide-react"
+import Nav from "@/components/nav"
 
 export const metadata: Metadata = {
   title: "Services — Kanishk Pansari",
@@ -9,112 +10,150 @@ export const metadata: Metadata = {
 
 const services = [
   {
+    num: "01",
     name: "Data Intelligence Dashboard",
     price: "$800 – $1,500",
     timeline: "1–2 weeks",
-    description:
-      "Custom business analytics tool built on your data. Upload a CSV or connect your database and get KPI tracking, revenue forecasting, customer segmentation, and AI-generated insights. Delivered as a live web app.",
-    bestFor: "SMBs with sales, ops, or finance data they can't act on",
+    description: "Custom business analytics tool built on your data. Upload a CSV or connect your database and get KPI tracking, revenue forecasting, customer segmentation, and AI-generated insights. Delivered as a live web app.",
+    bestFor: "SMBs with sales, ops, or finance data they can't act on.",
+    includes: ["CSV / database ingestion", "KPI dashboard", "Revenue forecasting", "Customer segmentation", "Live web app deployment"],
     subject: "Project Inquiry — Data Intelligence Dashboard",
   },
   {
+    num: "02",
     name: "Custom AI Agent",
     price: "$1,200 – $2,500",
     timeline: "1–2 weeks",
-    description:
-      "A scoped AI agent built for one specific workflow. Lead qualifier, support bot, report generator, or data processor. Built with Python and FastAPI, integrated into your existing tools.",
-    bestFor: "Businesses with repetitive manual processes eating team time",
+    description: "A scoped AI agent built for one specific workflow. Lead qualifier, support bot, report generator, or data processor. Built with Python and FastAPI, integrated into your existing tools.",
+    bestFor: "Businesses with repetitive manual processes eating team time.",
+    includes: ["Scoped workflow automation", "Python + FastAPI backend", "Tool integrations (Slack, email, CRM)", "Deployment + handoff docs"],
     subject: "Project Inquiry — Custom AI Agent",
   },
   {
+    num: "03",
     name: "Full AI Product Build",
     price: "$3,000 – $6,000",
     timeline: "3–5 weeks",
-    description:
-      "End-to-end custom product. Full-stack TypeScript frontend, Python backend, database, auth, and deployment. Built for founders who have a product idea but no technical team.",
-    bestFor: "Early-stage founders who need a technical partner, not just a contractor",
+    description: "End-to-end custom product. Full-stack TypeScript frontend, Python backend, database, auth, and deployment. Built for founders who have a product idea but no technical team.",
+    bestFor: "Early-stage founders who need a technical partner, not just a contractor.",
+    includes: ["Full-stack TypeScript + Python", "Database + auth", "Cloudflare / VPS deployment", "2 weeks post-launch support"],
     subject: "Project Inquiry — Full AI Product Build",
   },
 ]
 
+const process = [
+  { step: "01", title: "Discovery call", desc: "30 minutes to understand your data, your goal, and what success looks like." },
+  { step: "02", title: "Scoped proposal", desc: "A clear spec with timeline, deliverables, and price. No surprises." },
+  { step: "03", title: "Build sprint", desc: "Weekly check-ins. You see real progress, not a black box." },
+  { step: "04", title: "Delivery + handoff", desc: "Live product, source code, and a walkthrough. You own everything." },
+]
+
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-20 h-10 border-b border-border flex items-center justify-between px-6 bg-background/80 backdrop-blur-md">
-        <span className="font-mono text-[11px] tracking-widest text-foreground/80 uppercase select-none">
-          Kanishk Pansari <span className="text-muted-foreground">/ Services</span>
-        </span>
-        <Link
-          href="/"
-          className="flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+    <div style={{ background: "#000", color: "#ededed", minHeight: "100vh" }}>
+      <Nav />
+
+      {/* Hero */}
+      <section className="max-w-[1200px] mx-auto px-8 pt-36 pb-24">
+        <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10" style={{ color: "#444" }}>Services</p>
+        <h1
+          className="text-[clamp(52px,7vw,88px)] leading-[0.9] tracking-[-0.03em] mb-8"
+          style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
         >
-          <ArrowLeft className="w-3 h-3" />
-          Back
-        </Link>
-      </header>
+          What I Build
+        </h1>
+        <p className="text-[17px] leading-[1.7] max-w-[480px]" style={{ color: "#555" }}>
+          Custom AI tools and full-stack products. Every engagement starts with your data and ends with something that works{" "}
+          <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>in production</em>.
+        </p>
+      </section>
 
-      <main className="max-w-4xl mx-auto px-6 py-16">
-        {/* Page heading */}
-        <div className="mb-12">
-          <p className="font-mono text-[10px] tracking-widest text-muted-foreground/50 uppercase mb-2">Services</p>
-          <h1 className="font-mono text-2xl font-semibold text-foreground mb-3">What I Build</h1>
-          <p className="font-mono text-[12px] text-muted-foreground max-w-xl leading-relaxed">
-            Custom AI tools and full-stack products. Every engagement starts with your data and ends with something that works in production.
-          </p>
-        </div>
-
-        {/* Service cards */}
-        <div className="grid gap-4 md:grid-cols-3 mb-8">
-          {services.map((service) => (
-            <div
-              key={service.name}
-              className="rounded-xl border border-border p-5 flex flex-col gap-4 transition-all duration-200 hover:border-foreground/15"
-              style={{ background: "rgba(255,255,255,0.025)", backdropFilter: "blur(12px)" }}
-            >
-              <div>
-                <p className="font-mono text-[10px] text-muted-foreground/50 mb-2">{service.timeline}</p>
-                <h2 className="font-mono text-[13px] font-semibold text-foreground mb-1">{service.name}</h2>
-                <p className="font-mono text-[11px]" style={{ color: "#0ea5e9" }}>{service.price}</p>
+      {/* Service list */}
+      <section className="max-w-[1200px] mx-auto px-8 pb-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        {services.map((s, i) => (
+          <div key={s.num} className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 py-16"
+            style={{ borderBottom: "1px solid #1c1d22" }}>
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <span className="font-mono text-[10px] tracking-[0.18em]" style={{ color: "#333" }}>{s.num}</span>
+                <span className="font-mono text-[9px] px-2.5 py-1 rounded-full" style={{ border: "1px solid #1c1d22", color: "#444" }}>
+                  {s.timeline}
+                </span>
               </div>
-              <p className="text-[11px] text-muted-foreground leading-relaxed flex-1">{service.description}</p>
-              <div>
-                <p className="font-mono text-[9px] text-muted-foreground/40 uppercase tracking-wider mb-1">Best for</p>
-                <p className="font-mono text-[10px] text-muted-foreground/70 leading-relaxed">{service.bestFor}</p>
-              </div>
-              <a
-                href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(service.subject)}`}
-                className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md font-mono text-[10px] font-semibold text-white transition-all duration-200 hover:opacity-90"
-                style={{ backgroundColor: "#0ea5e9" }}
-              >
-                <Mail className="w-3 h-3" />
-                Get a Quote
+              <h2 className="leading-[1.1] tracking-[-0.02em] mb-4"
+                style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed", fontSize: "clamp(24px,3vw,36px)" }}>
+                {s.name}
+              </h2>
+              <p className="font-mono text-[20px] font-medium mb-6" style={{ color: "#cc9166" }}>{s.price}</p>
+              <p className="text-[14px] leading-[1.8] mb-6 max-w-[500px]" style={{ color: "#555" }}>{s.description}</p>
+              <p className="font-mono text-[11px] mb-8" style={{ color: "#333" }}>
+                Best for: <span style={{ color: "#555" }}>{s.bestFor}</span>
+              </p>
+              <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(s.subject)}`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-colors hover:bg-[#e8e8e8]"
+                style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+                <Mail className="w-3.5 h-3.5" /> Get a Quote
               </a>
+            </div>
+            <div className="lg:pt-14">
+              <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#333" }}>Includes</p>
+              <div style={{ borderTop: "1px solid #1c1d22" }}>
+                {s.includes.map((item, j) => (
+                  <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
+                    <span className="font-mono text-[10px]" style={{ color: "#cc9166" }}>→</span>
+                    <span className="font-mono text-[11px]" style={{ color: "#555" }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* Process */}
+      <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        <h2 className="text-[clamp(32px,4vw,48px)] leading-[1] tracking-[-0.025em] mb-16"
+          style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+          How it works
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4" style={{ border: "1px solid #1c1d22" }}>
+          {process.map((p, i) => (
+            <div key={p.step} className="px-6 py-8"
+              style={{ background: "#000", borderRight: i < 3 ? "1px solid #1c1d22" : "none" }}>
+              <p className="font-mono text-[10px] tracking-[0.18em] mb-5" style={{ color: "#333" }}>{p.step}</p>
+              <p className="text-[15px] font-medium mb-3" style={{ color: "#ededed" }}>{p.title}</p>
+              <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>{p.desc}</p>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Retainer strip */}
-        <div
-          className="rounded-xl border p-6"
-          style={{
-            background: "rgba(255,255,255,0.015)",
-            backdropFilter: "blur(12px)",
-            borderColor: "rgba(255,255,255,0.08)",
-          }}
-        >
-          <p className="font-mono text-[9px] text-muted-foreground/40 uppercase tracking-wider mb-1">Monthly Retainer</p>
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-            <div>
-              <h2 className="font-mono text-[13px] font-semibold text-foreground mb-1">Ongoing Support</h2>
-              <p className="font-mono text-[11px] mb-3" style={{ color: "#0ea5e9" }}>$300 – $600 / month</p>
-              <p className="font-mono text-[10px] text-muted-foreground/70 leading-relaxed max-w-xl">
-                Ongoing maintenance, updates, new features, and hosting management for any product I have built. Available to all clients post-delivery.
-              </p>
-            </div>
+      {/* CTA */}
+      <section className="max-w-[1200px] mx-auto px-8 py-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div>
+            <h2 className="text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.025em] mb-4"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+              Ready to start?
+            </h2>
+            <p className="text-[15px]" style={{ color: "#555" }}>Send a message — I reply within 24 hours.</p>
           </div>
+          <a href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
+            className="inline-flex items-center gap-2 px-6 py-3 text-[13px] font-medium transition-colors hover:bg-[#e8e8e8] flex-shrink-0"
+            style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+            <Mail className="w-3.5 h-3.5" /> kanishkpansari1217@gmail.com
+          </a>
         </div>
-      </main>
+      </section>
+
+      <footer className="max-w-[1200px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="flex items-center justify-between">
+          <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
+            ← Back to Home
+          </Link>
+          <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { getAllPosts } from "@/lib/blog"
 import type { Metadata } from "next"
+import Nav from "@/components/nav"
+import { ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Writing — Kanishk Pansari",
@@ -11,54 +13,79 @@ export default function BlogPage() {
   const posts = getAllPosts()
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="h-10 border-b border-border flex items-center justify-between px-6 bg-background/80 backdrop-blur-md sticky top-0 z-20">
-        <Link href="/" className="font-mono text-[11px] tracking-widest text-muted-foreground hover:text-foreground transition-colors uppercase">
-          ← Kanishk Pansari
-        </Link>
-        <span className="font-mono text-[11px] tracking-widest text-foreground/80 uppercase">Writing</span>
-      </header>
+    <div style={{ background: "#000", color: "#ededed", minHeight: "100vh" }}>
+      <Nav />
 
-      <main className="max-w-2xl mx-auto px-6 py-16">
-        <h1 className="font-mono text-xs tracking-widest text-muted-foreground uppercase mb-12">
-          {posts.length} {posts.length === 1 ? "post" : "posts"}
+      {/* Hero */}
+      <section className="max-w-[1200px] mx-auto px-8 pt-36 pb-20">
+        <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10" style={{ color: "#444" }}>Writing</p>
+        <h1
+          className="text-[clamp(52px,7vw,88px)] leading-[0.9] tracking-[-0.03em] mb-8"
+          style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
+        >
+          Thinking out loud
         </h1>
+        <p className="font-mono text-[11px]" style={{ color: "#333" }}>
+          {posts.length} {posts.length === 1 ? "post" : "posts"}
+        </p>
+      </section>
 
-        {posts.length === 0 && (
-          <p className="font-mono text-sm text-muted-foreground">No posts yet. First one coming soon.</p>
-        )}
-
-        <div className="space-y-px">
-          {posts.map((post) => (
+      {/* Post list */}
+      <section className="max-w-[1200px] mx-auto px-8 pb-28" style={{ borderTop: "1px solid #1c1d22" }}>
+        {posts.length === 0 ? (
+          <p className="font-mono text-[13px] pt-12" style={{ color: "#444" }}>No posts yet. First one coming soon.</p>
+        ) : (
+          posts.map((post, i) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex items-start justify-between py-5 border-b border-border hover:bg-card/40 px-2 -mx-2 rounded transition-colors duration-150"
+              className="group flex items-start justify-between gap-8 py-8 transition-all duration-200"
+              style={{
+                borderBottom: "1px solid #1c1d22",
+                paddingLeft: 0,
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.paddingLeft = "8px" }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.paddingLeft = "0px" }}
             >
-              <div className="flex-1 pr-8">
-                <p className="font-mono text-sm font-medium text-foreground group-hover:text-foreground mb-1">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-6 mb-3">
+                  <span className="font-mono text-[10px]" style={{ color: "#2a2a2a" }}>
+                    {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                  </span>
+                  {post.tags?.length > 0 && (
+                    <div className="flex gap-1.5">
+                      {post.tags.slice(0, 3).map(tag => (
+                        <span key={tag} className="font-mono text-[8px] px-2 py-0.5 rounded-full"
+                          style={{ border: "1px solid #1c1d22", color: "#333" }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <h2 className="text-[18px] leading-[1.2] tracking-[-0.01em] mb-2 transition-colors duration-200 group-hover:text-white"
+                  style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#888" }}>
                   {post.title}
-                </p>
-                <p className="font-mono text-[11px] text-muted-foreground leading-relaxed">
-                  {post.description}
-                </p>
-                {post.tags.length > 0 && (
-                  <div className="flex gap-1.5 mt-2 flex-wrap">
-                    {post.tags.map((tag) => (
-                      <span key={tag} className="font-mono text-[9px] px-1.5 py-0.5 rounded border border-border text-muted-foreground/60">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                </h2>
+                {post.description && (
+                  <p className="text-[13px] leading-relaxed" style={{ color: "#444" }}>{post.description}</p>
                 )}
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground/40 whitespace-nowrap pt-0.5">
-                {new Date(post.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-              </span>
+              <ArrowRight className="w-4 h-4 flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-1"
+                style={{ color: "#555" }} />
             </Link>
-          ))}
+          ))
+        )}
+      </section>
+
+      <footer className="max-w-[1200px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
+        <div className="flex items-center justify-between">
+          <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
+            ← Back to Home
+          </Link>
+          <p className="font-mono text-[10px]" style={{ color: "#1a1a1a" }}>© 2026 Kanishk Pansari</p>
         </div>
-      </main>
+      </footer>
     </div>
   )
 }
