@@ -2,7 +2,6 @@
 
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useMotionValue,
   useSpring,
@@ -117,111 +116,122 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   return <span ref={ref}>{val}{suffix}</span>
 }
 
-// ─── Hero Selector ────────────────────────────────────────────────────────────
-function HeroSelector() {
-  const [active, setActive] = useState(0)
-
-  const options = [
-    {
-      label: "I have data I can't act on",
-      service: "Data Intelligence Dashboard",
-      price: "$800 – $1,500",
-      timeline: "1–2 weeks",
-      subject: "Project Inquiry: Data Intelligence Dashboard",
-    },
-    {
-      label: "I need a workflow automated",
-      service: "Custom AI Agent",
-      price: "$1,200 – $2,500",
-      timeline: "1–2 weeks",
-      subject: "Project Inquiry: Custom AI Agent",
-    },
-    {
-      label: "I want a full product built",
-      service: "Full AI Product Build",
-      price: "$3,000 – $6,000",
-      timeline: "3–5 weeks",
-      subject: "Project Inquiry: Full AI Product Build",
-    },
+// ─── Hero Tech Graph ──────────────────────────────────────────────────────────
+function HeroTechGraph() {
+  type Anchor = "start" | "middle" | "end"
+  const nodes: Array<{ id: string; label: string; x: number; y: number; lx: number; ly: number; anchor: Anchor }> = [
+    { id: "python",     label: "Python",     x: 80,  y: 100, lx: 56,  ly: 103, anchor: "end"    },
+    { id: "fastapi",    label: "FastAPI",    x: 200, y: 50,  lx: 200, ly: 30,  anchor: "middle" },
+    { id: "react",      label: "React",      x: 320, y: 100, lx: 344, ly: 103, anchor: "start"  },
+    { id: "postgresql", label: "PostgreSQL", x: 320, y: 215, lx: 344, ly: 218, anchor: "start"  },
+    { id: "cloudflare", label: "Cloudflare", x: 200, y: 268, lx: 200, ly: 288, anchor: "middle" },
+    { id: "openai",     label: "OpenAI",     x: 80,  y: 215, lx: 56,  ly: 218, anchor: "end"    },
   ]
+
+  const edges: [number, number][] = [
+    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0],
+    [0, 3], [1, 4], [2, 5],
+  ]
+
+  const particleEdges = [0, 2, 4, 7]
+  const particleSpeeds = [2.6, 3.0, 2.2, 3.8]
+  const particleDelays = [0, 1.2, 2.2, 0.6]
+
+  const getLen = (ai: number, bi: number) => {
+    const a = nodes[ai], b = nodes[bi]
+    return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+  }
 
   return (
     <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
+      <div className="px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
         <span className="font-mono text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>
-          What do you need?
-        </span>
-        <span className="font-mono text-[9px]" style={{ color: "#252525" }}>
-          {active + 1} / {options.length}
+          Tech Stack
         </span>
       </div>
+      <div className="px-4 pt-4 pb-5">
+        <svg viewBox="0 0 400 310" className="w-full" style={{ display: "block" }}>
 
-      {/* Options */}
-      {options.map((opt, i) => (
-        <div key={i}>
-          <button
-            onClick={() => setActive(i)}
-            className="w-full text-left flex items-center gap-3.5 px-5 py-4 cursor-pointer"
-            style={{
-              borderBottom: "1px solid #0d0d10",
-              background: active === i ? "rgba(204,145,102,0.03)" : "transparent",
-              transition: "background 0.15s",
-            }}
-          >
-            <div style={{
-              width: 2, height: 24, borderRadius: 1, flexShrink: 0,
-              background: active === i ? "#cc9166" : "#1c1d22",
-              transition: "background 0.2s",
-            }} />
-            <span className="flex-1 font-mono text-[11px] leading-snug" style={{
-              color: active === i ? "#ededed" : "#555",
-              transition: "color 0.15s",
-            }}>
-              {opt.label}
-            </span>
-            <span className="font-mono text-[10px] flex-shrink-0" style={{
-              color: active === i ? "#cc9166" : "#222",
-              transform: active === i ? "translateX(2px)" : "none",
-              transition: "all 0.15s",
-            }}>
-              →
-            </span>
-          </button>
+          {/* Static base edges */}
+          {edges.map(([ai, bi], i) => {
+            const a = nodes[ai], b = nodes[bi]
+            return <line key={`base-${i}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#111113" strokeWidth="1" />
+          })}
 
-          <AnimatePresence>
-            {active === i && (
-              <motion.div
-                key="detail"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ overflow: "hidden" }}
-              >
-                <div className="px-8 pt-4 pb-5" style={{ borderBottom: "1px solid #0d0d10", background: "rgba(204,145,102,0.02)" }}>
-                  <p className="font-mono text-[9px] tracking-[0.15em] uppercase mb-3" style={{ color: "#444" }}>
-                    {opt.service}
-                  </p>
-                  <p className="font-mono text-[24px] font-medium leading-none mb-1.5" style={{ color: "#cc9166" }}>
-                    {opt.price}
-                  </p>
-                  <p className="font-mono text-[9px] mb-4" style={{ color: "#333" }}>
-                    Delivered in {opt.timeline}
-                  </p>
-                  <a
-                    href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(opt.subject)}`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 font-mono text-[10px] font-medium transition-colors hover:bg-[#e8e8e8]"
-                    style={{ background: "#fff", color: "#000", borderRadius: 2 }}
-                  >
-                    Get a Quote →
-                  </a>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
+          {/* Pulsing edge overlays */}
+          {edges.map(([ai, bi], i) => {
+            const a = nodes[ai], b = nodes[bi]
+            return (
+              <motion.line key={`pulse-${i}`}
+                x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                stroke="#242428" strokeWidth="1"
+                animate={{ opacity: [0.2, 0.6, 0.2] }}
+                transition={{ duration: 2.5 + i * 0.38, repeat: Infinity, ease: "easeInOut", delay: i * 0.28 }}
+              />
+            )
+          })}
+
+          {/* Traveling amber particles via strokeDashoffset */}
+          {particleEdges.map((ei, i) => {
+            const [ai, bi] = edges[ei]
+            const a = nodes[ai], b = nodes[bi]
+            const len = getLen(ai, bi)
+            return (
+              <motion.line key={`particle-${i}`}
+                x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                stroke="#cc9166" strokeWidth="2" strokeLinecap="round"
+                strokeDasharray={`4 ${len}`}
+                style={{ opacity: 0.65 }}
+                initial={{ strokeDashoffset: 0 }}
+                animate={{ strokeDashoffset: -(len + 4) }}
+                transition={{
+                  duration: particleSpeeds[i],
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "linear",
+                  delay: particleDelays[i],
+                  repeatDelay: 0.3,
+                }}
+              />
+            )
+          })}
+
+          {/* Node glow rings */}
+          {nodes.map((n, i) => (
+            <motion.circle key={`glow-${n.id}`}
+              cx={n.x} cy={n.y} r={20}
+              fill="none" stroke="#cc9166" strokeWidth="0.8"
+              animate={{ opacity: [0, 0.14, 0] }}
+              transition={{ duration: 3.2 + i * 0.55, repeat: Infinity, ease: "easeInOut", delay: i * 0.45 }}
+            />
+          ))}
+
+          {/* Node circles */}
+          {nodes.map((n, i) => (
+            <motion.circle key={`node-${n.id}`}
+              cx={n.x} cy={n.y} r={13}
+              fill="#060608" stroke="#1e1e22" strokeWidth="1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+            />
+          ))}
+
+          {/* Labels */}
+          {nodes.map((n, i) => (
+            <motion.g key={`label-${n.id}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
+            >
+              <text x={n.lx} y={n.ly} textAnchor={n.anchor} fontSize="8" fontFamily="monospace" fill="#444">
+                {n.label}
+              </text>
+            </motion.g>
+          ))}
+
+        </svg>
+      </div>
     </div>
   )
 }
@@ -1208,7 +1218,7 @@ export default function Home() {
           <motion.div style={{ y: heroDashY }}
             initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}>
-            <HeroSelector />
+            <HeroTechGraph />
           </motion.div>
         </div>
       </section>
