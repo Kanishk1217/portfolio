@@ -120,65 +120,61 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 function HeroDashboard() {
   const [loaded, setLoaded] = useState(false)
   useEffect(() => { setLoaded(true) }, [])
-  const kpis = [
-    { label: "Revenue", value: "$84.2k", delta: "+12.4%", pos: true },
-    { label: "Customers", value: "1,284", delta: "+8.1%", pos: true },
-    { label: "Churn", value: "2.3%", delta: "-0.4%", pos: false },
+  const rows = [
+    { metric: "Revenue",      actual: "$84.2k", predicted: "$79.1k", variance: "+6.5%", status: "above"  },
+    { metric: "Gross Margin", actual: "38.4%",  predicted: "41.2%",  variance: "-2.8%", status: "below"  },
+    { metric: "Customers",    actual: "1,284",  predicted: "1,190",  variance: "+7.9%", status: "above"  },
+    { metric: "Churn Rate",   actual: "2.3%",   predicted: "1.8%",   variance: "+0.5%", status: "watch"  },
+    { metric: "Net Profit",   actual: "$18.6k", predicted: "$17.4k", variance: "+6.9%", status: "above"  },
   ]
-  const bars = [42, 68, 53, 81, 60, 94, 72]
-  const days = ["M", "T", "W", "T", "F", "S", "S"]
-  const txns = [
-    { name: "Stripe Payment", amount: "+$2,400", time: "2m ago", pos: true },
-    { name: "AWS Invoice", amount: "-$340", time: "1h ago", pos: false },
-    { name: "New Customer", amount: "+$890", time: "3h ago", pos: true },
-  ]
+  const confidence = 74
   return (
-    <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#000" }}>
-      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-        <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: "#444" }}>Business Analyzer</span>
+    <div className="w-full rounded-xl overflow-hidden font-mono" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
+        <span className="text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>Business Analyzer</span>
         <div className="flex items-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }} />
-          <span className="font-mono text-[10px]" style={{ color: "#444" }}>Live</span>
+          <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+          <span className="text-[9px]" style={{ color: "#444" }}>Running</span>
         </div>
       </div>
-      <div className="grid grid-cols-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-        {kpis.map((k, i) => (
-          <motion.div key={k.label} initial={{ opacity: 0 }} animate={loaded ? { opacity: 1 } : {}} transition={{ delay: 0.25 + i * 0.1 }}
-            className="px-4 py-4" style={{ borderRight: i < 2 ? "1px solid #1c1d22" : "none" }}>
-            <p className="font-mono text-[9px] tracking-widest uppercase mb-1.5" style={{ color: "#444" }}>{k.label}</p>
-            <p className="text-[17px] font-semibold leading-none mb-1.5" style={{ color: "#ededed" }}>{k.value}</p>
-            <p className="font-mono text-[10px]" style={{ color: k.pos ? "#22c55e" : "#ef4444" }}>{k.delta}</p>
-          </motion.div>
+      {/* Column headers */}
+      <div className="grid grid-cols-4 px-5 py-2.5" style={{ borderBottom: "1px solid #111116", background: "#040406" }}>
+        {["Metric", "Actual", "Predicted", "Variance"].map((h, i) => (
+          <p key={h} className={`text-[8px] tracking-[0.15em] uppercase ${i > 0 ? "text-right" : ""}`} style={{ color: "#333" }}>{h}</p>
         ))}
       </div>
-      <div className="px-5 py-4" style={{ borderBottom: "1px solid #1c1d22" }}>
-        <p className="font-mono text-[9px] tracking-widest uppercase mb-3" style={{ color: "#444" }}>Weekly Revenue</p>
-        <div className="flex items-end gap-1.5" style={{ height: 64 }}>
-          {bars.map((h, i) => (
-            <div key={i} className="flex-1 flex flex-col justify-end">
-              <motion.div className="w-full rounded-[2px]" style={{ background: i === 5 ? "#ededed" : "#3d3d3d" }}
-                initial={{ height: 0 }} animate={loaded ? { height: `${h}%` } : { height: 0 }}
-                transition={{ delay: 0.55 + i * 0.07, duration: 0.55, ease: [0.34, 1.1, 0.64, 1] }} />
-            </div>
-          ))}
+      {/* Data rows */}
+      {rows.map((r, i) => (
+        <motion.div key={r.metric}
+          initial={{ opacity: 0, x: -6 }} animate={loaded ? { opacity: 1, x: 0 } : {}}
+          transition={{ delay: 0.2 + i * 0.09, duration: 0.4 }}
+          className="grid grid-cols-4 px-5 py-3 items-center"
+          style={{ borderBottom: "1px solid #0d0d10" }}
+        >
+          <p className="text-[10px]" style={{ color: "#666" }}>{r.metric}</p>
+          <p className="text-[10px] text-right font-medium" style={{ color: "#d0d0d0" }}>{r.actual}</p>
+          <p className="text-[10px] text-right" style={{ color: "#444" }}>{r.predicted}</p>
+          <p className={`text-[10px] text-right font-medium`}
+            style={{ color: r.status === "above" ? "#22c55e" : r.status === "watch" ? "#f59e0b" : "#ef4444" }}>
+            {r.variance}
+          </p>
+        </motion.div>
+      ))}
+      {/* Confidence footer */}
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderTop: "1px solid #111116", background: "#040406" }}>
+        <span className="text-[9px] tracking-[0.15em] uppercase" style={{ color: "#333" }}>Model confidence</span>
+        <div className="flex items-center gap-2.5">
+          <div style={{ width: 72, height: 2, background: "#161618", borderRadius: 1 }}>
+            <motion.div
+              initial={{ width: 0 }} animate={loaded ? { width: `${confidence}%` } : {}}
+              transition={{ delay: 0.7, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ height: "100%", background: "#cc9166", borderRadius: 1 }}
+            />
+          </div>
+          <span className="text-[10px]" style={{ color: "#cc9166" }}>{confidence}%</span>
         </div>
-        <div className="flex gap-1.5 mt-1.5">
-          {days.map((d, i) => (
-            <span key={i} className="flex-1 font-mono text-[8px] text-center" style={{ color: "#555" }}>{d}</span>
-          ))}
-        </div>
-      </div>
-      <div>
-        {txns.map((t, i) => (
-          <motion.div key={t.name} initial={{ opacity: 0, x: -10 }} animate={loaded ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.0 + i * 0.12 }}
-            className="flex items-center justify-between px-5 py-3" style={{ borderBottom: i < txns.length - 1 ? "1px solid #1c1d22" : "none" }}>
-            <div>
-              <p className="text-[12px]" style={{ color: "#888" }}>{t.name}</p>
-              <p className="font-mono text-[9px] mt-0.5" style={{ color: "#444" }}>{t.time}</p>
-            </div>
-            <p className="font-mono text-[12px] font-medium" style={{ color: t.pos ? "#ededed" : "#555" }}>{t.amount}</p>
-          </motion.div>
-        ))}
       </div>
     </div>
   )
@@ -1122,19 +1118,19 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto w-full px-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 items-center py-24">
           <motion.div style={{ y: heroTextY }}>
             {/* Fixed: animate directly, not whileInView — above-fold content */}
-            <div className="overflow-hidden mb-0">
-              <motion.h1 className="leading-[0.85] tracking-[-0.04em]"
+            <div className="overflow-hidden mb-[-4px]">
+              <motion.h1 className="leading-[0.9] tracking-[-0.035em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(72px, 10vw, 114px)", color: "#ffffff" }}>
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff" }}>
                 Kanishk
               </motion.h1>
             </div>
             <div className="overflow-hidden mb-14">
-              <motion.h1 className="leading-[0.85] tracking-[-0.04em]"
+              <motion.h1 className="leading-[0.9] tracking-[-0.035em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
-                transition={{ duration: 0.88, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, fontSize: "clamp(72px, 10vw, 114px)", color: "#cc9166" }}>
+                transition={{ duration: 0.88, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#cc9166" }}>
                 Pansari
               </motion.h1>
             </div>
