@@ -76,13 +76,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           prose-h2:font-normal
           prose-h3:text-[17px] prose-h3:leading-snug prose-h3:text-[#888] prose-h3:mt-10 prose-h3:mb-3 prose-h3:font-normal
           prose-strong:text-[#888] prose-strong:font-medium
-          prose-em:text-[#cc9166]
+          prose-em:text-[#f97316]
           prose-a:text-[#888] prose-a:underline prose-a:underline-offset-3 hover:prose-a:text-[#ededed]
           prose-code:font-mono prose-code:text-[13px] prose-code:bg-[#0a0a0a] prose-code:border prose-code:border-[#1c1d22] prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[#888]
           prose-pre:bg-[#050505] prose-pre:border prose-pre:border-[#1c1d22] prose-pre:rounded-xl
           prose-li:text-[15px] prose-li:text-[#555] prose-li:leading-[1.8]
           prose-ul:my-5 prose-ol:my-5
-          prose-blockquote:border-l-[#cc9166] prose-blockquote:text-[#555] prose-blockquote:italic
+          prose-blockquote:border-l-[#f97316] prose-blockquote:text-[#555] prose-blockquote:italic
         ">
           <MDXRemote source={post.content} />
         </div>

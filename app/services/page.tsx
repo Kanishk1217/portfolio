@@ -93,7 +93,7 @@ export default function ServicesPage() {
         </h1>
         <p className="text-[17px] leading-[1.7] max-w-[480px]" style={{ color: "#555" }}>
           Custom AI tools, outbound campaigns, and full-stack products. Every engagement starts with your goal and ends with something that works{" "}
-          <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>in production</em>.
+          <em style={{ color: "#f97316", fontFamily: "var(--font-playfair)" }}>in production</em>.
         </p>
       </section>
 
@@ -113,7 +113,7 @@ export default function ServicesPage() {
                 style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed", fontSize: "clamp(24px,3vw,36px)" }}>
                 {s.name}
               </h2>
-              <p className="font-mono text-[20px] font-medium mb-6" style={{ color: "#cc9166" }}>{s.price}</p>
+              <p className="font-mono text-[20px] font-medium mb-6" style={{ color: "#f97316" }}>{s.price}</p>
               <p className="text-[14px] leading-[1.8] mb-6 max-w-[500px]" style={{ color: "#555" }}>{s.description}</p>
               <p className="font-mono text-[11px] mb-8" style={{ color: "#555" }}>
                 Best for: <span style={{ color: "#555" }}>{s.bestFor}</span>
@@ -129,7 +129,7 @@ export default function ServicesPage() {
               <div style={{ borderTop: "1px solid #1c1d22" }}>
                 {s.includes.map((item, j) => (
                   <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-                    <span className="font-mono text-[10px]" style={{ color: "#cc9166" }}>→</span>
+                    <span className="font-mono text-[10px]" style={{ color: "#f97316" }}>→</span>
                     <span className="font-mono text-[11px]" style={{ color: "#555" }}>{item}</span>
                   </div>
                 ))}
@@ -143,14 +143,14 @@ export default function ServicesPage() {
       <section className="max-w-[1200px] mx-auto px-8 py-20" style={{ borderTop: "1px solid #1c1d22" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 items-start">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-6" style={{ color: "#cc9166" }}>Add-On · Available with any project</p>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-6" style={{ color: "#f97316" }}>Add-On · Available with any project</p>
             <h2
               className="text-[clamp(32px,4.5vw,52px)] leading-[1.05] tracking-[-0.025em] mb-6"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
             >
               Monthly Retainer
             </h2>
-            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#cc9166" }}>$300 – $600 / month</p>
+            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#f97316" }}>$300 – $600 / month</p>
             <p className="text-[15px] leading-[1.8] mb-8 max-w-[460px]" style={{ color: "#555" }}>
               This is where recurring revenue lives, for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
               and a weekly status report. One contact, no hourly billing, no surprises.
@@ -169,7 +169,7 @@ export default function ServicesPage() {
             <div style={{ borderTop: "1px solid #1c1d22" }}>
               {retainerIncludes.map((item, j) => (
                 <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-                  <span className="font-mono text-[10px]" style={{ color: "#cc9166" }}>→</span>
+                  <span className="font-mono text-[10px]" style={{ color: "#f97316" }}>→</span>
                   <span className="font-mono text-[11px]" style={{ color: "#555" }}>{item}</span>
                 </div>
               ))}

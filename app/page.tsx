@@ -176,7 +176,7 @@ function HeroInsightStream() {
       const show = Math.min(seg.t.length, rem)
       rem = Math.max(0, rem - seg.t.length)
       return (
-        <span key={si} style={{ color: seg.amber ? "#cc9166" : "#888" }}>
+        <span key={si} style={{ color: seg.amber ? "#f97316" : "#888" }}>
           {seg.t.slice(0, show)}
         </span>
       )
@@ -185,7 +185,7 @@ function HeroInsightStream() {
 
   return (
     <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
-      <div className="flex items-center gap-2 px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
+      <div className="flex items-center gap-2.5 px-6 py-4" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
         <motion.div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e" }}
           animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
         <span className="font-mono text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>
@@ -194,9 +194,9 @@ function HeroInsightStream() {
       </div>
 
       <div
-        className="px-5 py-5 font-mono text-[12px] leading-[2.1]"
+        className="px-6 py-6 font-mono text-[13px] leading-[2.2]"
         style={{
-          height: 200,
+          height: 260,
           overflow: "hidden",
           opacity: fade ? 0 : 1,
           transition: fade ? "opacity 0.75s ease" : "none",
@@ -208,7 +208,7 @@ function HeroInsightStream() {
             <span>
               {renderLine(INSIGHTS[i], line.typed)}
               {i === lines.length - 1 && (
-                <motion.span style={{ color: "#cc9166" }}
+                <motion.span style={{ color: "#f97316" }}
                   animate={{ opacity: [1, 0] }}
                   transition={{ duration: 0.52, repeat: Infinity, repeatType: "reverse" }}>
                   ▌
@@ -284,7 +284,7 @@ function BusinessAnalyzerMockup() {
                   <motion.div className="flex-1 rounded-[1px]" style={{ background: "#ededed", opacity: 0.12 }}
                     initial={{ height: "0%" }} animate={{ height: `${b.rev}%` }}
                     transition={{ delay: 0.4 + i * 0.06, duration: 0.5, ease: [0.34, 1.1, 0.64, 1] }} />
-                  <motion.div className="flex-1 rounded-[1px]" style={{ background: "#cc9166", opacity: 0.5 }}
+                  <motion.div className="flex-1 rounded-[1px]" style={{ background: "#f97316", opacity: 0.5 }}
                     initial={{ height: "0%" }} animate={{ height: `${b.pred}%` }}
                     transition={{ delay: 0.5 + i * 0.06, duration: 0.5, ease: [0.34, 1.1, 0.64, 1] }} />
                 </div>
@@ -356,7 +356,7 @@ function CSVAnalyzerMockup() {
               </div>
               <div>
                 <p className="font-mono text-[7px] mb-0.5" style={{ color: "#2a2a2a" }}>null %</p>
-                <p className="font-mono text-[9px]" style={{ color: col.nullPct === "0.0%" ? "#555" : "#cc9166" }}>{col.nullPct}</p>
+                <p className="font-mono text-[9px]" style={{ color: col.nullPct === "0.0%" ? "#555" : "#f97316" }}>{col.nullPct}</p>
               </div>
             </div>
             <div className="h-1 w-full rounded-full mb-1.5" style={{ background: "#0a0a0a" }}>
@@ -387,7 +387,7 @@ function FinanceAIMockup() {
   const categories = [
     { label: "Housing", pct: 28, color: "#ededed", amount: "$1,840" },
     { label: "Food", pct: 22, color: "#888", amount: "$1,450" },
-    { label: "Shopping", pct: 19, color: "#cc9166", amount: "$1,240" },
+    { label: "Shopping", pct: 19, color: "#f97316", amount: "$1,240" },
     { label: "Transport", pct: 15, color: "#555", amount: "$988" },
     { label: "Other", pct: 16, color: "#2a2a2a", amount: "$1,052" },
   ]
@@ -502,7 +502,7 @@ function AboutSection() {
           <FadeUp delay={0.04}>
             <p
               className="text-[clamp(17px,2vw,22px)] leading-[1.5] mb-7 pl-5"
-              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed", borderLeft: "2px solid #cc9166" }}
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed", borderLeft: "2px solid #f97316" }}
             >
               I build data products that work in production.
             </p>
@@ -592,7 +592,7 @@ function AboutSection() {
                     <p className="font-mono text-[10px]" style={{ color: "#444" }}>{e.sub}</p>
                     {e.meta && (
                       <span className="inline-block font-mono text-[9px] mt-2 px-2 py-0.5"
-                        style={{ color: "#cc9166", border: "1px solid rgba(204,145,102,0.2)", borderRadius: 2, background: "rgba(204,145,102,0.04)" }}>
+                        style={{ color: "#f97316", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 2, background: "rgba(249,115,22,0.04)" }}>
                         {e.meta}
                       </span>
                     )}
@@ -616,7 +616,7 @@ function AboutSection() {
                 initial={{ scaleY: 0 }}
                 whileHover={{ scaleY: 1 }}
                 transition={{ duration: 0.22 }}
-                style={{ width: 2, background: "#cc9166", transformOrigin: "top", borderRadius: 1 }}
+                style={{ width: 2, background: "#f97316", transformOrigin: "top", borderRadius: 1 }}
               />
               <div className="flex items-start justify-between gap-6 mb-3">
                 <div>
@@ -625,7 +625,7 @@ function AboutSection() {
                   <div className="flex items-center gap-2">
                     <p className="font-mono text-[10px]" style={{ color: "#444" }}>2025 – Present</p>
                     <span className="font-mono text-[8px] px-1.5 py-0.5"
-                      style={{ color: "#cc9166", border: "1px solid rgba(204,145,102,0.2)", borderRadius: 2, background: "rgba(204,145,102,0.04)" }}>
+                      style={{ color: "#f97316", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 2, background: "rgba(249,115,22,0.04)" }}>
                       Agility
                     </span>
                   </div>
@@ -772,11 +772,11 @@ function CapabilitySection() {
               )}
               {/* Amber highlight path through the network */}
               <motion.line x1={36} y1={110} x2={150} y2={84}
-                stroke="#cc9166" strokeWidth="1.5"
+                stroke="#f97316" strokeWidth="1.5"
                 initial={{ opacity: 0 }} animate={inView ? { opacity: 0.5 } : { opacity: 0 }}
                 transition={{ delay: 0.85 }} />
               <motion.line x1={150} y1={84} x2={264} y2={76}
-                stroke="#cc9166" strokeWidth="1.5"
+                stroke="#f97316" strokeWidth="1.5"
                 initial={{ opacity: 0 }} animate={inView ? { opacity: 0.5 } : { opacity: 0 }}
                 transition={{ delay: 0.95 }} />
               {/* Input nodes */}
@@ -798,7 +798,7 @@ function CapabilitySection() {
               {/* Output nodes — amber accent */}
               {outNodes.map((n, i) => (
                 <motion.circle key={`on-${i}`} cx={n.x} cy={n.y} r={10}
-                  fill="#060606" stroke="#cc9166" strokeWidth="1.5"
+                  fill="#060606" stroke="#f97316" strokeWidth="1.5"
                   initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 0.72 + i * 0.15 }}
                 />
@@ -810,7 +810,7 @@ function CapabilitySection() {
               ))}
               {outNodes.map((n, i) => (
                 <text key={`ol-${i}`} x={n.x} y={n.y + 4} textAnchor="middle"
-                  fontSize="6" fill="#cc9166" fontFamily="monospace">y{i + 1}</text>
+                  fontSize="6" fill="#f97316" fontFamily="monospace">y{i + 1}</text>
               ))}
             </svg>
           </div>
@@ -895,8 +895,8 @@ function CredentialsSection() {
               style={{ background: "#030303", border: "1px solid #1c1d22" }}>
               <div className="text-center">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ border: "1px solid #cc9166" }}>
-                  <span className="text-[18px]" style={{ color: "#cc9166" }}>✓</span>
+                  style={{ border: "1px solid #f97316" }}>
+                  <span className="text-[18px]" style={{ color: "#f97316" }}>✓</span>
                 </div>
                 <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3" style={{ color: "#333" }}>Certificate of Completion</p>
                 <p className="text-[15px] font-medium" style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>Engineering Plus</p>
@@ -1029,8 +1029,8 @@ function WorkSection() {
       <div className="max-w-[1200px] mx-auto px-8 pt-20 pb-6">
         <FadeUp className="mb-5">
           <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
-            style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
-            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+            style={{ border: "1px solid rgba(249,115,22,0.22)", color: "#f97316", background: "rgba(249,115,22,0.05)", borderRadius: 3 }}>
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#f97316", flexShrink: 0 }} />
             Selected Projects
           </span>
         </FadeUp>
@@ -1172,7 +1172,7 @@ export default function Home() {
               <motion.h1 className="leading-[0.9] tracking-[-0.035em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#cc9166" }}>
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#f97316" }}>
                 Pansari
               </motion.h1>
             </div>
@@ -1180,7 +1180,7 @@ export default function Home() {
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.48 }}
               className="text-[17px] leading-[1.68] max-w-[400px] mb-10" style={{ color: "#666" }}>
               I build custom AI tools that turn your business data into{" "}
-              <em style={{ color: "#cc9166", fontFamily: "var(--font-playfair)" }}>decisions</em>
+              <em style={{ color: "#f97316", fontFamily: "var(--font-playfair)" }}>decisions</em>
               . Shipped in 2 weeks.
             </motion.p>
 
@@ -1258,8 +1258,8 @@ export default function Home() {
           <div>
             <FadeUp className="mb-5">
               <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
-                style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
-                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+                style={{ border: "1px solid rgba(249,115,22,0.22)", color: "#f97316", background: "rgba(249,115,22,0.05)", borderRadius: 3 }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#f97316", flexShrink: 0 }} />
                 What I Build
               </span>
             </FadeUp>
@@ -1317,8 +1317,8 @@ export default function Home() {
           <div>
             <FadeUp className="mb-5">
               <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
-                style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
-                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+                style={{ border: "1px solid rgba(249,115,22,0.22)", color: "#f97316", background: "rgba(249,115,22,0.05)", borderRadius: 3 }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#f97316", flexShrink: 0 }} />
                 Latest Articles
               </span>
             </FadeUp>
