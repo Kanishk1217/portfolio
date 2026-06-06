@@ -2,6 +2,7 @@
 
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useMotionValue,
   useSpring,
@@ -116,66 +117,111 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   return <span ref={ref}>{val}{suffix}</span>
 }
 
-// ─── Hero Dashboard ───────────────────────────────────────────────────────────
-function HeroDashboard() {
-  const [loaded, setLoaded] = useState(false)
-  useEffect(() => { setLoaded(true) }, [])
-  const rows = [
-    { metric: "Revenue",      actual: "$84.2k", predicted: "$79.1k", variance: "+6.5%", status: "above"  },
-    { metric: "Gross Margin", actual: "38.4%",  predicted: "41.2%",  variance: "-2.8%", status: "below"  },
-    { metric: "Customers",    actual: "1,284",  predicted: "1,190",  variance: "+7.9%", status: "above"  },
-    { metric: "Churn Rate",   actual: "2.3%",   predicted: "1.8%",   variance: "+0.5%", status: "watch"  },
-    { metric: "Net Profit",   actual: "$18.6k", predicted: "$17.4k", variance: "+6.9%", status: "above"  },
+// ─── Hero Selector ────────────────────────────────────────────────────────────
+function HeroSelector() {
+  const [active, setActive] = useState(0)
+
+  const options = [
+    {
+      label: "I have data I can't act on",
+      service: "Data Intelligence Dashboard",
+      price: "$800 – $1,500",
+      timeline: "1–2 weeks",
+      subject: "Project Inquiry: Data Intelligence Dashboard",
+    },
+    {
+      label: "I need a workflow automated",
+      service: "Custom AI Agent",
+      price: "$1,200 – $2,500",
+      timeline: "1–2 weeks",
+      subject: "Project Inquiry: Custom AI Agent",
+    },
+    {
+      label: "I want a full product built",
+      service: "Full AI Product Build",
+      price: "$3,000 – $6,000",
+      timeline: "3–5 weeks",
+      subject: "Project Inquiry: Full AI Product Build",
+    },
   ]
-  const confidence = 74
+
   return (
-    <div className="w-full rounded-xl overflow-hidden font-mono" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
+    <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
-        <span className="text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>Business Analyzer</span>
-        <div className="flex items-center gap-1.5">
-          <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }}
-            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-          <span className="text-[9px]" style={{ color: "#444" }}>Running</span>
+        <span className="font-mono text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>
+          What do you need?
+        </span>
+        <span className="font-mono text-[9px]" style={{ color: "#252525" }}>
+          {active + 1} / {options.length}
+        </span>
+      </div>
+
+      {/* Options */}
+      {options.map((opt, i) => (
+        <div key={i}>
+          <button
+            onClick={() => setActive(i)}
+            className="w-full text-left flex items-center gap-3.5 px-5 py-4 cursor-pointer"
+            style={{
+              borderBottom: "1px solid #0d0d10",
+              background: active === i ? "rgba(204,145,102,0.03)" : "transparent",
+              transition: "background 0.15s",
+            }}
+          >
+            <div style={{
+              width: 2, height: 24, borderRadius: 1, flexShrink: 0,
+              background: active === i ? "#cc9166" : "#1c1d22",
+              transition: "background 0.2s",
+            }} />
+            <span className="flex-1 font-mono text-[11px] leading-snug" style={{
+              color: active === i ? "#ededed" : "#555",
+              transition: "color 0.15s",
+            }}>
+              {opt.label}
+            </span>
+            <span className="font-mono text-[10px] flex-shrink-0" style={{
+              color: active === i ? "#cc9166" : "#222",
+              transform: active === i ? "translateX(2px)" : "none",
+              transition: "all 0.15s",
+            }}>
+              →
+            </span>
+          </button>
+
+          <AnimatePresence>
+            {active === i && (
+              <motion.div
+                key="detail"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ overflow: "hidden" }}
+              >
+                <div className="px-8 pt-4 pb-5" style={{ borderBottom: "1px solid #0d0d10", background: "rgba(204,145,102,0.02)" }}>
+                  <p className="font-mono text-[9px] tracking-[0.15em] uppercase mb-3" style={{ color: "#444" }}>
+                    {opt.service}
+                  </p>
+                  <p className="font-mono text-[24px] font-medium leading-none mb-1.5" style={{ color: "#cc9166" }}>
+                    {opt.price}
+                  </p>
+                  <p className="font-mono text-[9px] mb-4" style={{ color: "#333" }}>
+                    Delivered in {opt.timeline}
+                  </p>
+                  <a
+                    href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(opt.subject)}`}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 font-mono text-[10px] font-medium transition-colors hover:bg-[#e8e8e8]"
+                    style={{ background: "#fff", color: "#000", borderRadius: 2 }}
+                  >
+                    Get a Quote →
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
-      {/* Column headers */}
-      <div className="grid grid-cols-4 px-5 py-2.5" style={{ borderBottom: "1px solid #111116", background: "#040406" }}>
-        {["Metric", "Actual", "Predicted", "Variance"].map((h, i) => (
-          <p key={h} className={`text-[8px] tracking-[0.15em] uppercase ${i > 0 ? "text-right" : ""}`} style={{ color: "#333" }}>{h}</p>
-        ))}
-      </div>
-      {/* Data rows */}
-      {rows.map((r, i) => (
-        <motion.div key={r.metric}
-          initial={{ opacity: 0, x: -6 }} animate={loaded ? { opacity: 1, x: 0 } : {}}
-          transition={{ delay: 0.2 + i * 0.09, duration: 0.4 }}
-          className="grid grid-cols-4 px-5 py-3 items-center"
-          style={{ borderBottom: "1px solid #0d0d10" }}
-        >
-          <p className="text-[10px]" style={{ color: "#666" }}>{r.metric}</p>
-          <p className="text-[10px] text-right font-medium" style={{ color: "#d0d0d0" }}>{r.actual}</p>
-          <p className="text-[10px] text-right" style={{ color: "#444" }}>{r.predicted}</p>
-          <p className={`text-[10px] text-right font-medium`}
-            style={{ color: r.status === "above" ? "#22c55e" : r.status === "watch" ? "#f59e0b" : "#ef4444" }}>
-            {r.variance}
-          </p>
-        </motion.div>
       ))}
-      {/* Confidence footer */}
-      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderTop: "1px solid #111116", background: "#040406" }}>
-        <span className="text-[9px] tracking-[0.15em] uppercase" style={{ color: "#333" }}>Model confidence</span>
-        <div className="flex items-center gap-2.5">
-          <div style={{ width: 72, height: 2, background: "#161618", borderRadius: 1 }}>
-            <motion.div
-              initial={{ width: 0 }} animate={loaded ? { width: `${confidence}%` } : {}}
-              transition={{ delay: 0.7, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ height: "100%", background: "#cc9166", borderRadius: 1 }}
-            />
-          </div>
-          <span className="text-[10px]" style={{ color: "#cc9166" }}>{confidence}%</span>
-        </div>
-      </div>
     </div>
   )
 }
@@ -1162,7 +1208,7 @@ export default function Home() {
           <motion.div style={{ y: heroDashY }}
             initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}>
-            <HeroDashboard />
+            <HeroSelector />
           </motion.div>
         </div>
       </section>
