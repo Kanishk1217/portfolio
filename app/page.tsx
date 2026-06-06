@@ -116,121 +116,107 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   return <span ref={ref}>{val}{suffix}</span>
 }
 
-// ─── Hero Tech Graph ──────────────────────────────────────────────────────────
-function HeroTechGraph() {
-  type Anchor = "start" | "middle" | "end"
-  const nodes: Array<{ id: string; label: string; x: number; y: number; lx: number; ly: number; anchor: Anchor }> = [
-    { id: "python",     label: "Python",     x: 80,  y: 100, lx: 56,  ly: 103, anchor: "end"    },
-    { id: "fastapi",    label: "FastAPI",    x: 200, y: 50,  lx: 200, ly: 30,  anchor: "middle" },
-    { id: "react",      label: "React",      x: 320, y: 100, lx: 344, ly: 103, anchor: "start"  },
-    { id: "postgresql", label: "PostgreSQL", x: 320, y: 215, lx: 344, ly: 218, anchor: "start"  },
-    { id: "cloudflare", label: "Cloudflare", x: 200, y: 268, lx: 200, ly: 288, anchor: "middle" },
-    { id: "openai",     label: "OpenAI",     x: 80,  y: 215, lx: 56,  ly: 218, anchor: "end"    },
-  ]
+// ─── Hero Insight Stream ─────────────────────────────────────────────────────
+type InsightSeg = { t: string; amber?: boolean }
 
-  const edges: [number, number][] = [
-    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0],
-    [0, 3], [1, 4], [2, 5],
-  ]
+const INSIGHTS: InsightSeg[][] = [
+  [{ t: "Revenue gap closed - " }, { t: "+$18.4k", amber: true }, { t: " recovered" }],
+  [{ t: "Churn risk: " }, { t: "2.3%", amber: true }, { t: " flagged, baseline 1.8%" }],
+  [{ t: "Segments detected: " }, { t: "3 clusters", amber: true }, { t: " in Q4 cohort" }],
+  [{ t: "Week 11 anomaly: " }, { t: "revenue spike +34%", amber: true }],
+  [{ t: "Model confidence: " }, { t: "94.2%", amber: true }, { t: " - deployed" }],
+]
 
-  const particleEdges = [0, 2, 4, 7]
-  const particleSpeeds = [2.6, 3.0, 2.2, 3.8]
-  const particleDelays = [0, 1.2, 2.2, 0.6]
+const INSIGHT_LENGTHS = INSIGHTS.map(segs => segs.reduce((n, s) => n + s.t.length, 0))
 
-  const getLen = (ai: number, bi: number) => {
-    const a = nodes[ai], b = nodes[bi]
-    return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+function HeroInsightStream() {
+  const [lines, setLines] = useState<{ typed: number }[]>([])
+  const [fade, setFade] = useState(false)
+
+  useEffect(() => {
+    let dead = false
+    const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
+
+    const run = async () => {
+      while (!dead) {
+        setFade(false)
+        setLines([])
+
+        for (let i = 0; i < INSIGHTS.length; i++) {
+          if (dead) return
+          setLines(prev => [...prev, { typed: 0 }])
+
+          for (let c = 1; c <= INSIGHT_LENGTHS[i]; c++) {
+            if (dead) return
+            await wait(28)
+            setLines(prev => {
+              const next = [...prev]
+              next[i] = { typed: c }
+              return next
+            })
+          }
+
+          if (i < INSIGHTS.length - 1) await wait(420)
+        }
+
+        await wait(1800)
+        setFade(true)
+        await wait(750)
+      }
+    }
+
+    run()
+    return () => { dead = true }
+  }, [])
+
+  const renderLine = (segs: InsightSeg[], typed: number) => {
+    let rem = typed
+    return segs.map((seg, si) => {
+      if (rem <= 0) return null
+      const show = Math.min(seg.t.length, rem)
+      rem = Math.max(0, rem - seg.t.length)
+      return (
+        <span key={si} style={{ color: seg.amber ? "#cc9166" : "#888" }}>
+          {seg.t.slice(0, show)}
+        </span>
+      )
+    })
   }
 
   return (
     <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
-      <div className="px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
+      <div className="flex items-center gap-2 px-5 py-3.5" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
+        <motion.div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e" }}
+          animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
         <span className="font-mono text-[9px] tracking-[0.2em] uppercase" style={{ color: "#444" }}>
-          Tech Stack
+          AI Analysis · Live
         </span>
       </div>
-      <div className="px-4 pt-4 pb-5">
-        <svg viewBox="0 0 400 310" className="w-full" style={{ display: "block" }}>
 
-          {/* Static base edges */}
-          {edges.map(([ai, bi], i) => {
-            const a = nodes[ai], b = nodes[bi]
-            return <line key={`base-${i}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#111113" strokeWidth="1" />
-          })}
-
-          {/* Pulsing edge overlays */}
-          {edges.map(([ai, bi], i) => {
-            const a = nodes[ai], b = nodes[bi]
-            return (
-              <motion.line key={`pulse-${i}`}
-                x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-                stroke="#242428" strokeWidth="1"
-                animate={{ opacity: [0.2, 0.6, 0.2] }}
-                transition={{ duration: 2.5 + i * 0.38, repeat: Infinity, ease: "easeInOut", delay: i * 0.28 }}
-              />
-            )
-          })}
-
-          {/* Traveling amber particles via strokeDashoffset */}
-          {particleEdges.map((ei, i) => {
-            const [ai, bi] = edges[ei]
-            const a = nodes[ai], b = nodes[bi]
-            const len = getLen(ai, bi)
-            return (
-              <motion.line key={`particle-${i}`}
-                x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-                stroke="#cc9166" strokeWidth="2" strokeLinecap="round"
-                strokeDasharray={`4 ${len}`}
-                style={{ opacity: 0.65 }}
-                initial={{ strokeDashoffset: 0 }}
-                animate={{ strokeDashoffset: -(len + 4) }}
-                transition={{
-                  duration: particleSpeeds[i],
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "linear",
-                  delay: particleDelays[i],
-                  repeatDelay: 0.3,
-                }}
-              />
-            )
-          })}
-
-          {/* Node glow rings */}
-          {nodes.map((n, i) => (
-            <motion.circle key={`glow-${n.id}`}
-              cx={n.x} cy={n.y} r={20}
-              fill="none" stroke="#cc9166" strokeWidth="0.8"
-              animate={{ opacity: [0, 0.14, 0] }}
-              transition={{ duration: 3.2 + i * 0.55, repeat: Infinity, ease: "easeInOut", delay: i * 0.45 }}
-            />
-          ))}
-
-          {/* Node circles */}
-          {nodes.map((n, i) => (
-            <motion.circle key={`node-${n.id}`}
-              cx={n.x} cy={n.y} r={13}
-              fill="#060608" stroke="#1e1e22" strokeWidth="1"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-            />
-          ))}
-
-          {/* Labels */}
-          {nodes.map((n, i) => (
-            <motion.g key={`label-${n.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-            >
-              <text x={n.lx} y={n.ly} textAnchor={n.anchor} fontSize="8" fontFamily="monospace" fill="#444">
-                {n.label}
-              </text>
-            </motion.g>
-          ))}
-
-        </svg>
+      <div
+        className="px-5 py-5 font-mono text-[12px] leading-[2.1]"
+        style={{
+          height: 200,
+          overflow: "hidden",
+          opacity: fade ? 0 : 1,
+          transition: fade ? "opacity 0.75s ease" : "none",
+        }}
+      >
+        {lines.map((line, i) => (
+          <div key={i} className="flex items-baseline gap-2.5">
+            <span className="flex-shrink-0" style={{ color: "#1e1e22" }}>→</span>
+            <span>
+              {renderLine(INSIGHTS[i], line.typed)}
+              {i === lines.length - 1 && (
+                <motion.span style={{ color: "#cc9166" }}
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.52, repeat: Infinity, repeatType: "reverse" }}>
+                  ▌
+                </motion.span>
+              )}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -1218,7 +1204,7 @@ export default function Home() {
           <motion.div style={{ y: heroDashY }}
             initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}>
-            <HeroTechGraph />
+            <HeroInsightStream />
           </motion.div>
         </div>
       </section>
