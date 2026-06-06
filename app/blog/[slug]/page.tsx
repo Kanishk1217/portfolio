@@ -30,11 +30,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <header className="max-w-[760px] mx-auto px-8 pt-36 pb-16">
         <div className="flex items-center gap-4 mb-10">
           <Link href="/blog" className="font-mono text-[10px] tracking-[0.15em] uppercase transition-colors hover:text-[#ededed]"
-            style={{ color: "#444" }}>
+            style={{ color: "#777" }}>
             ← Writing
           </Link>
-          <span className="font-mono text-[10px]" style={{ color: "#444" }}>·</span>
-          <span className="font-mono text-[10px]" style={{ color: "#444" }}>
+          <span className="font-mono text-[10px]" style={{ color: "#777" }}>·</span>
+          <span className="font-mono text-[10px]" style={{ color: "#777" }}>
             {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
           </span>
         </div>
@@ -43,7 +43,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <div className="flex gap-1.5 mb-8">
             {post.tags.map(tag => (
               <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
-                style={{ border: "1px solid #1c1d22", color: "#444" }}>
+                style={{ border: "1px solid #1c1d22", color: "#777" }}>
                 {tag}
               </span>
             ))}
@@ -58,7 +58,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </h1>
 
         {post.description && (
-          <p className="text-[16px] leading-[1.75]" style={{ color: "#555" }}>{post.description}</p>
+          <p className="text-[16px] leading-[1.75]" style={{ color: "#999" }}>{post.description}</p>
         )}
       </header>
 
@@ -71,18 +71,18 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <article className="max-w-[760px] mx-auto px-8 py-16">
         <div className="
           prose prose-invert max-w-none
-          prose-p:text-[15px] prose-p:leading-[1.85] prose-p:text-[#666] prose-p:mb-5
+          prose-p:text-[15px] prose-p:leading-[1.85] prose-p:text-[#aaa] prose-p:mb-5
           prose-h2:text-[22px] prose-h2:leading-snug prose-h2:tracking-[-0.015em] prose-h2:text-[#ededed] prose-h2:mt-14 prose-h2:mb-4
           prose-h2:font-normal
           prose-h3:text-[17px] prose-h3:leading-snug prose-h3:text-[#888] prose-h3:mt-10 prose-h3:mb-3 prose-h3:font-normal
           prose-strong:text-[#888] prose-strong:font-medium
-          prose-em:text-[#f97316]
+          prose-em:text-white
           prose-a:text-[#888] prose-a:underline prose-a:underline-offset-3 hover:prose-a:text-[#ededed]
           prose-code:font-mono prose-code:text-[13px] prose-code:bg-[#0a0a0a] prose-code:border prose-code:border-[#1c1d22] prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[#888]
           prose-pre:bg-[#050505] prose-pre:border prose-pre:border-[#1c1d22] prose-pre:rounded-xl
-          prose-li:text-[15px] prose-li:text-[#555] prose-li:leading-[1.8]
+          prose-li:text-[15px] prose-li:text-[#aaa] prose-li:leading-[1.8]
           prose-ul:my-5 prose-ol:my-5
-          prose-blockquote:border-l-[#f97316] prose-blockquote:text-[#555] prose-blockquote:italic
+          prose-blockquote:border-l-white/30 prose-blockquote:text-[#aaa] prose-blockquote:italic
         ">
           <MDXRemote source={post.content} />
         </div>
@@ -93,19 +93,19 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         <div className="flex items-center justify-between pt-12" style={{ borderTop: "1px solid #1c1d22" }}>
           <Link href="/blog"
             className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-[#ededed]"
-            style={{ color: "#444" }}>
+            style={{ color: "#777" }}>
             ← All posts
           </Link>
           <a href="mailto:kanishkpansari1217@gmail.com"
             className="font-mono text-[11px] transition-colors hover:text-[#ededed]"
-            style={{ color: "#444" }}>
+            style={{ color: "#777" }}>
             Reply by email →
           </a>
         </div>
       </div>
 
       <footer className="max-w-[760px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
-        <p className="font-mono text-[10px]" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
+        <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>© 2026 Kanishk Pansari</p>
       </footer>
     </div>
   )

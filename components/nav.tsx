@@ -21,7 +21,7 @@ export default function Nav() {
           : "bg-transparent"
       }`}
     >
-      <Link href="/" className="font-mono text-[11px] tracking-[0.18em] text-foreground/70 uppercase hover:text-foreground transition-colors select-none">
+      <Link href="/" className="font-mono text-[11px] tracking-[0.18em] text-white uppercase hover:text-white transition-colors select-none" style={{ textShadow: "0 0 20px rgba(255,255,255,0.35)" }}>
         Kanishk Pansari
       </Link>
 
