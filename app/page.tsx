@@ -539,59 +539,61 @@ function AboutSection() {
         {/* Right — education, experience, interests, resume */}
         <div className="flex flex-col gap-8">
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#555" }}>Education</p>
-            <div className="space-y-2">
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#555" }}>Education</p>
+            <div style={{ borderTop: "1px solid #181818" }}>
               {edu.map((e, i) => (
                 <motion.div key={i}
-                  className="p-5 rounded-xl transition-all duration-300 cursor-default"
-                  style={{ background: "#060608", border: "1px solid #1e1e24" }}
-                  whileHover={{ background: "#0a0a10", borderColor: "#2a2a36" }}
+                  className="group py-5 flex items-start justify-between gap-6 cursor-default transition-all duration-200"
+                  style={{ borderBottom: "1px solid #181818" }}
+                  whileHover={{ x: 6 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <p className="text-[14px] font-medium mb-1.5 leading-snug" style={{ color: "#ededed" }}>{e.title}</p>
-                      <p className="font-mono text-[10px]" style={{ color: "#555" }}>{e.sub}</p>
-                    </div>
-                    <span className="font-mono text-[9px] px-2 py-1 rounded flex-shrink-0"
-                      style={{ background: "#0d0d12", border: "1px solid #1e1e24", color: "#555" }}>
-                      {e.year}
-                    </span>
-                  </div>
-                  {e.meta && (
-                    <div className="mt-3 pt-3 flex items-center gap-2" style={{ borderTop: "1px solid #141418" }}>
-                      <span className="font-mono text-[9px] px-2 py-0.5 rounded"
-                        style={{ background: "#0d0d12", color: "#444", border: "1px solid #1a1a20" }}>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-medium mb-1 leading-snug transition-colors duration-200 group-hover:text-white"
+                      style={{ color: "#e0e0e0" }}>{e.title}</p>
+                    <p className="font-mono text-[10px]" style={{ color: "#444" }}>{e.sub}</p>
+                    {e.meta && (
+                      <span className="inline-block font-mono text-[9px] mt-2 px-2 py-0.5"
+                        style={{ color: "#cc9166", border: "1px solid rgba(204,145,102,0.2)", borderRadius: 2, background: "rgba(204,145,102,0.04)" }}>
                         {e.meta}
                       </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                  <p className="font-mono text-[10px] flex-shrink-0 pt-0.5" style={{ color: "#444" }}>{e.year}</p>
                 </motion.div>
               ))}
             </div>
           </FadeUp>
 
           <FadeUp delay={0.14}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#555" }}>Experience</p>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#555" }}>Experience</p>
             <motion.div
-              className="p-5 rounded-xl transition-all duration-300 cursor-default"
-              style={{
-                background: "#060608",
-                border: "1px solid #1e1e24",
-                borderLeft: "2px solid #cc9166",
-              }}
-              whileHover={{ background: "#0a0a0e", borderRightColor: "#2a2a36", borderTopColor: "#2a2a36", borderBottomColor: "#2a2a36" }}
+              className="group relative py-5 cursor-default overflow-hidden"
+              style={{ borderTop: "1px solid #181818", borderBottom: "1px solid #181818" }}
+              whileHover={{ x: 6 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
             >
-              <div className="flex items-start justify-between gap-4 mb-1">
+              <motion.div
+                className="absolute left-0 inset-y-0"
+                initial={{ scaleY: 0 }}
+                whileHover={{ scaleY: 1 }}
+                transition={{ duration: 0.22 }}
+                style={{ width: 2, background: "#cc9166", transformOrigin: "top", borderRadius: 1 }}
+              />
+              <div className="flex items-start justify-between gap-6 mb-3">
                 <div>
-                  <p className="text-[14px] font-medium mb-1" style={{ color: "#ededed" }}>Sales &amp; Marketing Associate</p>
-                  <p className="font-mono text-[9px]" style={{ color: "#cc9166" }}>Agility</p>
+                  <p className="text-[14px] font-medium mb-1 transition-colors duration-200 group-hover:text-white"
+                    style={{ color: "#e0e0e0" }}>Sales &amp; Marketing Associate</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-mono text-[10px]" style={{ color: "#444" }}>2025 – Present</p>
+                    <span className="font-mono text-[8px] px-1.5 py-0.5"
+                      style={{ color: "#cc9166", border: "1px solid rgba(204,145,102,0.2)", borderRadius: 2, background: "rgba(204,145,102,0.04)" }}>
+                      Agility
+                    </span>
+                  </div>
                 </div>
-                <span className="font-mono text-[9px] px-2 py-1 rounded flex-shrink-0"
-                  style={{ background: "#0d0d12", border: "1px solid #1e1e24", color: "#555" }}>
-                  2025 – Present
-                </span>
               </div>
-              <p className="text-[13px] leading-relaxed mt-3 pt-3" style={{ color: "#555", borderTop: "1px solid #141418" }}>
+              <p className="text-[13px] leading-relaxed" style={{ color: "#555" }}>
                 Analyzed customer behavior data to identify upsell opportunities and track pipeline performance, bridging technical insight with business decisions.
               </p>
             </motion.div>
@@ -987,27 +989,19 @@ function WorkSection() {
   return (
     <section id="work">
       <div className="max-w-[1200px] mx-auto px-8 pt-20 pb-6">
-        <motion.p
-          initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.45 }}
-          className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
-          style={{ color: "#cc9166" }}
-        >
-          Selected Projects
-        </motion.p>
-        <div className="relative inline-block">
-          <Reveal>
-            <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-              Work
-            </h2>
-          </Reveal>
-          <motion.div
-            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
-          />
-        </div>
+        <FadeUp className="mb-5">
+          <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
+            style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+            Selected Projects
+          </span>
+        </FadeUp>
+        <Reveal>
+          <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
+            style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+            Work
+          </h2>
+        </Reveal>
       </div>
 
       {/* 400vh = ~133vh of scroll per project */}
@@ -1111,6 +1105,8 @@ function WorkSection() {
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null)
   const { scrollY, scrollYProgress: pageProgress } = useScroll()
+  const heroTextY = useTransform(scrollY, [0, 700], [0, -90])
+  const heroDashY = useTransform(scrollY, [0, 700], [0, -40])
   const pageBg = useTransform(
     pageProgress,
     [0, 0.08, 0.22, 0.38, 0.52, 0.67, 0.80, 1.0],
@@ -1122,36 +1118,23 @@ export default function Home() {
       <Nav />
 
       {/* ══ HERO */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center pt-14 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-14">
         <div className="max-w-[1200px] mx-auto w-full px-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 items-center py-24">
-          <div>
+          <motion.div style={{ y: heroTextY }}>
             {/* Fixed: animate directly, not whileInView — above-fold content */}
-            <div className="overflow-hidden mb-1">
-              <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
+            <div className="overflow-hidden mb-0">
+              <motion.h1 className="leading-[0.85] tracking-[-0.04em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400,
-                  fontSize: "clamp(68px, 9.5vw, 108px)",
-                  WebkitTextStroke: "1.5px #ededed",
-                  WebkitTextFillColor: "transparent",
-                  color: "transparent",
-                }}>
+                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(72px, 10vw, 114px)", color: "#ffffff" }}>
                 Kanishk
               </motion.h1>
             </div>
-            <div className="overflow-hidden mb-12">
-              <motion.h1 className="leading-[0.88] tracking-[-0.03em]"
+            <div className="overflow-hidden mb-14">
+              <motion.h1 className="leading-[0.85] tracking-[-0.04em]"
                 initial={{ y: "106%" }} animate={{ y: "0%" }}
                 transition={{ duration: 0.88, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  fontFamily: "var(--font-playfair)", fontWeight: 400,
-                  fontSize: "clamp(68px, 9.5vw, 108px)",
-                  background: "linear-gradient(90deg, #ededed 0%, #cc9166 70%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}>
+                style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, fontSize: "clamp(72px, 10vw, 114px)", color: "#cc9166" }}>
                 Pansari
               </motion.h1>
             </div>
@@ -1178,9 +1161,10 @@ export default function Home() {
                 View Work <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </motion.div>
-          </div>
+          </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
+          <motion.div style={{ y: heroDashY }}
+            initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}>
             <HeroDashboard />
           </motion.div>
@@ -1234,27 +1218,19 @@ export default function Home() {
       <section id="services" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <div>
-            <motion.p
-              initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.45 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
-              style={{ color: "#cc9166" }}
-            >
-              What I Build
-            </motion.p>
-            <div className="relative inline-block">
-              <Reveal>
-                <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-                  style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-                  Services
-                </h2>
-              </Reveal>
-              <motion.div
-                initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
-              />
-            </div>
+            <FadeUp className="mb-5">
+              <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
+                style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+                What I Build
+              </span>
+            </FadeUp>
+            <Reveal>
+              <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
+                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+                Services
+              </h2>
+            </Reveal>
           </div>
           <FadeUp>
             <Link href="/services" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
@@ -1301,27 +1277,19 @@ export default function Home() {
       <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <div>
-            <motion.p
-              initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.45 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase mb-3"
-              style={{ color: "#cc9166" }}
-            >
-              Latest Articles
-            </motion.p>
-            <div className="relative inline-block">
-              <Reveal>
-                <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
-                  style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-                  Writing
-                </h2>
-              </Reveal>
-              <motion.div
-                initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ height: 2, background: "linear-gradient(90deg, #cc9166, transparent)", transformOrigin: "left", marginTop: 4 }}
-              />
-            </div>
+            <FadeUp className="mb-5">
+              <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase px-3 py-1.5"
+                style={{ border: "1px solid rgba(204,145,102,0.22)", color: "#cc9166", background: "rgba(204,145,102,0.05)", borderRadius: 3 }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#cc9166", flexShrink: 0 }} />
+                Latest Articles
+              </span>
+            </FadeUp>
+            <Reveal>
+              <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
+                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+                Writing
+              </h2>
+            </Reveal>
           </div>
           <FadeUp>
             <Link href="/blog" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>All posts →</Link>
