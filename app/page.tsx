@@ -248,7 +248,7 @@ function BusinessAnalyzerMockup() {
   ]
   return (
     <div className="flex flex-col h-full" style={{ background: "transparent" }}>
-      <WindowChrome title="business-analyzer.pages.dev" />
+      <WindowChrome title="business-analysis-3h9.pages.dev" />
       <div className="flex items-center gap-5 px-4 py-2.5 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22", background: "#050505" }}>
         <span className="font-mono text-[10px] font-bold" style={{ color: "#ededed", letterSpacing: "0.12em" }}>BA</span>
         {["Dashboard", "Analysis", "Reports"].map((item, i) => (
@@ -332,7 +332,7 @@ function CSVAnalyzerMockup() {
   ]
   return (
     <div className="flex flex-col h-full" style={{ background: "transparent" }}>
-      <WindowChrome title="csv-analysis.pages.dev" />
+      <WindowChrome title="csv--analysis.pages.dev" />
       <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22", background: "#050505" }}>
         <span className="font-mono text-[10px] font-bold" style={{ color: "#ededed", letterSpacing: "0.1em" }}>CSV ANALYZER</span>
         <span className="font-mono text-[8px] px-2 py-1 rounded-[3px]" style={{ border: "1px solid #1c1d22", color: "#999" }}>↑ Upload New</span>
