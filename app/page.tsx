@@ -1079,7 +1079,7 @@ function WorkSection() {
                     <motion.div
                       key={p.title}
                       className="absolute inset-0"
-                      style={{ opacity: opacities[i], y: yVals[i] }}
+                      style={{ opacity: opacities[i], y: yVals[i], pointerEvents: i === active ? "auto" : "none" }}
                     >
                       <h3 className="leading-[1] tracking-[-0.025em] mb-2"
                         style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
