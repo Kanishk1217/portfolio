@@ -5,14 +5,14 @@ import Nav from "@/components/nav"
 
 export const metadata: Metadata = {
   title: "Services: Kanishk Pansari",
-  description: "Custom AI tools, cold outreach, profile building, and full-stack development. Transparent pricing, 2-week delivery.",
+  description: "Custom AI tools, predictive models served as APIs, cold outreach, profile building, and full-stack development. Transparent pricing, 2-week delivery.",
 }
 
 const services = [
   {
     num: "01",
     name: "Data Intelligence Dashboard",
-    price: "$800 – $1,500",
+    price: "$1,800 – $2,800",
     timeline: "1–2 weeks",
     description: "Custom business analytics tool built on your data. Upload a CSV or connect your database and get KPI tracking, revenue forecasting, customer segmentation, and AI-generated insights. Delivered as a live web app.",
     bestFor: "SMBs with sales, ops, or finance data they can't act on.",
@@ -21,8 +21,18 @@ const services = [
   },
   {
     num: "02",
+    name: "Predictive Model & Scoring API",
+    price: "$3,200 – $6,000",
+    timeline: "2–3 weeks",
+    description: "A scoped predictive model trained on your historical data and served as an authenticated API your product can call. Probabilities are calibrated and the cut-off is tuned to the cost of a wrong call, so what comes back is a decision you can act on, not a raw score.",
+    bestFor: "Teams sitting on historical outcome data who need a risk, churn, or demand score running in production.",
+    includes: ["Data audit + feature engineering", "Model training & probability calibration", "Cost-based threshold tuning", "Fairness & drift checks (PSI)", "Hardened FastAPI scoring endpoint", "Model card + retraining runbook"],
+    subject: "Project Inquiry: Predictive Model & Scoring API",
+  },
+  {
+    num: "03",
     name: "Custom AI Agent",
-    price: "$1,200 – $2,500",
+    price: "$2,200 – $4,200",
     timeline: "1–2 weeks",
     description: "A scoped AI agent built for one specific workflow. Lead qualifier, support bot, report generator, or data processor. Built with Python and FastAPI, integrated into your existing tools.",
     bestFor: "Businesses with repetitive manual processes eating team time.",
@@ -30,9 +40,9 @@ const services = [
     subject: "Project Inquiry: Custom AI Agent",
   },
   {
-    num: "03",
+    num: "04",
     name: "Full AI Product Build",
-    price: "$3,000 – $6,000",
+    price: "$5,000 – $10,000",
     timeline: "3–5 weeks",
     description: "End-to-end custom product. Full-stack TypeScript frontend, Python backend, database, auth, and deployment. Built for founders who have a product idea but no technical team.",
     bestFor: "Early-stage founders who need a technical partner, not just a contractor.",
@@ -40,9 +50,9 @@ const services = [
     subject: "Project Inquiry: Full AI Product Build",
   },
   {
-    num: "04",
+    num: "05",
     name: "Cold Email Campaign",
-    price: "$600 – $1,200",
+    price: "$900 – $1,900",
     timeline: "1–2 weeks",
     description: "End-to-end outbound engine. Lead list building, personalised sequences, A/B testing, and automated follow-ups. You get daily reply monitoring and a weekly analytics report on opens, clicks, and booked calls.",
     bestFor: "Founders and consultants who need pipeline, not just a form on their website.",
@@ -50,9 +60,9 @@ const services = [
     subject: "Project Inquiry: Cold Email Campaign",
   },
   {
-    num: "05",
+    num: "06",
     name: "Profile & Brand Building",
-    price: "$400 – $800",
+    price: "$350 – $600",
     timeline: "1 week",
     description: "LinkedIn optimisation, positioning strategy, and a 30-day content calendar that turns your expertise into inbound leads. We rewrite your profile and build the first month of content.",
     bestFor: "Professionals and founders who need a credible presence before their next raise or launch.",
@@ -92,7 +102,7 @@ export default function ServicesPage() {
           What I Build
         </h1>
         <p className="text-[17px] leading-[1.7] max-w-[480px]" style={{ color: "#999" }}>
-          Custom AI tools, outbound campaigns, and full-stack products. Every engagement starts with your goal and ends with something that works{" "}
+          Custom AI tools, predictive models, outbound campaigns, and full-stack products. Every engagement starts with your goal and ends with something that works{" "}
           <em style={{ color: "#fff", fontFamily: "var(--font-playfair)" }}>in production</em>.
         </p>
       </section>
@@ -150,7 +160,7 @@ export default function ServicesPage() {
             >
               Monthly Retainer
             </h2>
-            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#fff" }}>$300 – $600 / month</p>
+            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#fff" }}>$400 – $900 / month</p>
             <p className="text-[15px] leading-[1.8] mb-8 max-w-[460px]" style={{ color: "#999" }}>
               This is where recurring revenue lives, for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
               and a weekly status report. One contact, no hourly billing, no surprises.

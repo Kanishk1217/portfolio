@@ -8,6 +8,7 @@ import {
   useInView,
   useMotionValueEvent,
   useTransform,
+  MotionConfig,
   type MotionValue,
 } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
@@ -24,13 +25,19 @@ const LinkedInIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
   </svg>
 )
 
+// The inner element starts translated 105% down, which puts it fully outside the
+// overflow-hidden wrapper's clip rect. IntersectionObserver intersection is
+// computed *after* ancestor clipping, so whileInView on the inner element never
+// fired and every heading stayed hidden. Observe the un-translated wrapper
+// instead and drive the child from that.
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: "-32px" })
   return (
-    <div className={`overflow-hidden ${className}`}>
+    <div ref={ref} className={`overflow-hidden ${className}`}>
       <motion.div
         initial={{ y: "105%" }}
-        whileInView={{ y: "0%" }}
-        viewport={{ once: true, margin: "-32px" }}
+        animate={inView ? { y: "0%" } : { y: "105%" }}
         transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
@@ -1157,10 +1164,13 @@ const projects = [
   },
 ]
 
+// Teaser subset of app/services/page.tsx — prices must match that file.
+// The hero card is the last entry; the rest fill the right-hand column.
 const services = [
-  { name: "Data Intelligence Dashboard", price: "$800 – $1,500", timeline: "1–2 weeks", subject: "Project Inquiry: Data Intelligence Dashboard" },
-  { name: "Custom AI Agent", price: "$1,200 – $2,500", timeline: "1–2 weeks", subject: "Project Inquiry: Custom AI Agent" },
-  { name: "Full AI Product Build", price: "$3,000 – $6,000", timeline: "3–5 weeks", subject: "Project Inquiry: Full AI Product Build" },
+  { name: "Data Intelligence Dashboard", price: "$1,800 – $2,800", timeline: "1–2 weeks", subject: "Project Inquiry: Data Intelligence Dashboard" },
+  { name: "Predictive Model & Scoring API", price: "$3,200 – $6,000", timeline: "2–3 weeks", subject: "Project Inquiry: Predictive Model & Scoring API" },
+  { name: "Custom AI Agent", price: "$2,200 – $4,200", timeline: "1–2 weeks", subject: "Project Inquiry: Custom AI Agent" },
+  { name: "Full AI Product Build", price: "$5,000 – $10,000", timeline: "3–5 weeks", subject: "Project Inquiry: Full AI Product Build" },
 ]
 
 const posts = [
@@ -1175,6 +1185,115 @@ const marqueeItems = [
   "Machine Learning", "XGBoost", "PyTorch", "PostgreSQL",
   "Docker", "Data Analysis", "Automation", "AI Development",
 ]
+
+// ─── Automation Section ──────────────────────────────────────────────────────
+// Internal tooling with no public artifact. Deliberately has no Source or Live
+// Demo affordance — the tag states why instead of showing a dead button.
+function AutomationSection() {
+  const labels = [
+    { name: "Needs reply", count: 4, w: 26 },
+    { name: "Waiting on them", count: 11, w: 62 },
+    { name: "Invoices", count: 3, w: 18 },
+    { name: "Archive · auto", count: 128, w: 100 },
+  ]
+  const week = [62, 48, 71, 39, 55, 28, 34]
+  return (
+    <section className="max-w-[1200px] mx-auto px-8 py-28">
+      <div className="mb-16">
+        <FadeUp className="mb-5">
+          <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: "#999" }}>
+            Internal Tools
+          </span>
+        </FadeUp>
+        <Reveal>
+          <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
+            style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+            Automation
+          </h2>
+        </Reveal>
+      </div>
+
+      <FadeUp>
+        <div className="rounded-xl grid grid-cols-1 lg:grid-cols-[1fr_380px] overflow-hidden"
+          style={{ border: "1px solid #1c1d22" }}>
+
+          {/* Copy */}
+          <div className="p-8 lg:p-10">
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#f97316" }}>
+              Internal tool · no public demo
+            </p>
+            <h3 className="text-[clamp(22px,2.6vw,30px)] leading-[1.15] tracking-[-0.02em] mb-2"
+              style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
+              Gmail Inbox Automation System
+            </h3>
+            <p className="font-mono text-[10px] mb-7" style={{ color: "#999" }}>
+              Google Apps Script · 2026 – Present
+            </p>
+            <p className="text-[14px] leading-[1.8] mb-6" style={{ color: "#bbb", maxWidth: 460 }}>
+              Runs on my own inbox: auto-labels every thread on arrival, validates
+              what is genuinely unread against what only looks unread, and writes a
+              Sheets-backed dashboard that tracks how long replies actually take.
+            </p>
+            <p className="text-[14px] leading-[1.8] mb-8" style={{ color: "#bbb", maxWidth: 460 }}>
+              The result is no manual sorting, nothing missed, and real numbers on
+              response speed instead of a guess.
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {["Apps Script", "Gmail", "Google Sheets", "Automation"].map(tag => (
+                <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                  style={{ border: "1px solid #333", color: "#ccc" }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Visual */}
+          <div className="p-6 lg:p-8 flex flex-col gap-5"
+            style={{ background: "#030303", borderLeft: "1px solid #1c1d22" }}>
+            <div>
+              <p className="font-mono text-[8px] tracking-widest uppercase mb-3" style={{ color: "#ccc" }}>Auto-applied labels</p>
+              <div className="space-y-2.5">
+                {labels.map((l, i) => (
+                  <div key={l.name}>
+                    <div className="flex items-baseline justify-between mb-1">
+                      <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{l.name}</span>
+                      <span className="font-mono text-[9px]" style={{ color: "#555" }}>{l.count}</span>
+                    </div>
+                    <div className="h-1 w-full rounded-full" style={{ background: "#0a0a0a" }}>
+                      <motion.div className="h-1 rounded-full" style={{ background: "#222" }}
+                        initial={{ width: 0 }} whileInView={{ width: `${l.w}%` }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.15 + i * 0.08, duration: 0.7 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ borderTop: "1px solid #1c1d22" }} className="pt-5">
+              <p className="font-mono text-[8px] tracking-widest uppercase mb-2" style={{ color: "#ccc" }}>Median reply time</p>
+              <p className="text-[24px] font-semibold leading-none mb-3"
+                style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>3h 12m</p>
+              <div className="flex items-end gap-1" style={{ height: 34 }}>
+                {week.map((h, i) => (
+                  <motion.div key={i} className="flex-1 rounded-[1px]"
+                    style={{ background: i === week.length - 1 ? "#ededed" : "#191919" }}
+                    initial={{ height: "0%" }} whileInView={{ height: `${h}%` }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.05, duration: 0.5 }} />
+                ))}
+              </div>
+              <div className="flex gap-1 mt-1.5">
+                {["M","T","W","T","F","S","S"].map((d, i) => (
+                  <span key={i} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#2a2a2a" }}>{d}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeUp>
+    </section>
+  )
+}
 
 // ─── Scroll band math ────────────────────────────────────────────────────────
 // Each project owns 1/n of the scroll. Crossfades are centred on the segment
@@ -1363,6 +1482,7 @@ export default function Home() {
   const heroDashY = useTransform(scrollY, [0, 700], [0, -40])
 
   return (
+    <MotionConfig reducedMotion="user">
     <div style={{ color: "#ededed", minHeight: "100vh", background: "#000" }}>
       <Nav />
 
@@ -1460,6 +1580,9 @@ export default function Home() {
       {/* ══ WORK (scroll-scrubbed) */}
       <WorkSection />
 
+      {/* ══ AUTOMATION (internal tools) */}
+      <AutomationSection />
+
       {/* ══ CREDENTIALS */}
       <CredentialsSection />
 
@@ -1491,12 +1614,12 @@ export default function Home() {
             <SpotlightCard className="rounded-xl h-full min-h-[280px] flex flex-col justify-between p-8 transition-all duration-300"
               style={{ border: "1px solid #1c1d22", background: "transparent" }}>
               <div>
-                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#bbb" }}>{services[2].timeline}</p>
+                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#bbb" }}>{services[services.length - 1].timeline}</p>
                 <h3 className="text-[26px] leading-[1.1] tracking-[-0.02em] mb-3"
-                  style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{services[2].name}</h3>
-                <p className="font-mono text-[22px] font-medium" style={{ color: "#ededed" }}>{services[2].price}</p>
+                  style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{services[services.length - 1].name}</h3>
+                <p className="font-mono text-[22px] font-medium" style={{ color: "#ededed" }}>{services[services.length - 1].price}</p>
               </div>
-              <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(services[2].subject)}`}
+              <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(services[services.length - 1].subject)}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 self-start text-[13px] font-medium transition-colors hover:bg-[#e8e8e8]"
                 style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
                 <Mail className="w-3.5 h-3.5" /> Get a Quote
@@ -1504,7 +1627,7 @@ export default function Home() {
             </SpotlightCard>
           </FadeUp>
           <div className="flex flex-col gap-4">
-            {services.slice(0, 2).map((s, i) => (
+            {services.slice(0, -1).map((s, i) => (
               <FadeUp key={s.name} delay={0.08 + i * 0.08}>
                 <SpotlightCard className="rounded-xl flex flex-col justify-between p-6 transition-all duration-300"
                   style={{ border: "1px solid #1c1d22", background: "#000", minHeight: 132 }}>
@@ -1591,5 +1714,6 @@ export default function Home() {
         <p className="font-mono text-[10px] mt-14" style={{ color: "#ccc" }}>© 2026 Kanishk Pansari</p>
       </footer>
     </div>
+    </MotionConfig>
   )
 }
