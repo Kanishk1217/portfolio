@@ -1,0 +1,96 @@
+﻿---
+title: "Credit Scoring ML - Why I Shipped the Worse Model"
+date: "2026-08-18"
+description: "A synthetic loan book gave me 0.892 AUC. Real applicants gave me 0.665. Here is why the lower number is the one in production, why the setting that hit 88% accuracy was the worse product, and what happened when I tested whether any of it generalized."
+tags: ["Python", "XGBoost", "PyTorch", "FastAPI", "Model Calibration", "Fairness"]
+---
+
+The best model I trained scored **0.892 AUC**. It is still in the repository. It has never scored a single real person.
+
+Credit Scoring ML started as a deliberate walk from classical machine learning to deep learning: a logistic-regression scorecard, Weight of Evidence binning, gradient boosting with calibration, a neural network written from scratch, an LSTM over payment sequences, and finally a hybrid that fuses the two. Nine notebooks. The architecture that came out the other end takes static financial features through XGBoost, runs the payment-history sequence through an LSTM, concatenates both signals, and passes them to a small MLP that emits a probability of default. That part worked. The part I was not prepared for was discovering that almost every instinct I had about *evaluating* it was wrong.
+
+---
+
+## The Number That Was Lying to Me
+
+The 0.892 came from a synthetic loan book I generated to develop against. That is a reasonable thing to do while building. It stops being reasonable the moment you quote the number.
+
+Synthetic data has a structural problem that has nothing to do with sample size: I generated it, so its two branches carried clean, complementary signal. The financial snapshot and the payment trajectory each told the model something genuinely different, because I built them to. Real applicants do not cooperate like that. Their income and their payment history are correlated, noisy, and frequently both missing.
+
+Retrained on **167,115 real Home Credit applicants** with an actual default rate of 8.1%, using only the seven features a person could self-report, the same architecture scored **0.665 AUC**. Five-fold cross-validation put it at 0.665 with a standard deviation of 0.003, so it was not a bad split. It was the truth.
+
+That 0.227 gap is the entire lesson of the project. The 0.892 measures how well the model learned a world I invented. The 0.665 measures how much a model can actually tell you about a real person from seven things they typed into a form. Only one of those is a claim I can defend, so only one of them is in production, and it is the lower one.
+
+---
+
+## Accuracy Is the Wrong Metric, and I Have the Table to Prove It
+
+Here is the part that genuinely surprised me. The model outputs one calibrated probability per applicant. That number is not a decision. The **threshold** is what turns it into approve, review, or decline, and moving the threshold does not retrain anything. It only moves where the line falls on the same score.
+
+I measured two candidate cutoffs on the same held-out test set.
+
+At a decline threshold of **0.15**, the system reaches **88.1% overall accuracy**. It declines only 6.2% of applicants and wrongly rejects only 5.4% of people who would have repaid. It also catches **14.6% of actual defaulters**. Roughly one in seven.
+
+At a decline threshold of **0.075**, overall accuracy collapses to **61.8%**. It declines 40.2% of all applicants and wrongly rejects 38.2% of people who would have repaid. It catches **62.5% of actual defaulters**. Roughly two in three.
+
+The 88% model is the worse product. It looks better by the metric every tutorial optimises, and it misses six out of seven of the people it exists to identify. Accuracy is flattering here for a boring reason: only 8.1% of applicants default, so a model that approves nearly everyone is right nearly all the time and useful to nobody.
+
+I shipped 0.075. The honest cost of that choice is 6.9 good applicants wrongly declined for every real defaulter caught. There is no threshold that escapes this trade-off. There is only a choice about which error you would rather make, and the discipline to write that choice down as a decision rather than leave it sitting in the code as a default nobody remembers picking.
+
+---
+
+## A Probability Is Not a Decision
+
+Before any of that arithmetic means anything, the probability has to *be* a probability.
+
+An uncalibrated classifier will happily hand you a 0.3 that does not correspond to a 30% chance of anything. It is a ranking score wearing a percentage sign. That is tolerable if all you do is sort applicants. It is useless the moment you want to set a price, quote a risk, or reason about expected loss, because all of those depend on the number meaning what it says.
+
+Isotonic calibration fixes this by fitting a monotonic mapping from raw scores to observed default rates, so predicted PD tracks true default frequency. Every served model in the project is calibrated, and separating calibration from thresholding turned out to be the cleanest architectural decision I made. Calibration is a property of the model. The threshold is a property of the business. Tangle them and you cannot change your risk appetite without retraining.
+
+---
+
+## Three Things That Broke and What They Taught Me
+
+### 1. It Did Not Generalize, and That Was the Finding
+
+I tested the production model against a completely different real lending population: historical US LendingClub loans. It scored **0.5079 AUC**. A coin flip.
+
+My first assumption was a units problem. Home Credit income figures live on a different scale entirely. So I quantile-matched the income and debt distributions to the training population and re-scored. It moved to 0.5446. Still noise. The failure was not cosmetic.
+
+Then I trained a model on that population's own real outcomes and re-scored **the same 300 applicants**. AUC went from 0.5079 to 0.7460. Same people, same features, different training population, and the signal reappeared.
+
+The relationship between financial features and default risk is not universal. It is a property of a specific population, in a specific credit market, at a specific time. Every real lender maintains population-specific models, and I had assumed that was regulatory caution rather than a hard empirical constraint. It is the constraint. The generalization test was the most valuable experiment in the project and it is the one I nearly skipped, because I expected it to confirm something.
+
+### 2. Fairness Had to Be Structural, Not a Promise
+
+The model never scores sex, marital status, or education. That is easy to say and easy to violate by accident six commits later when someone widens a schema.
+
+So it is not a convention. The API request schema is declared with `extra="forbid"`, which means an attempt to pass a protected attribute is rejected at the boundary as a validation error. The guarantee is enforced by the type system rather than by my memory.
+
+The audit still has to run, because exclusion is not the same as neutrality. Proxies leak. Measured against illustrative proxy groups that are never scoring inputs, the demographic-parity gap is 0.0617 by gender and 0.0481 by region, with equalized-odds gaps of 0.0569 and 0.0297. Those are numbers I can show someone, which is the point. I also check monotonicity: more debt has to move risk up, more income has to move it down, for every feature, with no reversals. A model that has learned that more income means more risk has learned an artifact, and it will find a way to look accurate while doing it.
+
+### 3. A Score Nobody Can Interrogate Is a Score Nobody Will Use
+
+This is the same lesson the Business Analyzer taught me, arriving from a different direction. A decline with no explanation is not a decision, it is a refusal.
+
+Every response carries ranked reasons drawn from SHAP values on the boosted branch plus a counterfactual over the payment sequence, and then something more useful than either: concrete advice. Not "your risk is 0.23" but "six months of on-time payments would move your risk from this to that." The first is a verdict. The second is something a person can act on, and it costs almost nothing to compute once you already have a calibrated model and a threshold you understand.
+
+---
+
+## What Production Actually Cost
+
+The modelling was the smaller half. Serving it meant API-key authentication, rate limiting, input validation, security headers, audit logging, batch scoring, a test suite, Docker, and CI.
+
+Two pieces I would not skip again. A drift monitor that computes Population Stability Index against the training distribution, because a model silently scoring a population that has moved is worse than no model. And a registry that catalogues every trained artifact with a SHA-256 fingerprint of the weights themselves rather than the config that produced them, because config lies about what actually got deployed and weights cannot.
+
+---
+
+## The Bigger Picture
+
+The Consumer Financial Protection Bureau found that **26 million Americans are credit invisible** and a further 19 million have records too thin to score. These are not people with bad credit. They are people with no credit, which the system treats as roughly the same thing.
+
+The tension in my own results is uncomfortable and worth stating. The best-performing variant I trained reaches 0.756 AUC by adding thirty-one more features, most of them bureau history. It is not deployed, because serving it requires a bureau lookup for the applicant. Which means the accurate model needs exactly the data that credit-invisible people do not have, and the model that works from seven self-reported fields is the one that can serve them, at 0.665.
+
+That is not a gap I can close with better architecture. It is what the problem actually looks like.
+
+A model that overstates what it knows about a person's future is not a better model. It is a more confident one, and confidence is the cheapest thing in machine learning.
