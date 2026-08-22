@@ -8,10 +8,11 @@ import {
   useInView,
   useMotionValueEvent,
   useTransform,
+  type MotionValue,
 } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
-import { Mail, ExternalLink, ArrowRight } from "lucide-react"
-import { SiGithub, SiPython, SiNumpy, SiPostgresql, SiGit, SiJupyter } from "react-icons/si"
+import { Mail, ExternalLink, ArrowRight, Rocket } from "lucide-react"
+import { SiGithub, SiPython, SiTypescript, SiPostgresql, SiFastapi, SiReact, SiNextdotjs, SiPytorch, SiScikitlearn, SiDocker } from "react-icons/si"
 import Link from "next/link"
 import Nav from "@/components/nav"
 import dynamic from "next/dynamic"
@@ -466,15 +467,121 @@ function FinanceAIMockup() {
   )
 }
 
+function CreditScoringMockup() {
+  const pd = 0.34
+  const R = 34, ARC = Math.PI * R
+  const drivers = [
+    { name: "EXT_SOURCE_2", w: 82, up: false, val: "-0.184" },
+    { name: "DAYS_EMPLOYED", w: 61, up: true, val: "+0.132" },
+    { name: "CREDIT / INCOME", w: 48, up: true, val: "+0.097" },
+    { name: "PAYMENT_HIST_12M", w: 37, up: false, val: "-0.071" },
+  ]
+  const decisions = [
+    { id: "APP-40192", pd: "0.11", band: "Approve", tone: "#22c55e" },
+    { id: "APP-40193", pd: "0.34", band: "Review", tone: "#f97316" },
+    { id: "APP-40194", pd: "0.72", band: "Decline", tone: "#555" },
+  ]
+  return (
+    <div className="flex flex-col h-full" style={{ background: "transparent" }}>
+      <WindowChrome title="credit-scoring-ml.pages.dev" />
+      <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22", background: "#050505" }}>
+        <span className="font-mono text-[10px] font-bold" style={{ color: "#ededed", letterSpacing: "0.1em" }}>CREDIT SCORING ML</span>
+        <span className="font-mono text-[8px] px-2 py-1 rounded-[3px]" style={{ border: "1px solid #1c1d22", color: "#999" }}>hybrid · xgb+lstm</span>
+      </div>
+
+      {/* Score gauge + decision */}
+      <div className="flex flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22" }}>
+        <div className="w-[132px] flex-shrink-0 flex items-center justify-center px-4 py-3" style={{ borderRight: "1px solid #1c1d22" }}>
+          <svg viewBox="0 0 100 60" className="w-full h-auto">
+            <path d="M 16 46 A 34 34 0 0 1 84 46" fill="none" stroke="#141414" strokeWidth="8" strokeLinecap="round" />
+            <motion.path d="M 16 46 A 34 34 0 0 1 84 46" fill="none" stroke="#f97316" strokeWidth="8" strokeLinecap="round"
+              initial={{ strokeDasharray: `0 ${ARC}` }}
+              animate={{ strokeDasharray: `${pd * ARC} ${ARC}` }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.25, 1, 0.5, 1] }} />
+            <text x="50" y="42" textAnchor="middle" fontSize="15" fontWeight="600" fill="#ededed">0.34</text>
+            <text x="50" y="55" textAnchor="middle" fontSize="6.5" fill="#555">DEFAULT PROB.</text>
+          </svg>
+        </div>
+        <div className="flex-1 flex flex-col justify-center px-4 py-3 gap-2">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[9px]" style={{ color: "#999" }}>APP-40193</span>
+            <span className="font-mono text-[8px] px-1.5 py-0.5 rounded-[2px]" style={{ border: "1px solid #f97316", color: "#f97316" }}>REVIEW</span>
+          </div>
+          <p className="font-mono text-[8px]" style={{ color: "#2a2a2a" }}>above approve cut-off 0.18 · below decline 0.55</p>
+          <div className="relative h-1.5 w-full rounded-full mt-0.5" style={{ background: "#0f0f0f" }}>
+            <div className="absolute inset-y-0 left-0 rounded-l-full" style={{ width: "18%", background: "#1a2e1f" }} />
+            <div className="absolute inset-y-0 rounded-r-full" style={{ left: "55%", right: 0, background: "#241414" }} />
+            <motion.div className="absolute -top-0.5 w-0.5 h-2.5 rounded-full" style={{ background: "#fff" }}
+              initial={{ left: "0%" }} animate={{ left: `${pd * 100}%` }} transition={{ delay: 0.5, duration: 0.7 }} />
+          </div>
+        </div>
+      </div>
+
+      {/* SHAP-style drivers */}
+      <div className="px-4 py-3 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22" }}>
+        <p className="font-mono text-[8px] tracking-widest uppercase mb-2.5" style={{ color: "#ccc" }}>Top Risk Drivers · SHAP</p>
+        <div className="space-y-2">
+          {drivers.map((d, i) => (
+            <div key={d.name} className="flex items-center gap-2">
+              <span className="font-mono text-[8px] w-[104px] flex-shrink-0 truncate" style={{ color: "#999" }}>{d.name}</span>
+              <div className="flex-1 h-1 rounded-full" style={{ background: "#0a0a0a" }}>
+                <motion.div className="h-1 rounded-full" style={{ background: d.up ? "#f97316" : "#22c55e", opacity: 0.55 }}
+                  initial={{ width: 0 }} animate={{ width: `${d.w}%` }}
+                  transition={{ delay: 0.5 + i * 0.08, duration: 0.6 }} />
+              </div>
+              <span className="font-mono text-[8px] w-[38px] text-right flex-shrink-0" style={{ color: d.up ? "#f97316" : "#22c55e" }}>{d.val}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Model health */}
+      <div className="grid grid-cols-3 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22" }}>
+        {[
+          { label: "Test AUC", value: "0.665" },
+          { label: "PSI drift", value: "0.04" },
+          { label: "Fairness gap", value: "0.062" },
+        ].map((k, i) => (
+          <motion.div key={k.label} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 + i * 0.08 }}
+            className="px-3 py-2.5" style={{ borderRight: i < 2 ? "1px solid #1c1d22" : "none" }}>
+            <p className="font-mono text-[7px] tracking-widest uppercase mb-1" style={{ color: "#ccc" }}>{k.label}</p>
+            <p className="font-mono text-[12px] leading-none" style={{ color: "#ededed" }}>{k.value}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Decision queue */}
+      <div className="flex-1 overflow-hidden">
+        <div className="px-4 py-1.5 flex gap-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
+          {["Application", "PD", "Decision"].map(h => (
+            <span key={h} className="font-mono text-[7px] flex-1" style={{ color: "#222" }}>{h}</span>
+          ))}
+        </div>
+        {decisions.map((d, i) => (
+          <motion.div key={d.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 + i * 0.09 }}
+            className="flex items-center gap-2 px-4 py-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
+            <span className="font-mono text-[8px] flex-1" style={{ color: "#555" }}>{d.id}</span>
+            <span className="font-mono text-[8px] flex-1" style={{ color: "#333" }}>{d.pd}</span>
+            <span className="font-mono text-[8px] flex-1" style={{ color: d.tone }}>{d.band}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── About Section ───────────────────────────────────────────────────────────
 function AboutSection() {
   const stack = [
     { name: "Python", Icon: SiPython },
-    { name: "NumPy", Icon: SiNumpy },
+    { name: "TypeScript", Icon: SiTypescript },
     { name: "PostgreSQL", Icon: SiPostgresql },
-    { name: "Git", Icon: SiGit },
-    { name: "GitHub", Icon: SiGithub },
-    { name: "Jupyter", Icon: SiJupyter },
+    { name: "FastAPI", Icon: SiFastapi },
+    { name: "React 19", Icon: SiReact },
+    { name: "Next.js", Icon: SiNextdotjs },
+    { name: "PyTorch", Icon: SiPytorch },
+    { name: "scikit-learn", Icon: SiScikitlearn },
+    { name: "Docker", Icon: SiDocker },
   ]
   const skills = [
     { name: "Python & Data Analysis", pct: 88 },
@@ -485,10 +592,14 @@ function AboutSection() {
     { name: "FastAPI & Backends", pct: 74 },
   ]
   const edu = [
-    { title: "Computer Science Engineering", sub: "New LJ Institute of Engineering & Technology", meta: "6th Semester", year: "2022 – 2026" },
+    { title: "Computer Science Engineering (AI-ML)", sub: "New L J Institute of Engineering & Technology · Ahmedabad", meta: "4th Year", year: "2023 – Present" },
     { title: "Engineering Plus: Python & Data Science", sub: "New LJ Institute · Certified", meta: "Completed", year: "2024" },
   ]
   const interests = ["Problem Solving", "Data Analysis", "Karate · Black Belt", "Japanese", "AI & ML"]
+  const mlEngineering = [
+    "Model calibration", "Threshold tuning", "Fairness auditing",
+    "Drift monitoring (PSI)", "Cross-population testing", "Model governance",
+  ]
 
   return (
     <section className="max-w-[1200px] mx-auto px-8 py-28">
@@ -574,6 +685,19 @@ function AboutSection() {
               ))}
             </div>
           </FadeUp>
+
+          {/* ML engineering practices */}
+          <FadeUp delay={0.18}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mt-10 mb-4" style={{ color: "#ccc" }}>ML Engineering</p>
+            <div className="flex flex-wrap gap-2">
+              {mlEngineering.map(item => (
+                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                  style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
         </div>
 
         {/* Right — education, experience, interests, resume */}
@@ -623,9 +747,9 @@ function AboutSection() {
               <div className="flex items-start justify-between gap-6 mb-3">
                 <div>
                   <p className="text-[14px] font-medium mb-1 transition-colors duration-200 group-hover:text-white"
-                    style={{ color: "#e0e0e0" }}>Sales &amp; Marketing Associate</p>
+                    style={{ color: "#e0e0e0" }}>Marketing &amp; Sales Associate</p>
                   <div className="flex items-center gap-2">
-                    <p className="font-mono text-[10px]" style={{ color: "#999" }}>2025 – Present</p>
+                    <p className="font-mono text-[10px]" style={{ color: "#999" }}>2026 – Present</p>
                     <span className="font-mono text-[8px] px-1.5 py-0.5"
                       style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 2, background: "rgba(255,255,255,0.03)" }}>
                       Agility
@@ -634,7 +758,9 @@ function AboutSection() {
                 </div>
               </div>
               <p className="text-[13px] leading-relaxed" style={{ color: "#bbb" }}>
-                Analyzed customer behavior data to identify upsell opportunities and track pipeline performance, bridging technical insight with business decisions.
+                Run end-to-end marketing and sales operations at an AI consulting firm, building and deploying automation
+                systems for email, content, YouTube asset production, and outreach with Python, n8n, and make.com.
+                Also handle structured B2B platform research and competitive analysis for global positioning.
               </p>
             </motion.div>
           </FadeUp>
@@ -885,9 +1011,35 @@ function CredentialsSection() {
         </Reveal>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Certificate */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* ISRO hackathon — participation */}
         <FadeUp>
+          <a href="/isro-antariksh-hackathon-2026.pdf" target="_blank" rel="noopener noreferrer"
+            className="group flex flex-col rounded-xl p-8 h-full transition-all duration-300"
+            style={{ border: "1px solid #1c1d22", background: "transparent" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#2e2e2e" }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}>
+            <div className="flex-1 flex items-center justify-center py-12 rounded-lg mb-8"
+              style={{ background: "#030303", border: "1px solid #1c1d22" }}>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ border: "1px solid #f97316" }}>
+                  <Rocket className="w-[18px] h-[18px]" style={{ color: "#fff" }} />
+                </div>
+                <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3" style={{ color: "#ccc" }}>Certificate of Participation</p>
+                <p className="text-[15px] font-medium" style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>Bharatiya Antariksh</p>
+                <p className="font-mono text-[9px] mt-1.5" style={{ color: "#bbb" }}>Hackathon 2026</p>
+              </div>
+            </div>
+            <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Bharatiya Antariksh Hackathon 2026</p>
+            <p className="font-mono text-[10px] mb-1" style={{ color: "#999" }}>ISRO · powered by Hack2skill · Idea submission</p>
+            <p className="font-mono text-[9px] mb-5" style={{ color: "#555" }}>ID 2026H2S06BAH-P05765</p>
+            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
+          </a>
+        </FadeUp>
+
+        {/* Certificate */}
+        <FadeUp delay={0.08}>
           <a href="/certificate.pdf" target="_blank" rel="noopener noreferrer"
             className="group flex flex-col rounded-xl p-8 h-full transition-all duration-300"
             style={{ border: "1px solid #1c1d22", background: "transparent" }}
@@ -912,7 +1064,7 @@ function CredentialsSection() {
         </FadeUp>
 
         {/* Resume */}
-        <FadeUp delay={0.08}>
+        <FadeUp delay={0.16}>
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
             className="group flex flex-col rounded-xl p-8 h-full transition-all duration-300"
             style={{ border: "1px solid #1c1d22", background: "transparent" }}
@@ -934,7 +1086,7 @@ function CredentialsSection() {
               </div>
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari: Résumé</p>
-            <p className="font-mono text-[10px] mb-5" style={{ color: "#999" }}>Data Analyst &amp; AI Developer · 2026</p>
+            <p className="font-mono text-[10px] mb-5" style={{ color: "#999" }}>Data Science &amp; AI Engineer · 2026</p>
             <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>Download PDF ↓</span>
           </a>
         </FadeUp>
@@ -975,6 +1127,16 @@ const projects = [
     github: "https://github.com/Kanishk1217/Financial_AI",
     Mockup: FinanceAIMockup,
   },
+  {
+    title: "Credit Scoring ML",
+    sub: "Loan Default Risk Engine",
+    year: "2026",
+    desc: "Classical ML through to a hybrid XGBoost + LSTM model, served behind a hardened FastAPI service with key-based auth. Calibrated probabilities, cost-based decision thresholds, fairness audits, and PSI drift monitoring.",
+    tags: ["Python", "XGBoost", "PyTorch", "FastAPI", "React"],
+    link: "https://credit-scoring-ml.pages.dev/",
+    github: "https://github.com/Kanishk1217/credit-scoring-ml",
+    Mockup: CreditScoringMockup,
+  },
 ]
 
 const services = [
@@ -995,30 +1157,104 @@ const marqueeItems = [
   "PostgreSQL", "TypeScript", "Data Analysis", "AI Development",
 ]
 
+// ─── Scroll band math ────────────────────────────────────────────────────────
+// Each project owns 1/n of the scroll. Crossfades are centred on the segment
+// boundaries with half-width W, so they stay in sync with the progress pills.
+// The first project starts fully opaque and the last holds to 1.0 — without
+// those clamps a project silently never appears.
+type Project = (typeof projects)[number]
+
+function bandKeyframes(i: number, n: number) {
+  const seg = 1 / n
+  const W = Math.min(0.065, seg / 3)
+  const fadeIn = i * seg
+  const fadeOut = (i + 1) * seg
+  const first = i === 0
+  const last = i === n - 1
+
+  if (first && last) return { times: [0, 1], op: [1, 1], y: [0, 0], mock: [0, 0] }
+  if (first) return {
+    times: [0, fadeOut - W, fadeOut + W, 1],
+    op: [1, 1, 0, 0], y: [0, 0, -20, -20], mock: [0, 0, -80, -80],
+  }
+  if (last) return {
+    times: [0, fadeIn - W, fadeIn + W, 1],
+    op: [0, 0, 1, 1], y: [20, 20, 0, 0], mock: [80, 80, 0, 0],
+  }
+  return {
+    times: [0, fadeIn - W, fadeIn + W, fadeOut - W, fadeOut + W, 1],
+    op: [0, 0, 1, 1, 0, 0], y: [20, 20, 0, 0, -20, -20], mock: [80, 80, 0, 0, -80, -80],
+  }
+}
+
+// Split into two children so each calls useTransform unconditionally — they sit
+// in different DOM containers, so this can't be one component.
+function ProjectText({ p, i, n, progress, active }: {
+  p: Project; i: number; n: number; progress: MotionValue<number>; active: boolean
+}) {
+  const kf = bandKeyframes(i, n)
+  const opacity = useTransform(progress, kf.times, kf.op)
+  const y = useTransform(progress, kf.times, kf.y)
+  return (
+    <motion.div
+      className="absolute inset-0"
+      style={{ opacity, y, pointerEvents: active ? "auto" : "none" }}
+    >
+      <h3 className="leading-[1] tracking-[-0.025em] mb-2"
+        style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
+        {p.title}
+      </h3>
+      <p className="font-mono text-[10px] mb-7" style={{ color: "#999" }}>
+        {p.sub} · {p.year}
+      </p>
+      <p className="text-[14px] leading-[1.8] mb-7" style={{ color: "#bbb", maxWidth: 380 }}>
+        {p.desc}
+      </p>
+      <div className="flex flex-wrap gap-1.5 mb-8">
+        {p.tags.map(tag => (
+          <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+            style={{ border: "1px solid #333", color: "#ccc" }}>{tag}</span>
+        ))}
+      </div>
+      <div className="flex items-center gap-4">
+        {p.github && (
+          <a href={p.github} target="_blank" rel="noopener noreferrer"
+            className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-white"
+            style={{ color: "#ccc" }}>
+            <SiGithub className="w-3.5 h-3.5" /> Source
+          </a>
+        )}
+        {p.link && (
+          <a href={p.link} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
+            style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+            Live Demo <ExternalLink className="w-3 h-3" />
+          </a>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
+function ProjectMockup({ p, i, n, progress }: {
+  p: Project; i: number; n: number; progress: MotionValue<number>
+}) {
+  const kf = bandKeyframes(i, n)
+  const opacity = useTransform(progress, kf.times, kf.op)
+  const y = useTransform(progress, kf.times, kf.mock)
+  const M = p.Mockup
+  return (
+    <motion.div className="absolute inset-0" style={{ opacity, y }}>
+      <M />
+    </motion.div>
+  )
+}
+
 // ─── Work Section (scroll-scrubbed) ──────────────────────────────────────────
 function WorkSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] })
-
-  // Each opacity/y value is a direct function of scrollYProgress — no state transitions.
-  // Crossfade zone is the 0.25–0.38 and 0.62–0.75 bands. Pausing mid-scroll = visual pauses.
-  const op0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],       [1, 1, 0, 0])
-  const op1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [0, 0, 1, 1, 0, 0])
-  const op2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],       [0, 0, 1, 1])
-
-  const y0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],       [0, 0, -20, -20])
-  const y1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [20, 20, 0, 0, -20, -20])
-  const y2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],       [20, 20, 0, 0])
-
-  const opacities = [op0, op1, op2]
-  const yVals = [y0, y1, y2]
-
-  // Mockup Y: outgoing slides up and out, incoming slides up into view
-  // overflow-hidden on the container clips the movement at the panel edge
-  const mockY0 = useTransform(scrollYProgress, [0, 0.25, 0.38, 1],             [0, 0, -80, -80])
-  const mockY1 = useTransform(scrollYProgress, [0, 0.25, 0.38, 0.62, 0.75, 1], [80, 80, 0, 0, -80, -80])
-  const mockY2 = useTransform(scrollYProgress, [0, 0.62, 0.75, 1],             [80, 80, 0, 0])
-  const mockYVals = [mockY0, mockY1, mockY2]
+  const n = projects.length
 
   // Active index drives only the progress pills
   const [active, setActive] = useState(0)
@@ -1044,8 +1280,8 @@ function WorkSection() {
         </Reveal>
       </div>
 
-      {/* 400vh = ~133vh of scroll per project */}
-      <div ref={containerRef} style={{ height: "400vh" }}>
+      {/* ~133vh of scroll per project */}
+      <div ref={containerRef} style={{ height: `${n * 133}vh` }}>
         <div className="sticky overflow-hidden" style={{ top: 56, height: "calc(100vh - 56px)" }}>
 
           {/* Full-viewport flex: text aligns to page grid, mockup fills right edge-to-edge */}
@@ -1060,7 +1296,7 @@ function WorkSection() {
                 {/* Progress pills */}
                 <div className="flex items-center gap-3 mb-8">
                   <span className="font-mono text-[10px]" style={{ color: "#bbb" }}>
-                    0{active + 1} / 0{projects.length}
+                    {String(active + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
                   </span>
                   <div className="flex gap-2 items-center">
                     {projects.map((_, i) => (
@@ -1073,43 +1309,11 @@ function WorkSection() {
                   </div>
                 </div>
 
-                {/* All 3 text blocks stacked; opacity + y driven by scroll */}
+                {/* All text blocks stacked; opacity + y driven by scroll */}
                 <div className="relative" style={{ height: 360 }}>
                   {projects.map((p, i) => (
-                    <motion.div
-                      key={p.title}
-                      className="absolute inset-0"
-                      style={{ opacity: opacities[i], y: yVals[i], pointerEvents: i === active ? "auto" : "none" }}
-                    >
-                      <h3 className="leading-[1] tracking-[-0.025em] mb-2"
-                        style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
-                        {p.title}
-                      </h3>
-                      <p className="font-mono text-[10px] mb-7" style={{ color: "#999" }}>
-                        {p.sub} · {p.year}
-                      </p>
-                      <p className="text-[14px] leading-[1.8] mb-7" style={{ color: "#bbb", maxWidth: 380 }}>
-                        {p.desc}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mb-8">
-                        {p.tags.map(tag => (
-                          <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
-                            style={{ border: "1px solid #333", color: "#ccc" }}>{tag}</span>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <a href={p.github} target="_blank" rel="noopener noreferrer"
-                          className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-white"
-                          style={{ color: "#ccc" }}>
-                          <SiGithub className="w-3.5 h-3.5" /> Source
-                        </a>
-                        <a href={p.link} target="_blank" rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
-                          style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
-                          Live Demo <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                    </motion.div>
+                    <ProjectText key={p.title} p={p} i={i} n={n}
+                      progress={scrollYProgress} active={i === active} />
                   ))}
                 </div>
               </div>
@@ -1120,18 +1324,9 @@ function WorkSection() {
               className="w-full lg:w-[58%] relative overflow-hidden"
               style={{ borderLeft: "1px solid #1c1d22", background: "transparent" }}
             >
-              {projects.map((p, i) => {
-                const M = p.Mockup
-                return (
-                  <motion.div
-                    key={p.title}
-                    className="absolute inset-0"
-                    style={{ opacity: opacities[i], y: mockYVals[i] }}
-                  >
-                    <M />
-                  </motion.div>
-                )
-              })}
+              {projects.map((p, i) => (
+                <ProjectMockup key={p.title} p={p} i={i} n={n} progress={scrollYProgress} />
+              ))}
             </div>
 
           </div>
@@ -1219,7 +1414,7 @@ export default function Home() {
       <section className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="grid grid-cols-2 md:grid-cols-4" style={{ border: "1px solid #1c1d22" }}>
           {[
-            { to: 3, suffix: "", label: "AI tools shipped" },
+            { to: 4, suffix: "", label: "AI tools shipped" },
             { to: 2, suffix: " wk", label: "average delivery" },
             { to: 500, suffix: "k+", label: "rows processed" },
             { to: 100, suffix: "%", label: "on-time delivery" },
