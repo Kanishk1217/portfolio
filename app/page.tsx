@@ -600,6 +600,11 @@ function AboutSection() {
     "Model calibration", "Threshold tuning", "Fairness auditing",
     "Drift monitoring (PSI)", "Cross-population testing", "Model governance",
   ]
+  const platforms = [
+    "Plaid API", "Supabase", "Brevo", "Cloudflare Pages", "Render",
+    "GitHub Actions", "Tailwind CSS", "Pandas", "n8n", "make.com",
+    "Apps Script · Gmail + Sheets",
+  ]
 
   return (
     <section className="max-w-[1200px] mx-auto px-8 py-28">
@@ -691,6 +696,19 @@ function AboutSection() {
             <p className="font-mono text-[10px] tracking-[0.22em] uppercase mt-10 mb-4" style={{ color: "#ccc" }}>ML Engineering</p>
             <div className="flex flex-wrap gap-2">
               {mlEngineering.map(item => (
+                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                  style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
+
+          {/* Platforms & tooling */}
+          <FadeUp delay={0.22}>
+            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mt-10 mb-4" style={{ color: "#ccc" }}>Platforms &amp; Tools</p>
+            <div className="flex flex-wrap gap-2">
+              {platforms.map(item => (
                 <span key={item} className="font-mono text-[10px] px-3 py-1.5"
                   style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
                   {item}
@@ -1153,8 +1171,9 @@ const posts = [
 ]
 
 const marqueeItems = [
-  "Python", "FastAPI", "React", "Machine Learning",
-  "PostgreSQL", "TypeScript", "Data Analysis", "AI Development",
+  "Python", "TypeScript", "FastAPI", "React", "Next.js",
+  "Machine Learning", "XGBoost", "PyTorch", "PostgreSQL",
+  "Docker", "Data Analysis", "Automation", "AI Development",
 ]
 
 // ─── Scroll band math ────────────────────────────────────────────────────────
