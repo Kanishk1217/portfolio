@@ -262,14 +262,14 @@ function BusinessAnalyzerMockup() {
       <div className="flex items-center gap-5 px-4 py-2.5 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22", background: "#050505" }}>
         <span className="font-mono text-[10px] font-bold" style={{ color: "#ededed", letterSpacing: "0.12em" }}>BA</span>
         {["Dashboard", "Analysis", "Reports"].map((item, i) => (
-          <span key={item} className="font-mono text-[9px]" style={{ color: i === 0 ? "#ededed" : "#2a2a2a" }}>{item}</span>
+          <span key={item} className="font-mono text-[9px]" style={{ color: i === 0 ? "#ededed" : "#7a7a7a" }}>{item}</span>
         ))}
       </div>
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-shrink-0 w-[110px] flex flex-col gap-0.5 py-3 px-2" style={{ borderRight: "1px solid #1c1d22", background: "#030303" }}>
           {[["Overview", true], ["Revenue", false], ["Customers", false], ["Predictions", false], ["Settings", false]].map(([label, active]) => (
             <div key={label as string} className="px-2.5 py-1.5 rounded-[3px]" style={{ background: active ? "#0f0f0f" : "transparent" }}>
-              <span className="font-mono text-[9px]" style={{ color: active ? "#ededed" : "#2a2a2a" }}>{label as string}</span>
+              <span className="font-mono text-[9px]" style={{ color: active ? "#ededed" : "#7a7a7a" }}>{label as string}</span>
             </div>
           ))}
         </div>
@@ -304,14 +304,14 @@ function BusinessAnalyzerMockup() {
             </div>
             <div className="flex gap-1 mt-1">
               {bars.map(b => (
-                <span key={b.label} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#222" }}>{b.label}</span>
+                <span key={b.label} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#7a7a7a" }}>{b.label}</span>
               ))}
             </div>
           </div>
           <div className="flex-1 overflow-hidden">
             <div className="px-3 py-1.5 flex gap-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
               {["Company", "Predicted", "Actual", "Acc."].map(h => (
-                <span key={h} className="font-mono text-[7px] flex-1" style={{ color: "#222" }}>{h}</span>
+                <span key={h} className="font-mono text-[7px] flex-1" style={{ color: "#7a7a7a" }}>{h}</span>
               ))}
             </div>
             {[
@@ -322,7 +322,7 @@ function BusinessAnalyzerMockup() {
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 + i * 0.1 }}
                 className="flex items-center gap-2 px-3 py-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
                 {row.map((cell, j) => (
-                  <span key={j} className="font-mono text-[8px] flex-1" style={{ color: j === 0 ? "#555" : j === 3 ? "#22c55e" : "#333" }}>{cell}</span>
+                  <span key={j} className="font-mono text-[8px] flex-1" style={{ color: j === 0 ? "#999999" : j === 3 ? "#22c55e" : "#7a7a7a" }}>{cell}</span>
                 ))}
               </motion.div>
             ))}
@@ -350,8 +350,8 @@ function CSVAnalyzerMockup() {
       <div className="flex items-center gap-4 px-4 py-2.5 flex-shrink-0" style={{ borderBottom: "1px solid #1c1d22", background: "#030303" }}>
         <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e" }} />
         <span className="font-mono text-[9px]" style={{ color: "#aaa" }}>sales_data_q4.csv</span>
-        <span className="font-mono text-[8px]" style={{ color: "#2a2a2a" }}>1,247 rows · 8 cols</span>
-        <span className="font-mono text-[8px] ml-auto" style={{ color: "#2a2a2a" }}>1.2s</span>
+        <span className="font-mono text-[8px]" style={{ color: "#7a7a7a" }}>1,247 rows · 8 cols</span>
+        <span className="font-mono text-[8px] ml-auto" style={{ color: "#7a7a7a" }}>1.2s</span>
       </div>
       <div className="flex-1 overflow-hidden p-3 grid grid-cols-2 gap-2 content-start">
         {cols.map((col, i) => (
@@ -363,29 +363,29 @@ function CSVAnalyzerMockup() {
             </div>
             <div className="flex gap-4 mb-2">
               <div>
-                <p className="font-mono text-[7px] mb-0.5" style={{ color: "#2a2a2a" }}>unique</p>
+                <p className="font-mono text-[7px] mb-0.5" style={{ color: "#7a7a7a" }}>unique</p>
                 <p className="font-mono text-[9px]" style={{ color: "#bbb" }}>{col.unique}</p>
               </div>
               <div>
-                <p className="font-mono text-[7px] mb-0.5" style={{ color: "#2a2a2a" }}>null %</p>
-                <p className="font-mono text-[9px]" style={{ color: col.nullPct === "0.0%" ? "#555" : "#f97316" }}>{col.nullPct}</p>
+                <p className="font-mono text-[7px] mb-0.5" style={{ color: "#7a7a7a" }}>null %</p>
+                <p className="font-mono text-[9px]" style={{ color: col.nullPct === "0.0%" ? "#7a7a7a" : "#f97316" }}>{col.nullPct}</p>
               </div>
             </div>
             <div className="h-1 w-full rounded-full mb-1.5" style={{ background: "#0a0a0a" }}>
               <motion.div className="h-1 rounded-full" initial={{ width: 0 }} animate={{ width: `${col.barW}%` }}
                 transition={{ delay: 0.4 + i * 0.1, duration: 0.7 }} style={{ background: "#222" }} />
             </div>
-            <p className="font-mono text-[7px] truncate" style={{ color: "#2a2a2a" }}>{col.note}</p>
+            <p className="font-mono text-[7px] truncate" style={{ color: "#7a7a7a" }}>{col.note}</p>
           </motion.div>
         ))}
       </div>
       <div className="flex-shrink-0" style={{ borderTop: "1px solid #1c1d22" }}>
-        <div className="px-4 py-1.5"><p className="font-mono text-[7px] tracking-widest uppercase" style={{ color: "#1c1c1c" }}>Sample Data</p></div>
+        <div className="px-4 py-1.5"><p className="font-mono text-[7px] tracking-widest uppercase" style={{ color: "#7a7a7a" }}>Sample Data</p></div>
         {[["1001", "Electronics", "$1,247", "2024-03-15"], ["1002", "Clothing", "$89", "2024-03-15"], ["1003", "Electronics", "$2,840", "2024-03-16"]].map((row, i) => (
           <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 + i * 0.08 }}
             className="flex px-4 py-1.5" style={{ borderTop: "1px solid #0a0a0a" }}>
             {row.map((cell, j) => (
-              <span key={j} className="font-mono text-[8px] flex-1" style={{ color: j === 0 ? "#444" : "#2a2a2a" }}>{cell}</span>
+              <span key={j} className="font-mono text-[8px] flex-1" style={{ color: j === 0 ? "#999999" : "#7a7a7a" }}>{cell}</span>
             ))}
           </motion.div>
         ))}
@@ -444,7 +444,7 @@ function FinanceAIMockup() {
                 transition={{ delay: 0.3 + i * 0.1, duration: 0.55 }} />
             ))}
             <text x="55" y="51" textAnchor="middle" fontSize="10" fontWeight="600" fill="#ededed">$6.6k</text>
-            <text x="55" y="64" textAnchor="middle" fontSize="7" fill="#444">spent</text>
+            <text x="55" y="64" textAnchor="middle" fontSize="7" fill="#7a7a7a">spent</text>
           </svg>
         </div>
         <div className="flex-1 flex flex-col justify-center py-2">
@@ -453,22 +453,22 @@ function FinanceAIMockup() {
               className="flex items-center gap-2 px-3 py-1">
               <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />
               <span className="font-mono text-[8px] flex-1" style={{ color: "#999" }}>{c.label}</span>
-              <span className="font-mono text-[8px]" style={{ color: "#2a2a2a" }}>{c.pct}%</span>
+              <span className="font-mono text-[8px]" style={{ color: "#7a7a7a" }}>{c.pct}%</span>
               <span className="font-mono text-[8px]" style={{ color: "#ccc" }}>{c.amount}</span>
             </motion.div>
           ))}
         </div>
       </div>
       <div className="flex-1 overflow-hidden">
-        <div className="px-4 py-1.5"><p className="font-mono text-[7px] tracking-widest uppercase" style={{ color: "#1c1c1c" }}>Recent Transactions</p></div>
+        <div className="px-4 py-1.5"><p className="font-mono text-[7px] tracking-widest uppercase" style={{ color: "#7a7a7a" }}>Recent Transactions</p></div>
         {txns.map((t, i) => (
           <motion.div key={t.name} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 + i * 0.08 }}
             className="flex items-center justify-between px-4 py-2" style={{ borderTop: "1px solid #0a0a0a" }}>
             <div>
               <p className="font-mono text-[9px]" style={{ color: "#bbb" }}>{t.name}</p>
-              <p className="font-mono text-[7px]" style={{ color: "#222" }}>{t.cat} · {t.time}</p>
+              <p className="font-mono text-[7px]" style={{ color: "#7a7a7a" }}>{t.cat} · {t.time}</p>
             </div>
-            <p className="font-mono text-[9px] font-medium" style={{ color: t.pos ? "#22c55e" : "#444" }}>{t.amount}</p>
+            <p className="font-mono text-[9px] font-medium" style={{ color: t.pos ? "#22c55e" : "#7a7a7a" }}>{t.amount}</p>
           </motion.div>
         ))}
       </div>
@@ -488,7 +488,7 @@ function CreditScoringMockup() {
   const decisions = [
     { id: "APP-40192", pd: "0.11", band: "Approve", tone: "#22c55e" },
     { id: "APP-40193", pd: "0.34", band: "Review", tone: "#f97316" },
-    { id: "APP-40194", pd: "0.72", band: "Decline", tone: "#555" },
+    { id: "APP-40194", pd: "0.72", band: "Decline", tone: "#7a7a7a" },
   ]
   return (
     <div className="flex flex-col h-full" style={{ background: "transparent" }}>
@@ -508,7 +508,7 @@ function CreditScoringMockup() {
               animate={{ strokeDasharray: `${pd * ARC} ${ARC}` }}
               transition={{ delay: 0.3, duration: 0.8, ease: [0.25, 1, 0.5, 1] }} />
             <text x="50" y="42" textAnchor="middle" fontSize="15" fontWeight="600" fill="#ededed">0.34</text>
-            <text x="50" y="55" textAnchor="middle" fontSize="6.5" fill="#555">DEFAULT PROB.</text>
+            <text x="50" y="55" textAnchor="middle" fontSize="6.5" fill="#7a7a7a">DEFAULT PROB.</text>
           </svg>
         </div>
         <div className="flex-1 flex flex-col justify-center px-4 py-3 gap-2">
@@ -516,7 +516,7 @@ function CreditScoringMockup() {
             <span className="font-mono text-[9px]" style={{ color: "#999" }}>APP-40193</span>
             <span className="font-mono text-[8px] px-1.5 py-0.5 rounded-[2px]" style={{ border: "1px solid #f97316", color: "#f97316" }}>REVIEW</span>
           </div>
-          <p className="font-mono text-[8px]" style={{ color: "#2a2a2a" }}>above approve cut-off 0.18 · below decline 0.55</p>
+          <p className="font-mono text-[8px]" style={{ color: "#7a7a7a" }}>above approve cut-off 0.18 · below decline 0.55</p>
           <div className="relative h-1.5 w-full rounded-full mt-0.5" style={{ background: "#0f0f0f" }}>
             <div className="absolute inset-y-0 left-0 rounded-l-full" style={{ width: "18%", background: "#1a2e1f" }} />
             <div className="absolute inset-y-0 rounded-r-full" style={{ left: "55%", right: 0, background: "#241414" }} />
@@ -563,14 +563,14 @@ function CreditScoringMockup() {
       <div className="flex-1 overflow-hidden">
         <div className="px-4 py-1.5 flex gap-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
           {["Application", "PD", "Decision"].map(h => (
-            <span key={h} className="font-mono text-[7px] flex-1" style={{ color: "#222" }}>{h}</span>
+            <span key={h} className="font-mono text-[7px] flex-1" style={{ color: "#7a7a7a" }}>{h}</span>
           ))}
         </div>
         {decisions.map((d, i) => (
           <motion.div key={d.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 + i * 0.09 }}
             className="flex items-center gap-2 px-4 py-2" style={{ borderBottom: "1px solid #0a0a0a" }}>
-            <span className="font-mono text-[8px] flex-1" style={{ color: "#555" }}>{d.id}</span>
-            <span className="font-mono text-[8px] flex-1" style={{ color: "#333" }}>{d.pd}</span>
+            <span className="font-mono text-[8px] flex-1" style={{ color: "#999999" }}>{d.id}</span>
+            <span className="font-mono text-[8px] flex-1" style={{ color: "#7a7a7a" }}>{d.pd}</span>
             <span className="font-mono text-[8px] flex-1" style={{ color: d.tone }}>{d.band}</span>
           </motion.div>
         ))}
@@ -683,7 +683,7 @@ function AboutSection() {
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="font-mono text-[10px]" style={{ color: "#999" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#2a2a2a" }}>{s.pct}%</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#7a7a7a" }}>{s.pct}%</span>
                   </div>
                   <div className="h-px w-full" style={{ background: "#0f0f0f" }}>
                     <motion.div
@@ -849,7 +849,7 @@ function CapabilitySection() {
             <div className="flex items-end justify-between mb-8">
               <div>
                 <p className="font-mono text-[9px] tracking-widest uppercase mb-2"
-                  style={{ color: "#2a2a2a" }}>Revenue YTD</p>
+                  style={{ color: "#7a7a7a" }}>Revenue YTD</p>
                 <p className="text-[36px] leading-none tracking-[-0.03em]"
                   style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>
                   $84.2k
@@ -879,7 +879,7 @@ function CapabilitySection() {
             <div className="flex gap-1.5 mt-2">
               {months.map((m, i) => (
                 <span key={i} className="flex-1 font-mono text-[8px] text-center"
-                  style={{ color: "#2a2a2a" }}>{m}</span>
+                  style={{ color: "#7a7a7a" }}>{m}</span>
               ))}
             </div>
           </div>
@@ -961,7 +961,7 @@ function CapabilitySection() {
               {/* Node labels */}
               {inNodes.map((n, i) => (
                 <text key={`il-${i}`} x={n.x} y={n.y + 4} textAnchor="middle"
-                  fontSize="6" fill="#2a2a2a" fontFamily="monospace">x{i + 1}</text>
+                  fontSize="6" fill="#7a7a7a" fontFamily="monospace">x{i + 1}</text>
               ))}
               {outNodes.map((n, i) => (
                 <text key={`ol-${i}`} x={n.x} y={n.y + 4} textAnchor="middle"
@@ -996,7 +996,7 @@ function CapabilitySection() {
                   <p className="font-mono text-[10px] font-medium mb-0.5"
                     style={{ color: "#aaa" }}>{layer.label}</p>
                   <p className="font-mono text-[8px]"
-                    style={{ color: "#2a2a2a" }}>{layer.sub}</p>
+                    style={{ color: "#7a7a7a" }}>{layer.sub}</p>
                 </div>
                 <motion.div
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -1060,7 +1060,7 @@ function CredentialsSection() {
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Bharatiya Antariksh Hackathon 2026</p>
             <p className="font-mono text-[10px] mb-1" style={{ color: "#999" }}>ISRO · powered by Hack2skill · Idea submission</p>
-            <p className="font-mono text-[9px] mb-5" style={{ color: "#555" }}>ID 2026H2S06BAH-P05765</p>
+            <p className="font-mono text-[9px] mb-5" style={{ color: "#7a7a7a" }}>ID 2026H2S06BAH-P05765</p>
             <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
           </a>
         </FadeUp>
@@ -1251,7 +1251,7 @@ function AutomationSection() {
                   <div key={l.name}>
                     <div className="flex items-baseline justify-between mb-1">
                       <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{l.name}</span>
-                      <span className="font-mono text-[9px]" style={{ color: "#555" }}>{l.count}</span>
+                      <span className="font-mono text-[9px]" style={{ color: "#7a7a7a" }}>{l.count}</span>
                     </div>
                     <div className="h-1 w-full rounded-full" style={{ background: "#0a0a0a" }}>
                       <motion.div className="h-1 rounded-full" style={{ background: "#222" }}
@@ -1279,7 +1279,7 @@ function AutomationSection() {
               </div>
               <div className="flex gap-1 mt-1.5">
                 {["M","T","W","T","F","S","S"].map((d, i) => (
-                  <span key={i} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#2a2a2a" }}>{d}</span>
+                  <span key={i} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#7a7a7a" }}>{d}</span>
                 ))}
               </div>
             </div>
