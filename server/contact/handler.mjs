@@ -27,7 +27,7 @@ export async function handle(request, env, fetchImpl = fetch) {
   if (v.spam) return json(200, { ok: true }, headers);               // look successful to bots, store nothing
   if (!v.ok) return json(400, { ok: false, errors: v.errors }, headers);
 
-  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return json(500, { ok: false }, headers);
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return json(500, { ok: false, code: "config_missing" }, headers);
   const sb = { apikey: env.SUPABASE_SERVICE_ROLE_KEY, authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`, "content-type": "application/json" };
   const rest = `${env.SUPABASE_URL.replace(/\/$/, "")}/rest/v1/contact_requests`;
   const ipHash = await sha((request.headers.get("cf-connecting-ip") || "unknown") + (env.IP_SALT || ""));
@@ -39,7 +39,7 @@ export async function handle(request, env, fetchImpl = fetch) {
 
     const ins = await fetchImpl(rest, { method: "POST", headers: { ...sb, prefer: "return=representation" },
       body: JSON.stringify({ ...v.value, source: "portfolio", page_url: request.headers.get("referer") || origin || null, ip_hash: ipHash }) });
-    if (!ins.ok) return json(500, { ok: false }, headers);
+    if (!ins.ok) return json(500, { ok: false, code: `supabase_insert_${ins.status}` }, headers);
     const id = (await ins.json())[0]?.id;
 
     let patch = null;
@@ -53,7 +53,7 @@ export async function handle(request, env, fetchImpl = fetch) {
     } else patch = { notify_error: "RESEND_API_KEY not set" };
     if (id) await fetchImpl(`${rest}?id=eq.${id}`, { method: "PATCH", headers: sb, body: JSON.stringify(patch) });
     return json(200, { ok: true }, headers);
-  } catch {
-    return json(500, { ok: false }, headers);
+  } catch (e) {
+    return json(500, { ok: false, code: `exception_${String(e && e.name || "error").replace(/[^A-Za-z0-9_]/g, "").slice(0, 30)}` }, headers);
   }
 }

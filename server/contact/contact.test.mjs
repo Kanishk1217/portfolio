@@ -79,7 +79,17 @@ test("handler: oversized body refused", async () => {
 });
 test("handler: missing Supabase config is a generic 500", async () => {
   const s = stub(); const res = await handle(post({ email: "a@b.co" }), { RESEND_API_KEY: "rk" }, s.impl);
-  assert.equal(res.status, 500); assert.equal((await res.json()).ok, false);
+  assert.equal(res.status, 500); const j = await res.json(); assert.equal(j.ok, false); assert.equal(j.code, "config_missing");
+});
+test("handler: a rejected database insert reports a safe code with the status only", async () => {
+  const s = stub({ insertOk: false }); const res = await handle(post({ email: "a@b.co" }), ENV, s.impl);
+  const j = await res.json(); assert.equal(res.status, 500); assert.equal(j.code, "supabase_insert_500");
+  assert.ok(!JSON.stringify(j).includes("svc") && !JSON.stringify(j).includes("rk"));
+});
+test("handler: an unexpected exception reports only its type name", async () => {
+  const boom = async () => { const e = new TypeError("secret svc detail"); throw e; };
+  const res = await handle(post({ email: "a@b.co" }), ENV, boom);
+  const j = await res.json(); assert.equal(res.status, 500); assert.equal(j.code, "exception_TypeError"); assert.ok(!JSON.stringify(j).includes("secret"));
 });
 test("handler: email provider failure still saves and records the error", async () => {
   const s = stub({ mailOk: false }); const res = await handle(post({ email: "a@b.co" }), ENV, s.impl);
