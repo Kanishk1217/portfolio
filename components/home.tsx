@@ -16,6 +16,7 @@ import { Mail, ExternalLink, ArrowRight, Rocket } from "lucide-react"
 import { SiGithub, SiPython, SiTypescript, SiPostgresql, SiFastapi, SiReact, SiNextdotjs, SiPytorch, SiScikitlearn, SiDocker } from "react-icons/si"
 import Link from "next/link"
 import Nav from "@/components/nav"
+import ContactForm from "@/components/contact-form"
 import type { PostMeta } from "@/lib/blog"
 import dynamic from "next/dynamic"
 const BackgroundScene = dynamic(() => import("@/components/background-scene"), { ssr: false })
@@ -1679,6 +1680,33 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 ml-4 transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style={{ color: "#bbb" }} />
             </motion.a>
           ))}
+        </div>
+      </section>
+
+      {/* ══ CONTACT */}
+      <section id="contact" className="max-w-[1200px] mx-auto px-8 py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-12 lg:gap-16">
+          <div>
+            <FadeUp className="mb-5">
+              <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: "#999", letterSpacing: "0.18em" }}>
+                Contact
+              </span>
+            </FadeUp>
+            <Reveal>
+              <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
+                style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
+                Get in touch
+              </h2>
+            </Reveal>
+            <FadeUp delay={0.1}>
+              <p className="font-mono text-[12px] leading-[1.9] mt-8 max-w-[380px]" style={{ color: "#aaa" }}>
+                AI chatbot for my business. Machine learning and data science. Website or web app development. AI dashboards and analytics. Business automation (email, sheets, WhatsApp).
+              </p>
+            </FadeUp>
+          </div>
+          <FadeUp delay={0.1}>
+            <ContactForm />
+          </FadeUp>
         </div>
       </section>
 
