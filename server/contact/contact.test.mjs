@@ -52,6 +52,11 @@ test("handler: happy path stores, emails, marks notified", async () => {
   assert.ok(s.calls[3].body.notified_at);
   assert.ok(s.calls[0].headers.authorization.startsWith("Bearer "));
 });
+test("handler: the notification email shows the time in IST", async () => {
+  const s = stub(); await handle(post({ email: "a@b.co", service: "ai_chatbot" }), ENV, s.impl);
+  const mail = s.calls.find((c) => c.url.includes("resend")).body;
+  assert.match(mail.html, /IST/); assert.ok(!/GMT/.test(mail.html));
+});
 test("handler: honeypot stores nothing but looks successful", async () => {
   const s = stub(); const res = await handle(post({ email: "a@b.co", website: "spam" }), ENV, s.impl);
   assert.equal(res.status, 200); assert.equal(s.calls.length, 0);

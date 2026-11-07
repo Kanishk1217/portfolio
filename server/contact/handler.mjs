@@ -44,7 +44,7 @@ export async function handle(request, env, fetchImpl = fetch) {
 
     let patch = null;
     if (env.RESEND_API_KEY) {
-      const mail = renderEmail(v.value, { at: new Date().toUTCString(), page: request.headers.get("referer") || "the portfolio" });
+      const mail = renderEmail(v.value, { at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }) + " IST", page: request.headers.get("referer") || "the portfolio" });
       const res = await fetchImpl("https://api.resend.com/emails", { method: "POST",
         headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
         body: JSON.stringify({ from: env.MAIL_FROM || "Portfolio <onboarding@resend.dev>", to: [env.NOTIFY_TO || "kanishkpansari1217@gmail.com"],
