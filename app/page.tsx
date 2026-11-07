@@ -4,6 +4,7 @@ import Home from "@/components/home"
 
 const SITE = "https://kanishk-portfolio.pages.dev"
 const TITLE = "Kanishk Pansari: Data Science & AI Engineer"
+const OG_ALT = "Kanishk Pansari, Data Science & AI Engineer"
 const DESCRIPTION =
   "Kanishk Pansari builds AI chatbots, machine learning and data science projects, websites and web apps, AI dashboards, and business automation."
 
@@ -18,9 +19,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     locale: "en",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: OG_ALT }],
   },
-  // No og:image: the repo has no image made for sharing, so none is declared.
-  twitter: { card: "summary", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: OG_ALT }],
+  },
 }
 
 const EMAIL = "kanishkpansari1217@gmail.com"
