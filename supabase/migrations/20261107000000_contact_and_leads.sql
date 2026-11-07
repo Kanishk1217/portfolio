@@ -85,8 +85,7 @@ create table if not exists public.suppression (
 
 create or replace function public.touch_updated_at() returns trigger language plpgsql as $$
 begin new.updated_at = now(); return new; end $$;
-drop trigger if exists leads_touch on public.leads;
-create trigger leads_touch before update on public.leads for each row execute function public.touch_updated_at();
+create or replace trigger leads_touch before update on public.leads for each row execute function public.touch_updated_at();
 
 alter table public.contact_requests enable row level security;
 alter table public.leads            enable row level security;

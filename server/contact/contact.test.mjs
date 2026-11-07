@@ -28,6 +28,8 @@ test("validate: nothing to reply to is rejected", () => assert.ok(validate({ not
 test("validate: bad email rejected", () => assert.ok(validate({ email: "not-an-email" }).errors.email));
 test("validate: line break in email (header injection) rejected", () => assert.ok(validate({ email: "a@b.co\nBcc: x@y.z" }).errors.email));
 test("validate: short phone rejected", () => assert.ok(validate({ phone: "12345" }).errors.phone));
+test("validate: every listed service is accepted", () => { for (const sv of ["ai_chatbot","machine_learning","web_development","ai_dashboard","automation","other"]) assert.equal(validate({ email: "a@b.co", service: sv }).ok, true); });
+test("validate: old service names are no longer accepted", () => assert.ok(validate({ email: "a@b.co", service: "website" }).errors.service));
 test("validate: unknown service rejected", () => assert.ok(validate({ email: "a@b.co", service: "hack" }).errors.service));
 test("validate: long note rejected", () => assert.ok(validate({ email: "a@b.co", note: "x".repeat(1001) }).errors.note));
 test("validate: honeypot marks spam", () => assert.equal(validate({ email: "a@b.co", website: "http://spam" }).spam, true));
@@ -41,7 +43,7 @@ test("email: visitor html is escaped", () => {
 });
 
 test("handler: happy path stores, emails, marks notified", async () => {
-  const s = stub(); const res = await handle(post({ email: "a@b.co", service: "chatbot", note: "hello" }), ENV, s.impl);
+  const s = stub(); const res = await handle(post({ email: "a@b.co", service: "ai_chatbot", note: "hello" }), ENV, s.impl);
   assert.equal(res.status, 200);
   const kinds = s.calls.map((c) => `${c.method} ${c.url.includes("resend") ? "resend" : "supabase"}`);
   assert.deepEqual(kinds, ["GET supabase", "POST supabase", "POST resend", "PATCH supabase"]);

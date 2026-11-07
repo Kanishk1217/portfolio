@@ -1,4 +1,4 @@
-export const SERVICES = ["chatbot", "automation", "website", "other"];
+export const SERVICES = ["ai_chatbot", "machine_learning", "web_development", "ai_dashboard", "automation", "other"];
 const EMAIL = /^[^\s@<>"',;]+@[^\s@<>"',;]+\.[^\s@<>"',;]{2,}$/;
 const str = (v) => (typeof v === "string" ? v.trim() : "");
 const hasLineBreak = (v) => /[\r\n]/.test(v);
