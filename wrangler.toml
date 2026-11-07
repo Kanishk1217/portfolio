@@ -1,3 +1,20 @@
 name = "kanishk-portfolio"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "out"
+
+# Non-secret settings for the contact form (secrets stay in the Cloudflare dashboard:
+# SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, IP_SALT).
+[vars]
+SUPABASE_URL = "https://vzvemgdmquypusxlbacm.supabase.co"
+NOTIFY_TO = "kanishkpansari1217@gmail.com"
+ALLOWED_ORIGINS = "https://kanishk-portfolio.pages.dev"
+
+[env.production.vars]
+SUPABASE_URL = "https://vzvemgdmquypusxlbacm.supabase.co"
+NOTIFY_TO = "kanishkpansari1217@gmail.com"
+ALLOWED_ORIGINS = "https://kanishk-portfolio.pages.dev"
+
+[env.preview.vars]
+SUPABASE_URL = "https://vzvemgdmquypusxlbacm.supabase.co"
+NOTIFY_TO = "kanishkpansari1217@gmail.com"
+ALLOWED_ORIGINS = "https://kanishk-portfolio.pages.dev,https://feat-contact-ui.kanishk-portfolio.pages.dev"
