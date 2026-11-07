@@ -198,11 +198,7 @@ function HeroInsightStream() {
   return (
     <div className="w-full rounded-xl overflow-hidden" style={{ border: "1px solid #1c1d22", background: "#050508" }}>
       <div className="flex items-center gap-2.5 px-6 py-4" style={{ borderBottom: "1px solid #111116", background: "#060609" }}>
-        <motion.div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e" }}
-          animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-        <span className="font-mono text-[9px] tracking-[0.2em] uppercase" style={{ color: "#999" }}>
-          AI Analysis · Live
-        </span>
+        <span className="text-xs font-medium" style={{ color: "#999" }}>Example output</span>
       </div>
 
       <div
@@ -622,7 +618,7 @@ function AboutSection() {
         {/* Left — bio + stack + skill bars */}
         <div>
           <FadeUp>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-8" style={{ color: "#ccc" }}>About</p>
+            <p className="text-xs font-medium mb-8" style={{ color: "#ccc" }}>About</p>
           </FadeUp>
 
           {/* Pull quote */}
@@ -647,7 +643,7 @@ function AboutSection() {
 
           {/* Tech Stack — 3-col, larger cards */}
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#ccc" }}>Stack</p>
+            <p className="text-xs font-medium mb-4" style={{ color: "#ccc" }}>Stack</p>
             <div className="grid grid-cols-3 gap-2 mb-10">
               {stack.map(({ name, Icon }, i) => (
                 <motion.div
@@ -663,7 +659,7 @@ function AboutSection() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1c1d22" }}
                 >
                   <Icon className="w-6 h-6" style={{ color: "#bbb" }} />
-                  <span className="font-mono text-[9px]" style={{ color: "#ccc" }}>{name}</span>
+                  <span className="text-xs" style={{ color: "#ccc" }}>{name}</span>
                 </motion.div>
               ))}
             </div>
@@ -671,7 +667,7 @@ function AboutSection() {
 
           {/* Skill proficiency bars */}
           <FadeUp delay={0.14}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#ccc" }}>Proficiency</p>
+            <p className="text-xs font-medium mb-5" style={{ color: "#ccc" }}>Proficiency</p>
             <div className="space-y-4">
               {skills.map((s, i) => (
                 <motion.div
@@ -682,8 +678,8 @@ function AboutSection() {
                   transition={{ delay: 0.18 + i * 0.06 }}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-mono text-[10px]" style={{ color: "#999" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#7a7a7a" }}>{s.pct}%</span>
+                    <span className="text-xs" style={{ color: "#999" }}>{s.name}</span>
+                    <span className="text-xs" style={{ color: "#7a7a7a" }}>{s.pct}%</span>
                   </div>
                   <div className="h-px w-full" style={{ background: "#0f0f0f" }}>
                     <motion.div
@@ -702,10 +698,10 @@ function AboutSection() {
 
           {/* ML engineering practices */}
           <FadeUp delay={0.18}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mt-10 mb-4" style={{ color: "#ccc" }}>ML Engineering</p>
+            <p className="text-xs font-medium mt-10 mb-4" style={{ color: "#ccc" }}>ML Engineering</p>
             <div className="flex flex-wrap gap-2">
               {mlEngineering.map(item => (
-                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                <span key={item} className="text-xs px-3 py-1.5"
                   style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
                   {item}
                 </span>
@@ -715,10 +711,10 @@ function AboutSection() {
 
           {/* Platforms & tooling */}
           <FadeUp delay={0.22}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mt-10 mb-4" style={{ color: "#ccc" }}>Platforms &amp; Tools</p>
+            <p className="text-xs font-medium mt-10 mb-4" style={{ color: "#ccc" }}>Platforms &amp; Tools</p>
             <div className="flex flex-wrap gap-2">
               {platforms.map(item => (
-                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                <span key={item} className="text-xs px-3 py-1.5"
                   style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
                   {item}
                 </span>
@@ -730,7 +726,7 @@ function AboutSection() {
         {/* Right — education, experience, interests, resume */}
         <div className="flex flex-col gap-8">
           <FadeUp delay={0.1}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#bbb" }}>Education</p>
+            <p className="text-xs font-medium mb-5" style={{ color: "#bbb" }}>Education</p>
             <div style={{ borderTop: "1px solid #181818" }}>
               {edu.map((e, i) => (
                 <motion.div key={i}
@@ -742,22 +738,22 @@ function AboutSection() {
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-medium mb-1 leading-snug transition-colors duration-200 group-hover:text-white"
                       style={{ color: "#e0e0e0" }}>{e.title}</p>
-                    <p className="font-mono text-[10px]" style={{ color: "#999" }}>{e.sub}</p>
+                    <p className="text-xs" style={{ color: "#999" }}>{e.sub}</p>
                     {e.meta && (
-                      <span className="inline-block font-mono text-[9px] mt-2 px-2 py-0.5"
+                      <span className="inline-block text-xs mt-2 px-2 py-0.5"
                         style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 2, background: "rgba(255,255,255,0.03)" }}>
                         {e.meta}
                       </span>
                     )}
                   </div>
-                  <p className="font-mono text-[10px] flex-shrink-0 pt-0.5" style={{ color: "#999" }}>{e.year}</p>
+                  <p className="text-xs flex-shrink-0 pt-0.5" style={{ color: "#999" }}>{e.year}</p>
                 </motion.div>
               ))}
             </div>
           </FadeUp>
 
           <FadeUp delay={0.14}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-5" style={{ color: "#bbb" }}>Experience</p>
+            <p className="text-xs font-medium mb-5" style={{ color: "#bbb" }}>Experience</p>
             <motion.div
               className="group relative py-5 cursor-default overflow-hidden"
               style={{ borderTop: "1px solid #181818", borderBottom: "1px solid #181818" }}
@@ -776,8 +772,8 @@ function AboutSection() {
                   <p className="text-[14px] font-medium mb-1 transition-colors duration-200 group-hover:text-white"
                     style={{ color: "#e0e0e0" }}>Marketing &amp; Sales Associate</p>
                   <div className="flex items-center gap-2">
-                    <p className="font-mono text-[10px]" style={{ color: "#999" }}>2026 – Present</p>
-                    <span className="font-mono text-[8px] px-1.5 py-0.5"
+                    <p className="text-xs" style={{ color: "#999" }}>2026 – Present</p>
+                    <span className="text-xs px-1.5 py-0.5"
                       style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 2, background: "rgba(255,255,255,0.03)" }}>
                       Agility
                     </span>
@@ -793,10 +789,10 @@ function AboutSection() {
           </FadeUp>
 
           <FadeUp delay={0.18}>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4" style={{ color: "#bbb" }}>Interests</p>
+            <p className="text-xs font-medium mb-4" style={{ color: "#bbb" }}>Interests</p>
             <div className="flex flex-wrap gap-2">
               {interests.map(item => (
-                <span key={item} className="font-mono text-[10px] px-3 py-1.5"
+                <span key={item} className="text-xs px-3 py-1.5"
                   style={{ border: "1px solid #1c1d22", color: "#bbb", borderRadius: 3, background: "#050505" }}>
                   {item}
                 </span>
@@ -806,7 +802,7 @@ function AboutSection() {
 
           <FadeUp delay={0.22}>
             <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-[12px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-[12px] font-medium transition-colors hover:bg-[#e8e8e8]"
               style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
               ↓ Download Resume
             </a>
@@ -848,7 +844,7 @@ function CapabilitySection() {
           <div className="flex-1 flex flex-col justify-end">
             <div className="flex items-end justify-between mb-8">
               <div>
-                <p className="font-mono text-[9px] tracking-widest uppercase mb-2"
+                <p className="text-xs font-medium tracking-widest mb-2"
                   style={{ color: "#7a7a7a" }}>Revenue YTD</p>
                 <p className="text-[36px] leading-none tracking-[-0.03em]"
                   style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>
@@ -858,7 +854,7 @@ function CapabilitySection() {
               <motion.span
                 initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ delay: 0.5 }}
-                className="font-mono text-[10px] px-2.5 py-1 rounded-full self-end mb-0.5"
+                className="text-xs px-2.5 py-1 rounded-full self-end mb-0.5"
                 style={{ border: "1px solid #1a3828", color: "#22c55e", background: "#0a180f" }}>
                 ↑ 12.4%
               </motion.span>
@@ -878,14 +874,12 @@ function CapabilitySection() {
             </div>
             <div className="flex gap-1.5 mt-2">
               {months.map((m, i) => (
-                <span key={i} className="flex-1 font-mono text-[8px] text-center"
+                <span key={i} className="flex-1 text-xs text-center"
                   style={{ color: "#7a7a7a" }}>{m}</span>
               ))}
             </div>
           </div>
           <div className="mt-10 pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#999" }}>01</p>
             <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Data Analysis
@@ -970,8 +964,6 @@ function CapabilitySection() {
             </svg>
           </div>
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#999" }}>02</p>
             <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Machine Learning
@@ -993,9 +985,9 @@ function CapabilitySection() {
                 className="flex items-center justify-between px-4 py-3.5 rounded-lg"
                 style={{ border: "1px solid #141414", background: "#050505" }}>
                 <div>
-                  <p className="font-mono text-[10px] font-medium mb-0.5"
+                  <p className="text-xs font-medium mb-0.5"
                     style={{ color: "#aaa" }}>{layer.label}</p>
-                  <p className="font-mono text-[8px]"
+                  <p className="text-xs"
                     style={{ color: "#7a7a7a" }}>{layer.sub}</p>
                 </div>
                 <motion.div
@@ -1008,8 +1000,6 @@ function CapabilitySection() {
             ))}
           </div>
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
-              style={{ color: "#999" }}>03</p>
             <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Full-Stack Build
@@ -1053,15 +1043,15 @@ function CredentialsSection() {
                   style={{ border: "1px solid #f97316" }}>
                   <Rocket className="w-[18px] h-[18px]" style={{ color: "#fff" }} />
                 </div>
-                <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3" style={{ color: "#ccc" }}>Certificate of Participation</p>
+                <p className="text-xs font-medium mb-3" style={{ color: "#ccc" }}>Certificate of Participation</p>
                 <p className="text-[15px] font-medium" style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>Bharatiya Antariksh</p>
-                <p className="font-mono text-[9px] mt-1.5" style={{ color: "#bbb" }}>Hackathon 2026</p>
+                <p className="text-xs mt-1.5" style={{ color: "#bbb" }}>Hackathon 2026</p>
               </div>
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Bharatiya Antariksh Hackathon 2026</p>
-            <p className="font-mono text-[10px] mb-1" style={{ color: "#999" }}>ISRO · powered by Hack2skill · Idea submission</p>
-            <p className="font-mono text-[9px] mb-5" style={{ color: "#7a7a7a" }}>ID 2026H2S06BAH-P05765</p>
-            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
+            <p className="text-xs mb-1" style={{ color: "#999" }}>ISRO · powered by Hack2skill · Idea submission</p>
+            <p className="text-xs mb-5" style={{ color: "#7a7a7a" }}>ID 2026H2S06BAH-P05765</p>
+            <span className="text-xs transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
           </a>
         </FadeUp>
 
@@ -1079,14 +1069,14 @@ function CredentialsSection() {
                   style={{ border: "1px solid #f97316" }}>
                   <span className="text-[18px]" style={{ color: "#fff" }}>✓</span>
                 </div>
-                <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3" style={{ color: "#ccc" }}>Certificate of Completion</p>
+                <p className="text-xs font-medium mb-3" style={{ color: "#ccc" }}>Certificate of Completion</p>
                 <p className="text-[15px] font-medium" style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>Engineering Plus</p>
-                <p className="font-mono text-[9px] mt-1.5" style={{ color: "#bbb" }}>Python &amp; Data Science</p>
+                <p className="text-xs mt-1.5" style={{ color: "#bbb" }}>Python &amp; Data Science</p>
               </div>
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Engineering Plus: Python &amp; Data Science</p>
-            <p className="font-mono text-[10px] mb-5" style={{ color: "#999" }}>New LJ Institute of Engineering &amp; Technology · 2024</p>
-            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
+            <p className="text-xs mb-5" style={{ color: "#999" }}>New LJ Institute of Engineering &amp; Technology · 2024</p>
+            <span className="text-xs transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>View Certificate ↗</span>
           </a>
         </FadeUp>
 
@@ -1113,8 +1103,8 @@ function CredentialsSection() {
               </div>
             </div>
             <p className="text-[15px] mb-1" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#ededed" }}>Kanishk Pansari: Résumé</p>
-            <p className="font-mono text-[10px] mb-5" style={{ color: "#999" }}>Data Science &amp; AI Engineer · 2026</p>
-            <span className="font-mono text-[10px] transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>Download PDF ↓</span>
+            <p className="text-xs mb-5" style={{ color: "#999" }}>Data Science &amp; AI Engineer · 2026</p>
+            <span className="text-xs transition-colors group-hover:text-[#ededed]" style={{ color: "#ccc" }}>Download PDF ↓</span>
           </a>
         </FadeUp>
       </div>
@@ -1195,11 +1185,6 @@ function AutomationSection() {
   return (
     <section className="max-w-[1200px] mx-auto px-8 py-28">
       <div className="mb-16">
-        <FadeUp className="mb-5">
-          <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: "#999" }}>
-            Internal Tools
-          </span>
-        </FadeUp>
         <Reveal>
           <h2 className="text-[clamp(36px,5vw,52px)] leading-[1] tracking-[-0.025em]"
             style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
@@ -1214,14 +1199,14 @@ function AutomationSection() {
 
           {/* Copy */}
           <div className="p-8 lg:p-10">
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#f97316" }}>
+            <p className="text-xs font-medium mb-4" style={{ color: "#f97316" }}>
               Internal tool · no public demo
             </p>
             <h3 className="text-[clamp(22px,2.6vw,30px)] leading-[1.15] tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Gmail Inbox Automation System
             </h3>
-            <p className="font-mono text-[10px] mb-7" style={{ color: "#999" }}>
+            <p className="text-xs mb-7" style={{ color: "#999" }}>
               Google Apps Script · 2026 – Present
             </p>
             <p className="text-[14px] leading-[1.8] mb-6" style={{ color: "#bbb", maxWidth: 460 }}>
@@ -1235,7 +1220,7 @@ function AutomationSection() {
             </p>
             <div className="flex flex-wrap gap-1.5">
               {["Apps Script", "Gmail", "Google Sheets", "Automation"].map(tag => (
-                <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+                <span key={tag} className="text-xs px-2.5 py-1 rounded-full"
                   style={{ border: "1px solid #333", color: "#ccc" }}>{tag}</span>
               ))}
             </div>
@@ -1245,13 +1230,13 @@ function AutomationSection() {
           <div className="p-6 lg:p-8 flex flex-col gap-5"
             style={{ background: "#030303", borderLeft: "1px solid #1c1d22" }}>
             <div>
-              <p className="font-mono text-[8px] tracking-widest uppercase mb-3" style={{ color: "#ccc" }}>Auto-applied labels</p>
+              <p className="text-xs font-medium tracking-widest mb-3" style={{ color: "#ccc" }}>Auto-applied labels</p>
               <div className="space-y-2.5">
                 {labels.map((l, i) => (
                   <div key={l.name}>
                     <div className="flex items-baseline justify-between mb-1">
-                      <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{l.name}</span>
-                      <span className="font-mono text-[9px]" style={{ color: "#7a7a7a" }}>{l.count}</span>
+                      <span className="text-xs" style={{ color: "#bbb" }}>{l.name}</span>
+                      <span className="text-xs" style={{ color: "#7a7a7a" }}>{l.count}</span>
                     </div>
                     <div className="h-1 w-full rounded-full" style={{ background: "#0a0a0a" }}>
                       <motion.div className="h-1 rounded-full" style={{ background: "#222" }}
@@ -1265,7 +1250,7 @@ function AutomationSection() {
             </div>
 
             <div style={{ borderTop: "1px solid #1c1d22" }} className="pt-5">
-              <p className="font-mono text-[8px] tracking-widest uppercase mb-2" style={{ color: "#ccc" }}>Median reply time</p>
+              <p className="text-xs font-medium tracking-widest mb-2" style={{ color: "#ccc" }}>Median reply time</p>
               <p className="text-[24px] font-semibold leading-none mb-3"
                 style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>3h 12m</p>
               <div className="flex items-end gap-1" style={{ height: 34 }}>
@@ -1279,7 +1264,7 @@ function AutomationSection() {
               </div>
               <div className="flex gap-1 mt-1.5">
                 {["M","T","W","T","F","S","S"].map((d, i) => (
-                  <span key={i} className="flex-1 font-mono text-[7px] text-center" style={{ color: "#7a7a7a" }}>{d}</span>
+                  <span key={i} className="flex-1 text-xs text-center" style={{ color: "#7a7a7a" }}>{d}</span>
                 ))}
               </div>
             </div>
@@ -1337,7 +1322,7 @@ function ProjectText({ p, i, n, progress, active }: {
         style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 4vw, 48px)", color: "#ededed" }}>
         {p.title}
       </h3>
-      <p className="font-mono text-[10px] mb-7" style={{ color: "#999" }}>
+      <p className="text-xs mb-7" style={{ color: "#999" }}>
         {p.sub} · {p.year}
       </p>
       <p className="text-[14px] leading-[1.8] mb-7" style={{ color: "#bbb", maxWidth: 380 }}>
@@ -1345,21 +1330,21 @@ function ProjectText({ p, i, n, progress, active }: {
       </p>
       <div className="flex flex-wrap gap-1.5 mb-8">
         {p.tags.map(tag => (
-          <span key={tag} className="font-mono text-[9px] px-2.5 py-1 rounded-full"
+          <span key={tag} className="text-xs px-2.5 py-1 rounded-full"
             style={{ border: "1px solid #333", color: "#ccc" }}>{tag}</span>
         ))}
       </div>
       <div className="flex items-center gap-4">
         {p.github && (
           <a href={p.github} target="_blank" rel="noopener noreferrer"
-            className="font-mono text-[11px] flex items-center gap-1.5 transition-colors hover:text-white"
+            className="text-xs flex items-center gap-1.5 transition-colors hover:text-white"
             style={{ color: "#ccc" }}>
             <SiGithub className="w-3.5 h-3.5" /> Source
           </a>
         )}
         {p.link && (
           <a href={p.link} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-[11px] font-mono font-medium transition-colors hover:bg-[#e8e8e8]"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium transition-colors hover:bg-[#e8e8e8]"
             style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
             Live Demo <ExternalLink className="w-3 h-3" />
           </a>
@@ -1398,17 +1383,10 @@ function WorkSection() {
   return (
     <section id="work">
       <div className="max-w-[1200px] mx-auto px-8 pt-20 pb-6">
-        <FadeUp className="mb-5">
-          <span className="font-mono text-[10px] tracking-[0.22em] uppercase"
-            style={{ border: "1px solid rgba(255,255,255,0.12)", color: "#fff", background: "rgba(255,255,255,0.03)", borderRadius: 3 }}>
-            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#fff", flexShrink: 0 }} />
-            Selected Projects
-          </span>
-        </FadeUp>
         <Reveal>
           <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
             style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
-            Work
+            Selected work
           </h2>
         </Reveal>
       </div>
@@ -1428,8 +1406,8 @@ function WorkSection() {
               <div className="w-full">
                 {/* Progress pills */}
                 <div className="flex items-center gap-3 mb-8">
-                  <span className="font-mono text-[10px]" style={{ color: "#bbb" }}>
-                    {String(active + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
+                  <span className="text-xs" style={{ color: "#bbb" }}>
+                    {active + 1} of {n}
                   </span>
                   <div className="flex gap-2 items-center">
                     {projects.map((_, i) => (
@@ -1492,7 +1470,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
                 <motion.span className="block leading-[0.9] tracking-[-0.035em]"
                   initial={{ y: "106%" }} animate={{ y: "0%" }}
                   transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 60px rgba(255,255,255,0.18)" }}>
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff" }}>
                   Kanishk{" "}
                 </motion.span>
               </span>
@@ -1500,7 +1478,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
                 <motion.span className="block leading-[0.9] tracking-[-0.035em]"
                   initial={{ y: "106%" }} animate={{ y: "0%" }}
                   transition={{ duration: 0.88, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 80px rgba(255,255,255,0.22)" }}>
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff" }}>
                   Pansari
                 </motion.span>
               </span>
@@ -1547,7 +1525,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       <div className="overflow-hidden" style={{ borderBottom: "1px solid #111116" }}>
         <div className="flex py-3" style={{ animation: "marquee 28s linear infinite", width: "max-content", gap: 56 }}>
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap" style={{ color: "#bbb" }}>{item}</span>
+            <span key={i} className="text-xs font-medium whitespace-nowrap" style={{ color: "#bbb" }}>{item}</span>
           ))}
         </div>
       </div>
@@ -1567,7 +1545,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
                   style={{ fontFamily: "var(--font-playfair)", color: "#ededed" }}>
                   <Counter to={s.to} suffix={s.suffix} />
                 </p>
-                <p className="font-mono text-[11px] tracking-[0.1em] uppercase" style={{ color: "#bbb" }}>{s.label}</p>
+                <p className="text-xs font-medium " style={{ color: "#bbb" }}>{s.label}</p>
               </div>
             </FadeUp>
           ))}
@@ -1593,12 +1571,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       <section id="services" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <div>
-            <FadeUp className="mb-5">
-              <span className="font-mono text-[10px] tracking-[0.22em] uppercase"
-                style={{ color: "#999", letterSpacing: "0.18em" }}>
-                What I Build
-              </span>
-            </FadeUp>
             <Reveal>
               <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
                 style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
@@ -1607,7 +1579,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
             </Reveal>
           </div>
           <FadeUp>
-            <Link href="/services" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>
+            <Link href="/services" className="text-xs transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>
               Full details →
             </Link>
           </FadeUp>
@@ -1617,10 +1589,10 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
             <SpotlightCard className="rounded-xl h-full min-h-[280px] flex flex-col justify-between p-8 transition-all duration-300"
               style={{ border: "1px solid #1c1d22", background: "transparent" }}>
               <div>
-                <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style={{ color: "#bbb" }}>{services[services.length - 1].timeline}</p>
+                <p className="text-xs font-medium mb-4" style={{ color: "#bbb" }}>{services[services.length - 1].timeline}</p>
                 <h3 className="text-[26px] leading-[1.1] tracking-[-0.02em] mb-3"
                   style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{services[services.length - 1].name}</h3>
-                <p className="font-mono text-[22px] font-medium" style={{ color: "#ededed" }}>{services[services.length - 1].price}</p>
+                <p className="text-[22px] font-medium" style={{ color: "#ededed" }}>{services[services.length - 1].price}</p>
               </div>
               <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(services[services.length - 1].subject)}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 self-start text-[13px] font-medium transition-colors hover:bg-[#e8e8e8]"
@@ -1635,10 +1607,10 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
                 <SpotlightCard className="rounded-xl flex flex-col justify-between p-6 transition-all duration-300"
                   style={{ border: "1px solid #1c1d22", background: "#000", minHeight: 132 }}>
                   <div>
-                    <p className="font-mono text-[10px] tracking-[0.15em] uppercase mb-3" style={{ color: "#bbb" }}>{s.timeline}</p>
+                    <p className="text-xs font-medium mb-3" style={{ color: "#bbb" }}>{s.timeline}</p>
                     <h3 className="text-[17px] leading-snug tracking-[-0.01em] mb-2"
                       style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed" }}>{s.name}</h3>
-                    <p className="font-mono text-[13px]" style={{ color: "#aaa" }}>{s.price}</p>
+                    <p className="text-[13px]" style={{ color: "#aaa" }}>{s.price}</p>
                   </div>
                 </SpotlightCard>
               </FadeUp>
@@ -1651,12 +1623,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       <section id="writing" className="max-w-[1200px] mx-auto px-8 py-28">
         <div className="flex items-end justify-between mb-20">
           <div>
-            <FadeUp className="mb-5">
-              <span className="font-mono text-[10px] tracking-[0.22em] uppercase"
-                style={{ color: "#999", letterSpacing: "0.18em" }}>
-                Latest Articles
-              </span>
-            </FadeUp>
             <Reveal>
               <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
                 style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
@@ -1665,7 +1631,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
             </Reveal>
           </div>
           <FadeUp>
-            <Link href="/blog" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>All posts →</Link>
+            <Link href="/blog" className="text-xs transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>All posts →</Link>
           </FadeUp>
         </div>
         <div style={{ borderTop: "1px solid #1c1d22" }}>
@@ -1678,7 +1644,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               onMouseEnter={e => { e.currentTarget.style.paddingLeft = "8px" }}
               onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0px" }}>
               <div className="flex items-baseline gap-8 flex-1 min-w-0">
-                <span className="font-mono text-[10px] flex-shrink-0" style={{ color: "#bbb" }}>
+                <span className="text-xs flex-shrink-0" style={{ color: "#bbb" }}>
                   {new Date(post.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
                 </span>
                 <span className="text-[14px] font-medium leading-snug truncate transition-colors duration-200 group-hover:text-white" style={{ color: "#aaa" }}>
@@ -1695,11 +1661,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       <section id="contact" tabIndex={-1} className="max-w-[1200px] mx-auto px-8 py-28 scroll-mt-14 focus:outline-none">
         <div className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-12 lg:gap-16">
           <div>
-            <FadeUp className="mb-5">
-              <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: "#999", letterSpacing: "0.18em" }}>
-                Contact
-              </span>
-            </FadeUp>
             <Reveal>
               <h2 className="text-[clamp(40px,5.5vw,58px)] leading-[1] tracking-[-0.025em]"
                 style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
@@ -1707,7 +1668,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               </h2>
             </Reveal>
             <FadeUp delay={0.1}>
-              <p className="font-mono text-[12px] leading-[1.9] mt-8 max-w-[380px]" style={{ color: "#aaa" }}>
+              <p className="text-[15px] leading-[1.75] mt-8 max-w-[420px]" style={{ color: "#bbb" }}>
                 AI chatbot for my business. Machine learning and data science. Website or web app development. AI dashboards and analytics. Business automation (email, sheets, WhatsApp).
               </p>
             </FadeUp>
@@ -1726,7 +1687,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Let's work together.
             </p>
-            <a href="mailto:kanishkpansari1217@gmail.com" className="font-mono text-[12px] transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>
+            <a href="mailto:kanishkpansari1217@gmail.com" className="text-[12px] transition-colors hover:text-[#ededed]" style={{ color: "#999" }}>
               kanishkpansari1217@gmail.com
             </a>
           </div>
@@ -1741,7 +1702,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
             </a>
           </div>
         </div>
-        <p className="font-mono text-[10px] mt-14" style={{ color: "#ccc" }}>© 2026 Kanishk Pansari</p>
+        <p className="text-xs mt-14" style={{ color: "#ccc" }}>© 2026 Kanishk Pansari</p>
       </footer>
     </div>
     </MotionConfig>

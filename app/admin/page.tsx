@@ -33,13 +33,13 @@ export default function AdminPage() {
       <div className="relative z-10 flex flex-col items-center gap-10">
         <div className="text-center space-y-3">
           <ShimmerText
-            className="text-4xl font-mono font-light tracking-tight text-foreground"
+            className="text-4xl font-light tracking-tight text-foreground"
             duration={2.5}
             delay={0.3}
           >
             Admin Access
           </ShimmerText>
-          <p className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground/50 uppercase">
+          <p className="text-xs font-medium text-muted-foreground/50 ">
             Kanishk Pansari · Portfolio
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function AdminPage() {
             autoFocus
             autoComplete="off"
             className={`
-              w-full font-mono text-sm bg-transparent border-b-2 text-center text-foreground
+              w-full text-sm bg-transparent border-b-2 text-center text-foreground
               placeholder:text-muted-foreground/40 outline-none pb-2.5 tracking-widest
               transition-all duration-300
               ${error
@@ -63,7 +63,7 @@ export default function AdminPage() {
           />
           <button
             type="submit"
-            className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted-foreground/30 hover:text-muted-foreground transition-colors duration-200"
+            className="text-xs font-medium text-muted-foreground/30 hover:text-muted-foreground transition-colors duration-200"
           >
             Enter →
           </button>

@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono, Playfair_Display, Space_Grotesk } from "next/font/google"
+import { Instrument_Sans, JetBrains_Mono, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
+const sans = Instrument_Sans({ variable: "--font-instrument", subsets: ["latin"], weight: ["400", "500", "600", "700"] })
+const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "500"] })
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], weight: ["400", "500", "700"], style: ["normal", "italic"] })
-const spaceGrotesk = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], weight: ["700"] })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kanishk-portfolio.pages.dev"),
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${spaceGrotesk.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${playfair.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           {children}

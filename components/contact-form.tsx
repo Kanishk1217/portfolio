@@ -109,7 +109,7 @@ export default function ContactForm() {
             Got it, thank you.
           </p>
         </div>
-        <p className="font-mono text-[12px] leading-relaxed" style={{ color: "#aaa" }}>
+        <p className="text-[12px] leading-relaxed" style={{ color: "#aaa" }}>
           I will reply by {via} soon. You do not need to do anything else.
         </p>
       </div>
@@ -124,7 +124,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="max-w-[560px] flex flex-col gap-8" aria-busy={sending}>
       <fieldset className="min-w-0" disabled={sending}>
-        <legend className="font-mono text-[11px] tracking-[0.12em] uppercase mb-3" style={{ color: "#bbb" }}>
+        <legend className="text-sm font-medium mb-3" style={{ color: "#bbb" }}>
           How should I reach you?
         </legend>
         <div className="inline-flex p-1 gap-1" style={{ border: "1px solid #2a2b31", borderRadius: 4 }}>
@@ -142,7 +142,7 @@ export default function ContactForm() {
       </fieldset>
 
       <div>
-        <label htmlFor={inputId} className="block font-mono text-[11px] tracking-[0.12em] uppercase mb-3" style={{ color: "#bbb" }}>
+        <label htmlFor={inputId} className="block text-sm font-medium mb-3" style={{ color: "#bbb" }}>
           {via === "email" ? "Your email address" : "Your phone number"}
         </label>
         <input
@@ -163,12 +163,12 @@ export default function ContactForm() {
           style={fieldStyle(!!errors[via])}
         />
         {errors[via] && (
-          <p id={errId} role="alert" className="font-mono text-[12px] mt-2" style={{ color: "#ff8a80" }}>{errors[via]}</p>
+          <p id={errId} role="alert" className="text-[12px] mt-2" style={{ color: "#ff8a80" }}>{errors[via]}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor={svcId} className="block font-mono text-[11px] tracking-[0.12em] uppercase mb-3" style={{ color: "#bbb" }}>
+        <label htmlFor={svcId} className="block text-sm font-medium mb-3" style={{ color: "#bbb" }}>
           What do you need?
         </label>
         <select
@@ -188,7 +188,7 @@ export default function ContactForm() {
           ))}
         </select>
         {errors.service && (
-          <p id={svcErrId} role="alert" className="font-mono text-[12px] mt-2" style={{ color: "#ff8a80" }}>{errors.service}</p>
+          <p id={svcErrId} role="alert" className="text-[12px] mt-2" style={{ color: "#ff8a80" }}>{errors.service}</p>
         )}
       </div>
 
@@ -217,12 +217,12 @@ export default function ContactForm() {
 
         <div aria-live="polite" className="min-h-[1px] w-full">
           {status === "limited" && (
-            <p className="font-mono text-[12px] leading-relaxed" style={{ color: "#ffcf8a" }}>
+            <p className="text-[12px] leading-relaxed" style={{ color: "#ffcf8a" }}>
               Too many tries from your connection. Please try again in a few minutes.
             </p>
           )}
           {status === "error" && (
-            <p className="font-mono text-[12px] leading-relaxed" style={{ color: "#ff8a80" }}>
+            <p className="text-[12px] leading-relaxed" style={{ color: "#ff8a80" }}>
               That did not go through, and it is not your fault. Please email me directly at{" "}
               <a href={`mailto:${EMAIL}`} className="underline underline-offset-4 break-all" style={{ color: "#ededed" }}>{EMAIL}</a>.
             </p>

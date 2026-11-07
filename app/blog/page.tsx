@@ -18,14 +18,14 @@ export default function BlogPage() {
 
       {/* Hero */}
       <section className="max-w-[1200px] mx-auto px-8 pt-36 pb-20">
-        <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10" style={{ color: "#444" }}>Writing</p>
+        <p className="text-xs font-medium mb-10" style={{ color: "#444" }}>Writing</p>
         <h1
           className="text-[clamp(52px,7vw,88px)] leading-[0.9] tracking-[-0.03em] mb-8"
           style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
         >
           Thinking out loud
         </h1>
-        <p className="font-mono text-[11px]" style={{ color: "#555" }}>
+        <p className="text-xs" style={{ color: "#555" }}>
           {posts.length} {posts.length === 1 ? "post" : "posts"}
         </p>
       </section>
@@ -33,7 +33,7 @@ export default function BlogPage() {
       {/* Post list */}
       <section className="max-w-[1200px] mx-auto px-8 pb-28" style={{ borderTop: "1px solid #1c1d22" }}>
         {posts.length === 0 ? (
-          <p className="font-mono text-[13px] pt-12" style={{ color: "#444" }}>No posts yet. First one coming soon.</p>
+          <p className="text-[13px] pt-12" style={{ color: "#444" }}>No posts yet. First one coming soon.</p>
         ) : (
           posts.map((post, i) => (
             <Link
@@ -44,13 +44,13 @@ export default function BlogPage() {
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-6 mb-3">
-                  <span className="font-mono text-[10px]" style={{ color: "#555" }}>
+                  <span className="text-xs" style={{ color: "#555" }}>
                     {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                   </span>
                   {post.tags?.length > 0 && (
                     <div className="flex gap-1.5">
                       {post.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="font-mono text-[8px] px-2 py-0.5 rounded-full"
+                        <span key={tag} className="text-xs px-2 py-0.5 rounded-full"
                           style={{ border: "1px solid #1c1d22", color: "#333" }}>
                           {tag}
                         </span>
@@ -75,10 +75,10 @@ export default function BlogPage() {
 
       <footer className="max-w-[1200px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
         <div className="flex items-center justify-between">
-          <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
+          <Link href="/" className="text-xs transition-colors hover:text-[#ededed]" style={{ color: "#444" }}>
             ← Back to Home
           </Link>
-          <p className="font-mono text-[10px]" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
+          <p className="text-xs" style={{ color: "#333" }}>© 2026 Kanishk Pansari</p>
         </div>
       </footer>
     </div>

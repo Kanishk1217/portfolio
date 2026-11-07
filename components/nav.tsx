@@ -15,20 +15,20 @@ export default function Nav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-8 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-5 sm:px-8 transition-all duration-300 ${
         scrolled
           ? "bg-background/90 backdrop-blur-md border-b border-border"
           : "bg-transparent"
       }`}
     >
-      <Link href="/" className="font-mono text-[11px] tracking-[0.18em] text-white uppercase hover:text-white transition-colors select-none" style={{ textShadow: "0 0 20px rgba(255,255,255,0.35)" }}>
+      <Link href="/" className="text-[18px] sm:text-[22px] leading-none whitespace-nowrap mr-3 text-white hover:text-white transition-colors select-none" style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}>
         Kanishk Pansari
       </Link>
 
-      <nav className="flex items-center gap-7">
-        <a href="/#work"     className="font-mono text-[11px] text-muted-foreground hover:text-foreground transition-colors">Work</a>
-        <a href="/#writing"  className="font-mono text-[11px] text-muted-foreground hover:text-foreground transition-colors">Writing</a>
-        <Link href="/services" className="font-mono text-[11px] text-muted-foreground hover:text-foreground transition-colors">Services</Link>
+      <nav className="flex items-center gap-3 sm:gap-7">
+        <a href="/#work"     className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Work</a>
+        <a href="/#writing"  className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Writing</a>
+        <Link href="/services" className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Services</Link>
         <a
           href="https://github.com/Kanishk1217"
           target="_blank"

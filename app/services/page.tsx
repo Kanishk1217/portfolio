@@ -94,7 +94,7 @@ export default function ServicesPage() {
 
       {/* Hero */}
       <section className="max-w-[1200px] mx-auto px-8 pt-36 pb-24">
-        <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-10" style={{ color: "#777" }}>Services</p>
+        <p className="text-xs font-medium mb-10" style={{ color: "#777" }}>Services</p>
         <h1
           className="text-[clamp(52px,7vw,88px)] leading-[0.9] tracking-[-0.03em] mb-8"
           style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
@@ -114,8 +114,8 @@ export default function ServicesPage() {
             style={{ borderBottom: "1px solid #1c1d22" }}>
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <span className="font-mono text-[10px] tracking-[0.18em]" style={{ color: "#999" }}>{s.num}</span>
-                <span className="font-mono text-[9px] px-2.5 py-1 rounded-full" style={{ border: "1px solid #1c1d22", color: "#999" }}>
+                <span className="text-xs font-medium" style={{ color: "#999" }}>{s.num}</span>
+                <span className="text-xs px-2.5 py-1 rounded-full" style={{ border: "1px solid #1c1d22", color: "#999" }}>
                   {s.timeline}
                 </span>
               </div>
@@ -123,9 +123,9 @@ export default function ServicesPage() {
                 style={{ fontFamily: "var(--font-playfair)", fontWeight: 400, color: "#ededed", fontSize: "clamp(24px,3vw,36px)" }}>
                 {s.name}
               </h2>
-              <p className="font-mono text-[20px] font-medium mb-6" style={{ color: "#fff" }}>{s.price}</p>
+              <p className="text-[20px] font-medium mb-6" style={{ color: "#fff" }}>{s.price}</p>
               <p className="text-[14px] leading-[1.8] mb-6 max-w-[500px]" style={{ color: "#999" }}>{s.description}</p>
-              <p className="font-mono text-[11px] mb-8" style={{ color: "#999" }}>
+              <p className="text-xs mb-8" style={{ color: "#999" }}>
                 Best for: <span style={{ color: "#999" }}>{s.bestFor}</span>
               </p>
               <a href={`mailto:kanishkpansari1217@gmail.com?subject=${encodeURIComponent(s.subject)}`}
@@ -135,12 +135,12 @@ export default function ServicesPage() {
               </a>
             </div>
             <div className="lg:pt-14">
-              <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#999" }}>Includes</p>
+              <p className="text-xs font-medium mb-4" style={{ color: "#999" }}>Includes</p>
               <div style={{ borderTop: "1px solid #1c1d22" }}>
                 {s.includes.map((item, j) => (
                   <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-                    <span className="font-mono text-[10px]" style={{ color: "#fff" }}>→</span>
-                    <span className="font-mono text-[11px]" style={{ color: "#999" }}>{item}</span>
+                    <span className="text-xs" style={{ color: "#fff" }}>→</span>
+                    <span className="text-xs" style={{ color: "#999" }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -153,19 +153,19 @@ export default function ServicesPage() {
       <section className="max-w-[1200px] mx-auto px-8 py-20" style={{ borderTop: "1px solid #1c1d22" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 items-start">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-6" style={{ color: "#fff" }}>Add-On · Available with any project</p>
+            <p className="text-xs font-medium mb-6" style={{ color: "#fff" }}>Add-On · Available with any project</p>
             <h2
               className="text-[clamp(32px,4.5vw,52px)] leading-[1.05] tracking-[-0.025em] mb-6"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400 }}
             >
               Monthly Retainer
             </h2>
-            <p className="font-mono text-[28px] font-medium mb-6" style={{ color: "#fff" }}>$400 – $900 / month</p>
+            <p className="text-[28px] font-medium mb-6" style={{ color: "#fff" }}>$400 – $900 / month</p>
             <p className="text-[15px] leading-[1.8] mb-8 max-w-[460px]" style={{ color: "#999" }}>
               This is where recurring revenue lives, for both of us. After launch, the product needs to grow. Bug fixes within 48 hours, monthly feature additions, hosting fully managed,
               and a weekly status report. One contact, no hourly billing, no surprises.
             </p>
-            <p className="font-mono text-[11px] mb-10" style={{ color: "#aaa" }}>
+            <p className="text-xs mb-10" style={{ color: "#aaa" }}>
               Best for: <span style={{ color: "#999" }}>Businesses that want the product to keep evolving without managing a dev relationship.</span>
             </p>
             <a href="mailto:kanishkpansari1217@gmail.com?subject=Retainer%20Inquiry"
@@ -175,12 +175,12 @@ export default function ServicesPage() {
             </a>
           </div>
           <div>
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-4" style={{ color: "#aaa" }}>Includes</p>
+            <p className="text-xs font-medium mb-4" style={{ color: "#aaa" }}>Includes</p>
             <div style={{ borderTop: "1px solid #1c1d22" }}>
               {retainerIncludes.map((item, j) => (
                 <div key={j} className="flex items-center gap-3 py-3" style={{ borderBottom: "1px solid #1c1d22" }}>
-                  <span className="font-mono text-[10px]" style={{ color: "#fff" }}>→</span>
-                  <span className="font-mono text-[11px]" style={{ color: "#999" }}>{item}</span>
+                  <span className="text-xs" style={{ color: "#fff" }}>→</span>
+                  <span className="text-xs" style={{ color: "#999" }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -198,7 +198,7 @@ export default function ServicesPage() {
           {process.map((p, i) => (
             <div key={p.step} className="px-6 py-8"
               style={{ background: "#000", borderRight: i < 3 ? "1px solid #1c1d22" : "none" }}>
-              <p className="font-mono text-[10px] tracking-[0.18em] mb-5" style={{ color: "#999" }}>{p.step}</p>
+              <p className="text-xs font-medium mb-5" style={{ color: "#999" }}>{p.step}</p>
               <p className="text-[15px] font-medium mb-3" style={{ color: "#ededed" }}>{p.title}</p>
               <p className="text-[13px] leading-relaxed" style={{ color: "#999" }}>{p.desc}</p>
             </div>
@@ -226,10 +226,10 @@ export default function ServicesPage() {
 
       <footer className="max-w-[1200px] mx-auto px-8 py-10" style={{ borderTop: "1px solid #1c1d22" }}>
         <div className="flex items-center justify-between">
-          <Link href="/" className="font-mono text-[11px] transition-colors hover:text-[#ededed]" style={{ color: "#777" }}>
+          <Link href="/" className="text-xs transition-colors hover:text-[#ededed]" style={{ color: "#777" }}>
             ← Back to Home
           </Link>
-          <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>© 2026 Kanishk Pansari</p>
+          <p className="text-xs" style={{ color: "#aaa" }}>© 2026 Kanishk Pansari</p>
         </div>
       </footer>
     </div>
