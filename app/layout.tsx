@@ -9,6 +9,7 @@ const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["lati
 const spaceGrotesk = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], weight: ["700"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kanishk-portfolio.pages.dev"),
   title: "Kanishk Pansari: Data Science & AI Engineer",
   description: "I build custom AI tools that turn your business data into decisions. Shipped in 2 weeks.",
 }

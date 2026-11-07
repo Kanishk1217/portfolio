@@ -886,10 +886,10 @@ function CapabilitySection() {
           <div className="mt-10 pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
               style={{ color: "#999" }}>01</p>
-            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+            <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Data Analysis
-            </h3>
+            </h2>
             <p className="text-[12px] leading-relaxed" style={{ color: "#999" }}>
               Raw inputs turned into revenue-visible decisions.
             </p>
@@ -972,10 +972,10 @@ function CapabilitySection() {
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
               style={{ color: "#999" }}>02</p>
-            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+            <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Machine Learning
-            </h3>
+            </h2>
             <p className="text-[12px] leading-relaxed" style={{ color: "#999" }}>
               Models trained on your data, deployed on your stack.
             </p>
@@ -1010,10 +1010,10 @@ function CapabilitySection() {
           <div className="pt-7" style={{ borderTop: "1px solid #1c1d22" }}>
             <p className="font-mono text-[9px] tracking-[0.2em] uppercase mb-3"
               style={{ color: "#999" }}>03</p>
-            <h3 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
+            <h2 className="text-[20px] leading-snug tracking-[-0.02em] mb-2"
               style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontWeight: 400, color: "#ededed" }}>
               Full-Stack Build
-            </h3>
+            </h2>
             <p className="text-[12px] leading-relaxed" style={{ color: "#999" }}>
               Frontend to database. Every layer owned and shipped.
             </p>
@@ -1486,22 +1486,25 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         <div className="max-w-[1200px] mx-auto w-full px-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-16 items-center py-24">
           <motion.div style={{ y: heroTextY }}>
             {/* Fixed: animate directly, not whileInView — above-fold content */}
-            <div className="overflow-hidden mb-[-4px]">
-              <motion.h1 className="leading-[0.9] tracking-[-0.035em]"
-                initial={{ y: "106%" }} animate={{ y: "0%" }}
-                transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 60px rgba(255,255,255,0.18)" }}>
-                Kanishk
-              </motion.h1>
-            </div>
-            <div className="overflow-hidden mb-14">
-              <motion.h1 className="leading-[0.9] tracking-[-0.035em]"
-                initial={{ y: "106%" }} animate={{ y: "0%" }}
-                transition={{ duration: 0.88, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 80px rgba(255,255,255,0.22)" }}>
-                Pansari
-              </motion.h1>
-            </div>
+            {/* One h1 for the name, split over two animated lines */}
+            <h1 className="mb-14">
+              <span className="block overflow-hidden mb-[-4px]">
+                <motion.span className="block leading-[0.9] tracking-[-0.035em]"
+                  initial={{ y: "106%" }} animate={{ y: "0%" }}
+                  transition={{ duration: 0.88, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 60px rgba(255,255,255,0.18)" }}>
+                  Kanishk{" "}
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden">
+                <motion.span className="block leading-[0.9] tracking-[-0.035em]"
+                  initial={{ y: "106%" }} animate={{ y: "0%" }}
+                  transition={{ duration: 0.88, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(66px, 9.5vw, 110px)", color: "#ffffff", textShadow: "0 0 80px rgba(255,255,255,0.22)" }}>
+                  Pansari
+                </motion.span>
+              </span>
+            </h1>
 
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.48 }}
               className="text-[17px] leading-[1.68] max-w-[400px] mb-10" style={{ color: "#ccc" }}>
@@ -1512,16 +1515,21 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
 
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.6 }}
               className="flex gap-3 flex-wrap">
-              <a href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-all duration-200 hover:bg-[#e8e8e8]"
+              <a href="#contact"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium cursor-pointer transition-all duration-200 hover:bg-[#e8e8e8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 style={{ background: "#fff", color: "#000", borderRadius: 3 }}>
+                <Mail className="w-3.5 h-3.5" /> Get in touch
+              </a>
+              <a href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium cursor-pointer transition-all duration-200 border border-[#1c1d22] text-[#ccc] hover:border-[#333] hover:text-[#ededed] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ borderRadius: 3 }}>
                 <Mail className="w-3.5 h-3.5" /> Work With Me
               </a>
               <a href="#work"
                 className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-all duration-200"
                 style={{ border: "1px solid #1c1d22", color: "#ccc", borderRadius: 3 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#333"; e.currentTarget.style.color = "#ededed" }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1c1d22"; e.currentTarget.style.color = "#666" }}>
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1c1d22"; e.currentTarget.style.color = "#ccc" }}>
                 View Work <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </motion.div>
@@ -1684,7 +1692,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       </section>
 
       {/* ══ CONTACT */}
-      <section id="contact" className="max-w-[1200px] mx-auto px-8 py-28">
+      <section id="contact" tabIndex={-1} className="max-w-[1200px] mx-auto px-8 py-28 scroll-mt-14 focus:outline-none">
         <div className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-12 lg:gap-16">
           <div>
             <FadeUp className="mb-5">
