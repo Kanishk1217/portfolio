@@ -1,0 +1,84 @@
+/* Hallmark · shape: design system · genre: modern-minimal · theme: custom, technical shade (by request, colours extracted from the live portfolio) · redesign: none
+ * nav: sticky top bar with a left progress rail · signature: scroll-driven word scene and a hairline-and-tick card language · states: default, hover, active, focus, disabled, loading
+ * axes: dark/serif-italic+grotesk+mono/neutral+one-orange · posture: committed · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, one accent on near-black is a known look; the pinned word scene and the corner-tick cards carry the identity */
+/* Hallmark · waive 64 · mono labels carry data, coordinates and section marks only, in lowercase and untracked · a developer portfolio makes mono part of its material by the owner's brief */
+/* Hallmark · waive 7b · --bg is #050506, tinted from the live site's #000 · the live portfolio is near-black by design */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;1,400;1,500&display=swap");
+
+:root {
+  color-scheme: dark;
+
+  /* surfaces, darkest to lightest */
+  --bg: #050506;          /* page, tinted from the live site's #000 [18] */
+  --bg-1: #0a0a0a;        /* raised band [14] */
+  --bg-2: #0d0d0f;        /* card */
+  --bg-3: #141519;        /* inset, input [6] */
+  --bg-4: #1a1b20;        /* hover, image placeholder */
+
+  /* lines: the system is built from hairlines, not shadows */
+  --line: #1c1d22;        /* default hairline [85, the most used colour] */
+  --line-2: #2a2b31;      /* stronger divider */
+  --line-3: #3a3a40;      /* control outline, tick marks */
+
+  /* text */
+  --text: #ededed;        /* primary [71] */
+  --text-2: #cccccc;      /* body on dark [28] */
+  --text-3: #999999;      /* secondary [38] */
+  --text-4: #8c8c8c;      /* tertiary, labels [32]. Lifted from #7a7a7a so it passes 4.5:1 on every surface */
+  --edge: #6e6e76;        /* form-control edge: 3:1 against the surface, the minimum for a visible field */
+  --scrim: rgba(5, 5, 6, 0.78);
+
+  /* signal: one accent, one status */
+  --accent: #f97316;      /* orange [12]: the only brand colour */
+  --accent-ink: #0b0b0c;  /* text on orange */
+  --accent-soft: rgba(249, 115, 22, 0.14);
+  --accent-line: rgba(249, 115, 22, 0.45);
+  --ok: #22c55e;          /* green [10]: status only, never decoration */
+  --danger: #ef4444;
+
+  /* type */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;  /* headlines, italic */
+  --font-ui: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;     /* everything you read */
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; /* labels, data, coordinates */
+
+  --fs-label: 0.75rem;    /* 12 mono label */
+  --fs-small: 0.875rem;   /* 14 */
+  --fs-body: 1rem;        /* 16 */
+  --fs-lead: 1.25rem;     /* 20 */
+  --fs-h3: 1.75rem;       /* 28 */
+  --fs-h2: clamp(2rem, 4vw, 3.25rem);
+  --fs-h1: clamp(2.75rem, 7vw, 6rem);
+  --fs-display: clamp(3.5rem, 11vw, 9rem);
+  --lh-tight: 1.02;
+  --lh-body: 1.6;
+  --track-label: 0;
+
+  /* space (4 base) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 144px;
+
+  /* shape */
+  --r-1: 6px;   /* chips, inputs */
+  --r-2: 12px;  /* cards */
+  --r-3: 20px;  /* large surfaces */
+  --r-pill: 999px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-micro: 120ms;
+  --t-short: 240ms;
+  --t-long: 600ms;
+  --t-scene: 1000ms;
+
+  /* layout */
+  --page: 1280px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --z-rail: 40; --z-nav: 50; --z-cursor: 60;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-micro: 0.01ms; --t-short: 0.01ms; --t-long: 0.01ms; --t-scene: 0.01ms; }
+}

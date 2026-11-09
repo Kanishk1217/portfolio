@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio design system</title>
+<meta name="description" content="Colours, type, motion and components for the portfolio: a technical shade built from hairlines, one orange signal and scroll that follows you.">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* Hallmark · shape: design system · genre: modern-minimal · theme: custom, technical shade (by request, colours extracted from the live portfolio) · redesign: none
+ * nav: sticky top bar with a left progress rail · signature: the orange second line of the hero head, the scroll-driven word scene and a hairline-and-tick card language · hero: head on the left over a hairline grid · states: default, hover, active, focus, disabled, loading
+ * axes: dark/serif-italic+grotesk+mono/neutral+one-orange · posture: committed · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, one accent on near-black is a known look; the pinned word scene and the corner-tick cards carry the identity */
+/* Hallmark · waive 64 · mono labels carry data, coordinates and section marks only, in lowercase and untracked · a developer portfolio makes mono part of its material by the owner's brief */
+/* Hallmark · waive 7b · --bg is #050506, tinted from the live site's #000 · the live portfolio is near-black by design and the guard is the stamp naming a dark axis */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--text-2);font:var(--fs-body)/var(--lh-body) var(--font-ui);overflow-x:clip;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+::selection{background:var(--accent-soft);color:var(--text)}
+a{color:inherit}
+h1,h2,h3{margin:0;font-weight:400;overflow-wrap:break-word;min-width:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--page);margin-inline:auto;padding-inline:var(--gutter)}
+.mono{font-family:var(--font-mono);font-size:var(--fs-label);color:var(--text-4)}
+.it{font-family:var(--font-display);font-style:italic;color:var(--text)}
+.acc{color:var(--accent)}
+
+/* scroll progress: drawn by the page scroll itself, no script */
+.prog{position:fixed;inset:0 0 auto 0;height:2px;background:var(--accent);transform-origin:left;transform:scaleX(0);z-index:var(--z-nav)}
+@supports (animation-timeline:scroll()){.prog{animation:prog linear both;animation-timeline:scroll(root)}}
+@keyframes prog{to{transform:scaleX(1)}}
+
+/* left rail: where you are */
+.rail{position:fixed;left:var(--s-5);top:50%;transform:translateY(-50%);z-index:var(--z-rail);display:none}
+@media (min-width:1380px){.rail{display:block}}
+.rail a{display:flex;align-items:center;gap:var(--s-2);padding:var(--s-1) 0;text-decoration:none;color:var(--text-4);font:500 12px/1 var(--font-mono)}
+.rail i{display:block;width:30px;height:1px;background:var(--line-3);transform:scaleX(.47);transform-origin:left;transition:transform var(--t-short) var(--ease-out),background var(--t-short)}
+.rail a[aria-current=true]{color:var(--text)}.rail a[aria-current=true] i{transform:none;background:var(--accent)}
+
+/* top bar */
+.nav{position:sticky;top:0;z-index:var(--z-nav);background:var(--scrim);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:var(--s-5);height:64px}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line-3);border-radius:var(--r-1);font:italic 22px/1 var(--font-display);color:var(--text);position:relative}
+.mark:after{content:"";position:absolute;right:-1px;top:-1px;width:9px;height:9px;background:var(--accent);border-radius:0 5px 0 4px}
+.nav .name{font:italic 20px var(--font-display);color:var(--text)}
+.nav .links{margin-left:auto;display:flex;gap:var(--s-5);align-items:center}
+.nav .links a.l{display:none;text-decoration:none;color:var(--text-3);font-size:var(--fs-small);transition:color var(--t-micro)}
+.nav .links a.l:hover{color:var(--text)}
+@media (min-width:760px){.nav .links a.l{display:inline}}
+@media (max-width:480px){.nav .name{display:none}}
+
+/* buttons: every state is designed */
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);min-height:44px;padding:0 var(--s-5);border-radius:var(--r-pill);border:1px solid transparent;font:500 var(--fs-small)/1 var(--font-ui);cursor:pointer;text-decoration:none;transition:transform var(--t-micro) var(--ease-out),background var(--t-short),border-color var(--t-short),color var(--t-short),box-shadow var(--t-short)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn-p{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn-p:hover{box-shadow:0 0 0 4px var(--bg-4)}
+.btn-o{border-color:var(--line-3);color:var(--text);background:transparent}
+.btn-o:hover{border-color:var(--text-3);background:var(--bg-3)}
+.lnk{display:inline-flex;align-items:center;min-height:44px;color:var(--text-3);text-underline-offset:.25em;transition:color var(--t-micro)}.lnk:hover{color:var(--text)}
+.btn-g{color:var(--text-3);background:transparent}.btn-g:hover{color:var(--text)}
+.btn[disabled]{opacity:1;color:var(--text-3);background:var(--bg-3);border-color:var(--line-2);cursor:not-allowed;box-shadow:none;transform:none}
+.btn.loading{pointer-events:none;color:transparent;position:relative}
+.btn.loading:after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent-ink);border-top-color:transparent;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* hero */
+.hero{position:relative;padding:var(--s-9) 0 var(--s-8);border-bottom:1px solid var(--line);overflow:hidden}
+.hero h1{font:italic clamp(3.25rem,10vw,8.5rem)/var(--lh-tight) var(--font-display);color:var(--text);letter-spacing:-.02em;margin:var(--s-5) 0 var(--s-5)}
+.hero h1 .l2{display:block;color:var(--accent);font-size:.62em;margin-top:.12em}
+.hero p.lead{font-size:var(--fs-lead);max-width:56ch;color:var(--text-3)}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.5;mask-image:radial-gradient(70% 70% at 60% 40%,var(--accent-ink),transparent);-webkit-mask-image:radial-gradient(70% 70% at 60% 40%,var(--accent-ink),transparent);pointer-events:none}
+.xh{position:absolute;left:0;top:0;pointer-events:none;z-index:2;will-change:transform;opacity:0;transition:opacity var(--t-short)}
+.hero:hover .xh{opacity:1}
+.xh i{position:absolute;left:-10px;top:0;width:21px;height:1px;background:var(--accent)}.xh i+i{left:0;top:-10px;width:1px;height:21px}
+.xh span{position:absolute;left:14px;top:12px;white-space:nowrap;font:500 12px/1 var(--font-mono);color:var(--accent)}
+
+/* sections */
+section.s{padding:var(--s-9) 0;border-bottom:1px solid var(--line);scroll-margin-top:64px}
+.sh{display:flex;align-items:baseline;gap:var(--s-4);margin-bottom:var(--s-7);flex-wrap:wrap}
+.sh h2{font:italic var(--fs-h2)/var(--lh-tight) var(--font-display);color:var(--text)}
+.sh .mono{color:var(--accent)}
+.two{display:grid;gap:var(--s-6);grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+
+/* reveal on scroll: scroll-driven where supported, visible everywhere else */
+.rv{opacity:1;transform:none}
+@supports (animation-timeline:view()){
+.rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+}
+@keyframes rv{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+/* color */
+.sw{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:var(--s-4);align-items:center;padding:var(--s-3) 0;border-top:1px solid var(--line)}
+.sw i{display:block;width:64px;height:40px;border-radius:var(--r-1);border:1px solid var(--line-3)}
+.sw b{display:block;font:500 var(--fs-small)/1.3 var(--font-mono);color:var(--text)}
+.sw small{display:block;color:var(--text-4);font-size:13px}
+.sw code{font:var(--fs-small) var(--font-mono);color:var(--text-3)}
+.ratio{display:flex;height:14px;border-radius:var(--r-pill);overflow:hidden;border:1px solid var(--line-3);margin-top:var(--s-4)}
+.ratio i{display:block}
+
+/* type */
+.spec{display:grid;grid-template-columns:120px minmax(0,1fr);gap:var(--s-4);padding:var(--s-5) 0;border-top:1px solid var(--line);align-items:baseline}
+@media (max-width:640px){.spec{grid-template-columns:1fr;gap:var(--s-2)}}
+
+/* components: technical shade = hairline cards with registration ticks, mono labels, one orange signal */
+.card{position:relative;color:var(--text-2);background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-2);padding:var(--s-5)}
+.tick:before,.tick:after{content:"";position:absolute;width:10px;height:10px;border:1px solid var(--accent-line)}
+.tick:before{left:-1px;top:-1px;border-right:0;border-bottom:0;border-top-left-radius:var(--r-2)}
+.tick:after{right:-1px;bottom:-1px;border-left:0;border-top:0;border-bottom-right-radius:var(--r-2)}
+.spot{background:radial-gradient(220px circle at var(--mx,50%) var(--my,-40%),var(--accent-soft),transparent 65%),var(--bg-2);transition:border-color var(--t-short)}
+.spot:hover{border-color:var(--line-3)}
+.chip{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border:1px solid var(--line-3);border-radius:var(--r-pill);font:500 12px/1 var(--font-mono);color:var(--text-3)}
+.chip .d{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.kv{display:grid;grid-template-columns:140px minmax(0,1fr);gap:var(--s-3);padding:var(--s-3) 0;border-top:1px solid var(--line);font-size:var(--fs-small)}
+.kv dt{font:500 12px/1.6 var(--font-mono);color:var(--text-4)}.kv dd{margin:0;color:var(--text)}
+dl{margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--line);border-radius:var(--r-2);overflow:hidden}
+.stats div{padding:var(--s-5);border-right:1px solid var(--line)}.stats div:last-child{border-right:0}
+.stats b{display:block;font:italic 56px/1 var(--font-display);color:var(--text);margin-bottom:var(--s-2)}
+.field{display:block;width:100%;min-height:44px;padding:0 var(--s-4);background:var(--bg-3);border:1px solid var(--edge);border-radius:var(--r-1);color:var(--text);font:var(--fs-body) var(--font-ui);transition:border-color var(--t-short),box-shadow var(--t-short)}
+.field::placeholder{color:var(--text-4)}.field:hover{border-color:var(--text-3)}.field:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.bento{display:grid;gap:var(--s-3);grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(120px,auto)}
+.bento>*{min-width:0}.b1{grid-column:span 4;grid-row:span 2}.b2{grid-column:span 2}.b3{grid-column:span 2}.b4{grid-column:span 3}.b5{grid-column:span 3}
+@media (max-width:720px){.bento{grid-template-columns:1fr}.bento>*{grid-column:auto!important;grid-row:auto!important}}
+.term{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--r-2);padding:var(--s-5);font:var(--fs-small)/1.9 var(--font-mono);color:var(--text-3);overflow:hidden}
+.term .p{color:var(--accent)}.term .ok{color:var(--ok)}
+.term .ln{display:block;white-space:nowrap;overflow:hidden;clip-path:inset(0 100% 0 0);animation:typeln 1.4s steps(34,end) forwards}
+.term .ln:nth-child(2){animation-delay:1.5s}.term .ln:nth-child(3){animation-delay:3s}.term .ln:nth-child(4){animation-delay:4.4s}
+@keyframes typeln{to{clip-path:inset(0 0 0 0)}}
+.cur{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* timeline: the orange node fills as you scroll past */
+.tl{position:relative;padding-left:var(--s-7)}
+.tl:before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:1px;background:var(--line-2)}
+.tl .fill{position:absolute;left:11px;top:6px;bottom:6px;width:1px;background:var(--accent);transform-origin:top;transform:scaleY(1)}
+@supports (animation-timeline:view()){.tl .fill{transform:scaleY(0);animation:grow linear both;animation-timeline:view();animation-range:entry 20% exit 40%}}
+@keyframes grow{to{transform:scaleY(1)}}
+.tl .it2{position:relative;padding:0 0 var(--s-6)}
+.tl .it2:before{content:"";position:absolute;left:calc(-1 * var(--s-7) + 6px);top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:1px solid var(--accent)}
+.tl h3{font:italic var(--fs-h3)/1.1 var(--font-display);color:var(--text);margin:var(--s-1) 0 var(--s-2)}
+
+/* pinned scene: scroll scrubs the numbers, nothing else moves the page */
+.scene{height:240vh;position:relative}
+.scene .pin{position:sticky;top:64px;height:calc(100vh - 64px);display:grid;align-content:center;gap:var(--s-5)}
+.bar{height:2px;background:var(--line-2);position:relative;overflow:hidden;border-radius:2px}
+.bar i{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(1)}
+@supports (animation-timeline:view()){.bar i{transform:scaleX(0);animation:grow2 linear both;animation-timeline:view();animation-range:cover 25% cover 75%}}
+@keyframes grow2{to{transform:scaleX(1)}}
+.big{font:italic clamp(2.25rem,6vw,5.25rem)/1 var(--font-display);color:var(--text);display:flex;flex-wrap:wrap;gap:.15em}
+.big span{opacity:1}
+@supports (animation-timeline:view()){.big span{opacity:.15;animation:lit linear both;animation-timeline:view();}
+.big span:nth-child(1){animation-range:cover 20% cover 38%}.big span:nth-child(2){animation-range:cover 32% cover 50%}.big span:nth-child(3){animation-range:cover 44% cover 62%}.big span:nth-child(4){animation-range:cover 56% cover 74%}}
+@keyframes lit{to{opacity:1}}
+
+.sub{font:500 var(--fs-small)/1.4 var(--font-ui);color:var(--text-3);margin:var(--s-7) 0 var(--s-3)}
+.note{border-left:2px solid var(--accent);padding:var(--s-2) var(--s-4);color:var(--text-3);font-size:var(--fs-small)}
+.do,.dont{padding:var(--s-5);border:1px solid var(--line);border-radius:var(--r-2)}
+.do h3,.dont h3{font:500 var(--fs-small) var(--font-mono);margin-bottom:var(--s-3)}
+.do h3{color:var(--ok)}.dont h3{color:var(--danger)}
+ul.plain{margin:0;padding-left:var(--s-5);color:var(--text-3)}ul.plain li{margin-bottom:var(--s-2)}
+footer{padding:var(--s-8) 0;color:var(--text-4);font-size:var(--fs-small)}
+@media (prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .prog{animation:none;transform:scaleX(0)}
+ .rv,.tl .fill,.bar i,.big span{animation:none!important;opacity:1!important;transform:none!important}
+ .term .ln{animation:none;clip-path:none}.cur{animation:none}.scene{height:auto}.scene .pin{position:static;height:auto;padding:var(--s-7) 0}
+}
+</style>
+</head>
+<body>
+<div class="prog" aria-hidden="true"></div>
+<nav class="rail" aria-label="Sections">
+ <a href="#foundations" data-s="foundations"><i></i>Colour</a>
+ <a href="#type" data-s="type"><i></i>Type</a>
+ <a href="#shape" data-s="shape"><i></i>Shape</a>
+ <a href="#motion" data-s="motion"><i></i>Motion</a>
+ <a href="#components" data-s="components"><i></i>Parts</a>
+ <a href="#rules" data-s="rules"><i></i>Rules</a>
+</nav>
+
+<header class="nav"><div class="wrap">
+ <span class="mark" aria-hidden="true">K</span><span class="name">Kanishk Pansari</span>
+ <div class="links"><a class="l" href="#foundations">Colour</a><a class="l" href="#type">Type</a><a class="l" href="#motion">Motion</a><a class="l" href="#components">Parts</a><a class="btn btn-o" href="#rules">Get in touch</a></div>
+</div></header>
+
+<main>
+<section class="hero" id="top"><div class="grid-bg"></div>
+ <div class="xh" id="xh" aria-hidden="true"><i></i><i></i><span id="xy">0, 0</span></div>
+ <div class="wrap">
+  <h1>Quiet, exact,<span class="l2">alive.</span></h1>
+  <p class="lead">A technical shade: hairlines, one orange signal, scroll that leads.</p>
+  <div style="display:flex;gap:var(--s-3);margin-top:var(--s-6);flex-wrap:wrap"><a class="btn btn-p" href="#foundations">See the system</a><a class="lnk" href="#motion">Watch it move</a></div>
+ </div>
+</section>
+
+<section class="s" id="foundations"><div class="wrap">
+ <div class="sh rv"><span class="mono">01</span><h2>Colour</h2></div>
+ <div class="two">
+  <div class="rv">
+   <p class="mono" style="margin-bottom:var(--s-3)">Surfaces</p>
+   <div class="sw"><i style="background:var(--bg)"></i><div><b>--bg</b><small>Page. Tinted from the live site’s #000.</small></div><code>#050506</code></div>
+   <div class="sw"><i style="background:var(--bg-1)"></i><div><b>--bg-1</b><small>Raised band. 14 uses.</small></div><code>#0a0a0a</code></div>
+   <div class="sw"><i style="background:var(--bg-2)"></i><div><b>--bg-2</b><small>Card.</small></div><code>#0d0d0f</code></div>
+   <div class="sw"><i style="background:var(--bg-3)"></i><div><b>--bg-3</b><small>Input, inset.</small></div><code>#141519</code></div>
+   <div class="sw"><i style="background:var(--bg-4)"></i><div><b>--bg-4</b><small>Hover, placeholder.</small></div><code>#1a1b20</code></div>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-3)">Lines</p>
+   <div class="sw"><i style="background:var(--line)"></i><div><b>--line</b><small>The default hairline. 85 uses, the most used colour on the site.</small></div><code>#1c1d22</code></div>
+   <div class="sw"><i style="background:var(--line-2)"></i><div><b>--line-2</b><small>Stronger divider.</small></div><code>#2a2b31</code></div>
+   <div class="sw"><i style="background:var(--line-3)"></i><div><b>--line-3</b><small>Control outline, ticks.</small></div><code>#3a3a40</code></div>
+  </div>
+  <div class="rv">
+   <p class="mono" style="margin-bottom:var(--s-3)">Text</p>
+   <div class="sw"><i style="background:var(--text)"></i><div><b>--text</b><small>Primary. 71 uses.</small></div><code>#ededed</code></div>
+   <div class="sw"><i style="background:var(--text-2)"></i><div><b>--text-2</b><small>Body on dark.</small></div><code>#cccccc</code></div>
+   <div class="sw"><i style="background:var(--text-3)"></i><div><b>--text-3</b><small>Secondary. 38 uses.</small></div><code>#999999</code></div>
+   <div class="sw"><i style="background:var(--text-4)"></i><div><b>--text-4</b><small>Labels, tertiary.</small></div><code>#8c8c8c</code></div>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-3)">Signal</p>
+   <div class="sw"><i style="background:var(--accent);border-color:var(--accent)"></i><div><b>--accent</b><small>The only brand colour. Marks the one thing to look at.</small></div><code>#f97316</code></div>
+   <div class="sw"><i style="background:var(--ok);border-color:var(--ok)"></i><div><b>--ok</b><small>Status only. Never decoration.</small></div><code>#22c55e</code></div>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-2)">Balance</p>
+   <div class="ratio" role="img" aria-label="About ninety percent black and grey, eight percent text, two percent orange"><i style="width:72%;background:var(--bg-2)"></i><i style="width:18%;background:var(--line-2)"></i><i style="width:8%;background:var(--text)"></i><i style="width:2%;background:var(--accent)"></i></div>
+   <p class="note" style="margin-top:var(--s-3)">Orange stays near two percent of any screen. If two things are orange, nothing is.</p>
+  </div>
+ </div>
+</div></section>
+
+<section class="s" id="type"><div class="wrap">
+ <div class="sh rv"><span class="mono">02</span><h2>Type</h2></div>
+ <div class="spec rv"><span class="mono">Display<br>Playfair italic</span><div class="it" style="font-size:var(--fs-h1);line-height:var(--lh-tight)">I design and build.</div></div>
+ <div class="spec rv"><span class="mono">Heading<br>Playfair italic</span><div class="it" style="font-size:var(--fs-h2);line-height:1.05">A calm voice with one sharp edge.</div></div>
+ <div class="spec rv"><span class="mono">Lead<br>Instrument Sans 20</span><p style="font-size:var(--fs-lead);color:var(--text-2);max-width:60ch">Body copy is Instrument Sans, set generously at a measure of about sixty characters, in the second tone so headings keep the first.</p></div>
+ <div class="spec rv"><span class="mono">Body<br>Instrument Sans 16</span><p style="max-width:62ch">The default reading size. Line height 1.6. Secondary text drops to the third grey and never below 14 pixels.</p></div>
+ <div class="spec rv"><span class="mono">Label<br>JetBrains Mono 12</span><p class="mono" style="color:var(--text-3)">Status 200 / Build 4.2s / 52.4 N, 4.9 E / Index 03</p></div>
+ <p class="note rv" style="margin-top:var(--s-5)">Serif speaks, sans explains, mono measures. Mono is for labels and data only, never for paragraphs.</p>
+</div></section>
+
+<section class="s" id="shape"><div class="wrap">
+ <div class="sh rv"><span class="mono">03</span><h2>Shape and line</h2></div>
+ <div class="two">
+  <div class="rv"><p class="mono" style="margin-bottom:var(--s-3)">Radius</p>
+   <div style="display:flex;gap:var(--s-4);flex-wrap:wrap">
+    <div class="card" style="width:120px;height:90px;border-radius:var(--r-1);padding:var(--s-3)"><span class="mono">6 chip</span></div>
+    <div class="card" style="width:120px;height:90px;padding:var(--s-3)"><span class="mono">12 card</span></div>
+    <div class="card" style="width:120px;height:90px;border-radius:var(--r-3);padding:var(--s-3)"><span class="mono">20 panel</span></div>
+    <div class="card" style="width:120px;height:90px;border-radius:999px;display:grid;place-items:center;padding:0"><span class="mono">pill</span></div>
+   </div></div>
+  <div class="rv"><p class="mono" style="margin-bottom:var(--s-3)">Depth without shadow</p>
+   <p style="color:var(--text-3);max-width:46ch">Depth comes from three hairlines and a one-step change of surface. When something needs to glow it is orange and it means something: focus, a live signal, the next action.</p>
+   <div class="card tick spot" data-spot style="margin-top:var(--s-4)"><span class="mono">Corner ticks mark an item you can act on</span></div></div>
+ </div>
+ <div class="rv" style="margin-top:var(--s-7)"><p class="mono" style="margin-bottom:var(--s-3)">Space, 4 base</p>
+  <div style="display:flex;align-items:flex-end;gap:var(--s-3);flex-wrap:wrap">
+   <span style="width:4px;height:4px;background:var(--accent)"></span><span style="width:8px;height:8px;background:var(--accent)"></span><span style="width:12px;height:12px;background:var(--accent)"></span><span style="width:16px;height:16px;background:var(--accent)"></span><span style="width:24px;height:24px;background:var(--accent)"></span><span style="width:32px;height:32px;background:var(--accent)"></span><span style="width:48px;height:48px;background:var(--accent)"></span><span style="width:64px;height:64px;background:var(--accent)"></span><span style="width:96px;height:96px;background:var(--accent)"></span>
+  </div></div>
+</div></section>
+
+<section class="s" id="motion"><div class="wrap">
+ <div class="sh rv"><span class="mono">04</span><h2>Motion that follows you</h2></div>
+ <p class="rv" style="max-width:62ch;margin-bottom:var(--s-7)">Motion answers one question: where am I and what changed. Everything below is driven by the scroll position itself, so it never lags and it reverses when you scroll back. Browsers that cannot do it show the finished state.</p>
+ <div class="two" style="margin-bottom:var(--s-7)">
+  <div class="card rv"><span class="mono">Tokens</span><dl style="margin-top:var(--s-3)"><div class="kv"><dt>Micro</dt><dd>120ms, hover and press</dd></div><div class="kv"><dt>Short</dt><dd>240ms, state change</dd></div><div class="kv"><dt>Long</dt><dd>600ms, entrances</dd></div><div class="kv"><dt>Scene</dt><dd>scroll-linked, 1 to 1</dd></div></dl></div>
+  <div class="card rv"><span class="mono">Curves</span><dl style="margin-top:var(--s-3)"><div class="kv"><dt>Out</dt><dd>cubic-bezier(.16,1,.3,1)</dd></div><div class="kv"><dt>Spring</dt><dd>cubic-bezier(.34,1.56,.64,1), for presses</dd></div><div class="kv"><dt>In-out</dt><dd>cubic-bezier(.65,0,.35,1), for lines drawing</dd></div></dl></div>
+ </div>
+</div>
+<div class="scene" aria-label="Scroll scene">
+ <div class="pin"><div class="wrap">
+  <p class="mono" style="margin-bottom:var(--s-4)">Scene / words light up as you pass them</p>
+  <div class="big"><span>Listen.</span><span>Design.</span><span>Build.</span><span>Ship.</span></div>
+  <div class="bar" style="margin-top:var(--s-6)"><i></i></div>
+ </div></div>
+</div>
+<div class="wrap" style="padding-top:var(--s-8)">
+  <div class="tl"><span class="fill"></span>
+  <div class="it2"><span class="mono">Step 1</span><h3>Listen</h3><p style="color:var(--text-3);max-width:50ch">What the business does and what a visitor should do next.</p></div>
+  <div class="it2"><span class="mono">Step 2</span><h3>Design</h3><p style="color:var(--text-3);max-width:50ch">One page, one idea, one action. Type and space before decoration.</p></div>
+  <div class="it2"><span class="mono">Step 3</span><h3>Build</h3><p style="color:var(--text-3);max-width:50ch">Fast on a cheap phone, readable in sunlight, easy to change.</p></div>
+ </div>
+ <h3 class="sub">The card lights where the pointer is</h3>
+ <div class="bento" style="grid-auto-rows:minmax(110px,auto)">
+  <div class="card spot b1" data-spot><span class="mono">Hover me</span><p class="it" style="font-size:var(--fs-h3);margin-top:var(--s-3)">A glow follows the pointer and stops when you leave.</p></div>
+  <div class="card spot b2" data-spot><span class="mono">Signal</span></div>
+  <div class="card spot b3" data-spot><span class="mono">Cursor</span></div>
+ </div>
+</div></section>
+
+<section class="s" id="components"><div class="wrap">
+ <div class="sh rv"><span class="mono">05</span><h2>Parts</h2></div>
+ <div class="two">
+  <div class="rv"><p class="mono" style="margin-bottom:var(--s-3)">Buttons, every state</p>
+   <div style="display:flex;gap:var(--s-3);flex-wrap:wrap;align-items:center">
+    <button class="btn btn-p">Primary</button><button class="btn btn-o">Outline</button><button class="btn btn-g">Ghost</button><button class="btn btn-p" disabled>Disabled</button><button class="btn btn-p loading" aria-label="Loading">Loading</button></div>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-3)">Status and chips</p>
+   <div style="display:flex;gap:var(--s-3);flex-wrap:wrap"><span class="chip"><span class="d"></span>available</span><span class="chip">react</span><span class="chip">typescript</span><span class="chip" style="color:var(--accent);border-color:var(--accent-line)">new</span></div>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-3)">Field</p>
+   <label style="display:block"><span class="mono" style="display:block;margin-bottom:var(--s-2)">Your email</span><input class="field" type="email" placeholder="name@company.com"></label>
+  </div>
+  <div class="rv"><p class="mono" style="margin-bottom:var(--s-3)">Spec list</p>
+   <dl><div class="kv"><dt>Role</dt><dd>Designer and developer</dd></div><div class="kv"><dt>Stack</dt><dd>React, Next.js, TypeScript</dd></div><div class="kv"><dt>Focus</dt><dd>Fast, clear websites</dd></div><div class="kv"><dt>Reply</dt><dd>Same day</dd></div></dl>
+   <p class="mono" style="margin:var(--s-6) 0 var(--s-3)">Stat strip</p>
+   <div class="stats"><div><b>01</b><span class="mono">Page, one idea</span></div><div><b>02</b><span class="mono">Taps to reach you</span></div><div><b>03</b><span class="mono">Colours, no more</span></div></div>
+  </div>
+ </div>
+ <div class="two" style="margin-top:var(--s-7)">
+  <div class="rv"><p class="mono" style="margin-bottom:var(--s-3)">Terminal strip</p>
+   <div class="term" role="img" aria-label="A short terminal session that ends with a deploy message"><span class="ln"><span class="p">$</span> build --production</span><span class="ln">compiled in 2.1s</span><span class="ln"><span class="ok">&#10003;</span> 100 performance</span><span class="ln"><span class="p">$</span> <span class="cur"></span></span></div></div>
+  <div class="rv">
+   <div class="card tick spot" data-spot><span class="mono">case 01 / website</span><h3 class="it" style="font-size:var(--fs-h3);margin:var(--s-2) 0">A clinic that takes bookings</h3><p style="color:var(--text-3)">Calendar, services, one call button.</p><div style="display:flex;gap:var(--s-2);margin-top:var(--s-4)"><span class="chip">next.js</span><span class="chip">seo</span></div></div></div>
+ </div>
+</div></section>
+
+<section class="s" id="rules"><div class="wrap">
+ <div class="sh rv"><span class="mono">06</span><h2>Rules</h2></div>
+ <div class="two">
+  <div class="do rv"><h3>Do</h3><ul class="plain"><li>One orange thing per screen.</li><li>Hairlines and one-step surface changes for depth.</li><li>Serif italic for the voice, mono for measurements.</li><li>Tie motion to scroll position so it feels attached.</li><li>Show the finished state first, then add motion.</li></ul></div>
+  <div class="dont rv"><h3>Do not</h3><ul class="plain"><li>No shadows, gradients on text, or purple.</li><li>No second accent colour.</li><li>No mono paragraphs.</li><li>No looping motion without a meaning.</li><li>No motion that hides content from people who ask for less.</li></ul></div>
+ </div>
+ <div class="rv" style="margin-top:var(--s-7);display:flex;gap:var(--s-3);flex-wrap:wrap"><a class="btn btn-p" href="#top">Back to the top</a><a class="btn btn-o" href="tokens.css">tokens.css</a></div>
+</div></section>
+</main>
+<footer><div class="wrap">Portfolio design system v1. Tokens extracted from the live site, then given roles.</div></footer>
+
+<script>
+(function(){
+ // active section in the rail
+ var links=[].slice.call(document.querySelectorAll('.rail a'));
+ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.setAttribute('aria-current',a.dataset.s===e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+ links.forEach(function(a){var t=document.getElementById(a.dataset.s);if(t)io.observe(t)});
+ // pointer spotlight on cards
+ [].forEach.call(document.querySelectorAll('[data-spot]'),function(el){
+  el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect();el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px')});
+  el.addEventListener('pointerleave',function(){el.style.removeProperty('--mx');el.style.removeProperty('--my')});
+ });
+ // crosshair with coordinates in the hero, fine pointers only
+ var hero=document.querySelector('.hero'),xh=document.getElementById('xh'),xy=document.getElementById('xy');
+ if(window.matchMedia('(pointer:fine)').matches&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect(),x=Math.round(e.clientX-r.left),y=Math.round(e.clientY-r.top);xh.style.transform='translate('+x+'px,'+y+'px)';xy.textContent=x+', '+y});
+ }
+})();
+</script>
+</body>
+</html>
