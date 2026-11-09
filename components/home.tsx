@@ -1501,7 +1501,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               <a href="mailto:kanishkpansari1217@gmail.com?subject=Project%20Inquiry"
                 className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium cursor-pointer transition-all duration-200 border border-[#1c1d22] text-[#ccc] hover:border-[#333] hover:text-[#ededed] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 style={{ borderRadius: 3 }}>
-                <Mail className="w-3.5 h-3.5" /> Work With Me
+                <Mail className="w-3.5 h-3.5" /> Email me
               </a>
               <a href="#work"
                 className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] font-medium transition-all duration-200"

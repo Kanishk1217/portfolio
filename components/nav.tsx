@@ -26,18 +26,25 @@ export default function Nav() {
       </Link>
 
       <nav className="flex items-center gap-3 sm:gap-7">
-        <a href="/#work"     className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Work</a>
-        <a href="/#writing"  className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Writing</a>
+        <a href="/#work"     className="hidden sm:inline text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Work</a>
+        <a href="/#writing"  className="hidden sm:inline text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Writing</a>
         <Link href="/services" className="text-[13px] sm:text-sm text-muted-foreground hover:text-foreground transition-colors">Services</Link>
         <a
           href="https://github.com/Kanishk1217"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-muted-foreground hover:text-foreground transition-colors"
+          className="hidden sm:inline text-muted-foreground hover:text-foreground transition-colors"
           aria-label="GitHub"
         >
           <SiGithub className="w-[15px] h-[15px]" />
         </a>
+        <Link
+          href="/#contact"
+          className="inline-flex items-center px-3.5 py-1.5 text-[13px] font-medium text-white border border-white/30 hover:bg-white/10 hover:border-white/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+          style={{ borderRadius: 3 }}
+        >
+          Get in touch
+        </Link>
       </nav>
     </header>
   )
